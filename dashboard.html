@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Regionalization Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left h1 { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.3px; }
+    .header-left span { font-size: 0.75rem; color: #a0aec0; margin-left: 8px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-right label { font-size: 0.8rem; color: #a0aec0; white-space: nowrap; }
+    .region-select {
+      background: #2d3748; color: #fff; border: 1px solid #4a5568;
+      border-radius: 8px; padding: 6px 12px; font-size: 0.85rem;
+      cursor: pointer; outline: none; min-width: 180px;
+    }
+    .region-select:hover { border-color: #667eea; }
+
+    /* ── POSITION TABS ── */
+    .tab-bar {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 0 32px; display: flex; gap: 4px;
+    }
+    .tab-btn {
+      padding: 14px 20px; font-size: 0.85rem; font-weight: 600;
+      color: #718096; background: none; border: none;
+      border-bottom: 3px solid transparent; cursor: pointer;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .tab-btn:hover { color: #4a5568; }
+    .tab-btn.active { color: #667eea; border-bottom-color: #667eea; }
+
+    /* ── MAIN ── */
+    main { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 20px;
+    }
+    .section-title { font-size: 1rem; font-weight: 700; color: #2d3748; }
+
+    /* ── VIEW TOGGLE ── */
+    .view-toggle {
+      display: flex; gap: 0; border: 1px solid #e2e8f0;
+      border-radius: 8px; overflow: hidden;
+    }
+    .view-toggle-btn {
+      padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
+      background: #fff; border: none; cursor: pointer;
+      color: #718096; transition: all 0.2s;
+    }
+    .view-toggle-btn:first-child { border-right: 1px solid #e2e8f0; }
+    .view-toggle-btn.active { background: #1a1a2e; color: #fff; }
+
+    /* ── KPI TABLE ── */
+    .kpi-table-wrapper {
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden;
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #f7fafc; }
+    th {
+      text-align: left; padding: 12px 20px; font-size: 0.75rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: #718096; border-bottom: 1px solid #e2e8f0;
+    }
+    th.center, td.center { text-align: center; }
+
+    /* ── TREND SUB-HEADERS ── */
+    .trend-sub-header {
+      padding: 10px 20px 9px;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: #4a5568; background: #f0f4f8;
+      border-top: 2px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .trend-sub-header:first-child { border-top: none; }
+    tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f7fafc; }
+    td { padding: 16px 20px; font-size: 0.875rem; color: #2d3748; }
+    td.kpi-name { font-weight: 600; color: #1a202c; max-width: 320px; }
+    td.kpi-note { font-size: 0.75rem; color: #a0aec0; font-weight: 400; display: block; margin-top: 3px; }
+    .tip { cursor: help; }
+
+    .value-cell { text-align: center; font-size: 1.05rem; font-weight: 700; color: #2d3748; }
+    .value-cell.empty { color: #cbd5e0; font-size: 0.9rem; font-weight: 400; }
+
+    /* Column colors */
+    th.weekly-col { color: #667eea; }
+    th.mtd-col    { color: #48bb78; }
+    th.qtd-col    { color: #ed8936; }
+    th.q1-col     { color: #9f7aea; }
+    .weekly-val   { color: #667eea; }
+    .mtd-val      { color: #38a169; }
+    .qtd-val      { color: #dd6b20; }
+    .q1-val       { color: #805ad5; }
+
+    /* ── SAME STORE TABLE ── */
+    #ss-section { display: none; }
+    .pct-pos { color: #38a169; font-weight: 700; }
+    .pct-neg { color: #e53e3e; font-weight: 700; }
+    .pct-neu { color: #718096; font-weight: 700; }
+    tfoot tr td { padding: 12px 20px; font-weight: 700; background: #f7fafc; border-top: 2px solid #e2e8f0; font-size: 0.875rem; }
+
+    /* ── FOOTER ── */
+    .footer-note {
+      margin-top: 32px; text-align: center;
+      font-size: 0.75rem; color: #a0aec0;
+    }
+  </style>
+  <style>
+    #tab-summary .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+    #tab-summary .chart-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    #tab-summary .chart-card h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #4a5568;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    #tab-summary .chart-card canvas {
+      height: 240px !important;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <h1>Regionalization Dashboard <span id="region-label">— All Regions</span></h1>
+  </div>
+  <div class="header-right">
+    <label for="regionFilter">Region</label>
+    <select class="region-select" id="regionFilter" onchange="updateRegionLabel()">
+      <option value="all">All Regions</option>
+      <option value="1">Chicago Proper</option>
+      <option value="2">Lake Co (North Burbs)</option>
+      <option value="3">Neenah (West Burbs)</option>
+      <option value="4">South Chicago (South Burbs)</option>
+      <option value="5">West IL</option>
+      <option value="6">Central IL</option>
+      <option value="7">Southern IL</option>
+      <option value="8">Northwestern IL</option>
+    </select>
+  </div>
+</header>
+
+<!-- POSITION TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('dm', this)">District Manager</button>
+  <button class="tab-btn" onclick="switchTab('ops', this)">Ops Lead</button>
+  <button class="tab-btn" onclick="switchTab('rd', this)">Regional Director</button>
+  <button class="tab-btn" onclick="switchTab('ls', this)">Legacy Sales</button>
+  <button class="tab-btn" onclick="switchTab('summary', this)">Summary</button>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- ── DISTRICT MANAGER ── -->
+  <div id="tab-dm" class="tab-content active">
+    <div class="section-header">
+      <div class="section-title">District Manager KPIs</div>
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" onclick="switchView('dm', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('dm', 'quarterly', this)">Quarterly</button>
+      </div>
+    </div>
+    <div class="kpi-table-wrapper">
+      <!-- Weekly/MTD -->
+      <div id="dm-weekly" class="view-panel active">
+        <div class="trend-sub-header">Weekly Trend</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
+              <th class="center weekly-col">6/22 – 6/28</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Door Swings / Cold Calls — Live</td>
+              <td class="value-cell weekly-val" id="doorswings-live-prev">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-weekly">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Door Swings / Cold Calls — Prospect</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-prev">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-weekly">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">New Pipeline Generated</td>
+              <td class="value-cell weekly-val" id="newpipeline-prev">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-weekly">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Marketing to Location Ratio</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Active Campaigns</td>
+              <td class="value-cell weekly-val" id="campaign-prev">—</td>
+              <td class="value-cell weekly-val" id="campaign-weekly">—</td>
+              <td class="value-cell weekly-val" id="campaign-week2">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center mtd-col" style="opacity:0.55;">May</th>
+              <th class="center mtd-col">June</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Door Swings / Cold Calls — Live</td>
+              <td class="value-cell mtd-val" id="doorswings-live-may">—</td>
+              <td class="value-cell mtd-val" id="doorswings-live-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Door Swings / Cold Calls — Prospect</td>
+              <td class="value-cell mtd-val" id="doorswings-prospect-may">—</td>
+              <td class="value-cell mtd-val" id="doorswings-prospect-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">New Pipeline Generated</td>
+              <td class="value-cell mtd-val" id="newpipeline-may">—</td>
+              <td class="value-cell mtd-val" id="newpipeline-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Marketing to Location Ratio</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell empty mtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Active Campaigns</td>
+              <td class="value-cell mtd-val" id="campaign-may">—</td>
+              <td class="value-cell mtd-val" id="campaign-mtd">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Quarterly -->
+      <div id="dm-quarterly" class="view-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center q1-col">Q1 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jan – Mar)</span></th>
+              <th class="center qtd-col">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name"># of New UAs</td>
+              <td class="value-cell q1-val" id="newua-q1">—</td>
+              <td class="value-cell qtd-val" id="newua-q2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Extensions</td>
+              <td class="value-cell q1-val" id="extensions-q1">—</td>
+              <td class="value-cell qtd-val" id="extensions-q2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Marketing Budget / Spend Responsibility</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Same Store Growth Section -->
+    <div id="ss-section" style="margin-top:28px;">
+      <div class="section-header">
+        <div class="section-title">Same Store Market Share Growth — Q2 2025 vs Q2 2026</div>
+        <div class="period-badge" id="ss-count">216 locations</div>
+      </div>
+      <div class="kpi-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th class="center" style="color:#a0aec0;">Q2 2025 NTI</th>
+              <th class="center qtd-col">Q2 2026 NTI</th>
+              <th class="center" style="color:#718096;">Change</th>
+            </tr>
+          </thead>
+          <tbody id="ss-tbody"></tbody>
+          <tfoot id="ss-tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPS LEAD ── -->
+  <div id="tab-ops" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Ops Lead KPIs</div>
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" onclick="switchView('ops', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('ops', 'quarterly', this)">Quarterly</button>
+      </div>
+    </div>
+    <div class="kpi-table-wrapper">
+      <!-- Weekly/MTD -->
+      <div id="ops-weekly" class="view-panel active">
+        <div class="trend-sub-header">Weekly Trend</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
+              <th class="center weekly-col">6/22 – 6/28</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">
+                Problematic Machines
+                <span class="kpi-note">Non-compliant · 7+ tickets in prior 30 days</span>
+              </td>
+              <td class="value-cell weekly-val" id="problematic-prev">—</td>
+              <td class="value-cell weekly-val" id="problematic-weekly">—</td>
+              <td class="value-cell weekly-val" id="problematic-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Unacceptable Tickets<span style="display:block;font-size:0.75rem;color:#a0aec0;margin-top:3px;">Accept + En Route + In Process &gt; 120 mins</span></td>
+              <td class="value-cell weekly-val" id="unacceptable-prev">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-weekly">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Average Utilization</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Payroll Actual vs Budgeted</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">
+                Controllable Vault Discrepancies
+                <span class="kpi-note">Cash only · excludes coin and break-ins</span>
+              </td>
+              <td class="value-cell weekly-val" id="vault-prev">—</td>
+              <td class="value-cell weekly-val" id="vault-weekly">—</td>
+              <td class="value-cell weekly-val" id="vault-week2">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center mtd-col" style="opacity:0.55;">May</th>
+              <th class="center mtd-col">June</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">
+                Problematic Machines
+                <span class="kpi-note">Non-compliant · 7+ tickets in prior 30 days</span>
+              </td>
+              <td class="value-cell mtd-val" id="problematic-may">—</td>
+              <td class="value-cell mtd-val" id="problematic-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Unacceptable Tickets<span style="display:block;font-size:0.75rem;color:#a0aec0;margin-top:3px;">Accept + En Route + In Process &gt; 120 mins</span></td>
+              <td class="value-cell mtd-val" id="unacceptable-may">—</td>
+              <td class="value-cell mtd-val" id="unacceptable-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Average Utilization</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell empty mtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Payroll Actual vs Budgeted</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell empty mtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">
+                Controllable Vault Discrepancies
+                <span class="kpi-note">Cash only · excludes coin and break-ins</span>
+              </td>
+              <td class="value-cell mtd-val" id="vault-may">—</td>
+              <td class="value-cell mtd-val" id="vault-mtd">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Quarterly -->
+      <div id="ops-quarterly" class="view-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center q1-col">Q1 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jan – Mar)</span></th>
+              <th class="center qtd-col">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Problematic Machines</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Unacceptable Tickets</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Average Utilization</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Payroll Actual vs Budgeted</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Vault Discrepancies</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── REGIONAL DIRECTOR ── -->
+  <div id="tab-rd" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Regional Director KPIs</div>
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" onclick="switchView('rd', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('rd', 'quarterly', this)">Quarterly</button>
+      </div>
+    </div>
+    <div class="kpi-table-wrapper">
+      <!-- Weekly/MTD -->
+      <div id="rd-weekly" class="view-panel active">
+        <div class="trend-sub-header">Weekly Trend</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
+              <th class="center weekly-col">6/22 – 6/28</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Monthly Payroll</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">District P&amp;L</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — House</td>
+              <td class="value-cell weekly-val" id="ruc-house-prev">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-weekly">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — Non-House</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-prev">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-weekly">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — Total</td>
+              <td class="value-cell weekly-val" id="ruc-total-prev">—</td>
+              <td class="value-cell weekly-val" id="ruc-weekly">—</td>
+              <td class="value-cell weekly-val" id="ruc-week2">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Spend Against Budget</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center mtd-col" style="opacity:0.55;">May</th>
+              <th class="center mtd-col">June</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Monthly Payroll</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell mtd-val" id="payroll-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">District P&amp;L</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell empty mtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — House</td>
+              <td class="value-cell mtd-val" id="ruc-house-may">—</td>
+              <td class="value-cell mtd-val" id="ruc-house-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — Non-House</td>
+              <td class="value-cell mtd-val" id="ruc-nonhouse-may">—</td>
+              <td class="value-cell mtd-val" id="ruc-nonhouse-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — Total</td>
+              <td class="value-cell mtd-val" id="ruc-total-may">—</td>
+              <td class="value-cell mtd-val" id="ruc-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Spend Against Budget</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell empty mtd-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Quarterly -->
+      <div id="rd-quarterly" class="view-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center q1-col">Q1 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jan – Mar)</span></th>
+              <th class="center qtd-col">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Operating Margin</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Regional Market Share Growth</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">New UAs / New Accounts</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — House</td>
+              <td class="value-cell q1-val" id="ruc-house-q1">—</td>
+              <td class="value-cell qtd-val" id="ruc-house-qtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — Non-House</td>
+              <td class="value-cell q1-val" id="ruc-nonhouse-q1">—</td>
+              <td class="value-cell qtd-val" id="ruc-nonhouse-qtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Revenue Under Contract — Total</td>
+              <td class="value-cell q1-val" id="ruc-q1">—</td>
+              <td class="value-cell qtd-val" id="ruc-qtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Retention (Staff)</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">% of Team Targets Met</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SUMMARY ── -->
+  <div id="tab-summary" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">KPI Summary — Weekly Trend (6/8–6/28)</div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Door Swings — Live</h3>
+        <canvas id="chart-live" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Door Swings — Prospect</h3>
+        <canvas id="chart-prospect" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>New Pipeline Generated</h3>
+        <canvas id="chart-pipeline" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Active Campaigns</h3>
+        <canvas id="chart-campaigns" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Problematic Machines</h3>
+        <canvas id="chart-problematic" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Unacceptable Tickets</h3>
+        <canvas id="chart-unacceptable" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Controllable Vault Discrepancy ($)</h3>
+        <canvas id="chart-vault" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Revenue Under Contract</h3>
+        <canvas id="chart-ruc" height="240"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LEGACY SALES ── -->
+  <div id="tab-ls" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Legacy Sales KPIs</div>
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" onclick="switchView('ls', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('ls', 'quarterly', this)">Quarterly</button>
+      </div>
+    </div>
+    <div class="kpi-table-wrapper">
+      <!-- Weekly/MTD -->
+      <div id="ls-weekly" class="view-panel active">
+        <div class="trend-sub-header">Weekly Trend</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
+              <th class="center weekly-col">6/22 – 6/28</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Pipeline Added per Month</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name"># of Meetings</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center mtd-col" style="opacity:0.55;">May</th>
+              <th class="center mtd-col">June</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Pipeline Added per Month</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell empty mtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name"># of Meetings</td>
+              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell empty mtd-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Quarterly -->
+      <div id="ls-quarterly" class="view-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th class="center q1-col">Q1 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jan – Mar)</span></th>
+              <th class="center qtd-col">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="kpi-name">Win Rate</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">UA Target</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">Last updated: <span id="last-updated">—</span></div>
+</main>
+
+<script>
+  document.getElementById('last-updated').textContent = new Date().toLocaleString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+    if (tabId === 'summary') {
+      const sel = document.getElementById('regionFilter');
+      buildSummaryCharts(sel ? sel.value : 'all');
+    }
+  }
+
+  function switchView(tabId, view, btn) {
+    document.getElementById(tabId + '-weekly').classList.toggle('active', view === 'weekly');
+    document.getElementById(tabId + '-quarterly').classList.toggle('active', view === 'quarterly');
+    btn.closest('.view-toggle').querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (tabId === 'dm') {
+      document.getElementById('ss-section').style.display = view === 'quarterly' ? 'block' : 'none';
+    }
+  }
+
+  // ── DATA ──
+
+  // Q1 2026 RUC — ref date 2026-03-31
+  const rucQ1Data = {
+    'all': { house: 454597576, nonhouse: 146724961, total: 601322537 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 63246450,  nonhouse: 37808783,   total: 101055234 },
+    '3':   { house: 139804236, nonhouse: 21745495,   total: 161549731 },
+    '4':   { house: 107347341, nonhouse: 23610936,   total: 130958278 },
+    '5':   { house: 9488462,   nonhouse: 5686030,    total: 15174492  },
+    '6':   { house: 101891449, nonhouse: 21726459,   total: 123617908 },
+    '7':   { house: 27417320,  nonhouse: 32823886,   total: 60241206  },
+    '8':   { house: 5402318,   nonhouse: 3323371,    total: 8725690   }
+  };
+
+  // May MTD RUC — ref date 2026-05-31
+  const rucMayData = {
+    'all': { house: 462295999, nonhouse: 140903634, total: 603199632 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 62793289,  nonhouse: 36178328,   total: 98971617  },
+    '3':   { house: 137729456, nonhouse: 20885714,   total: 158615170 },
+    '4':   { house: 108986201, nonhouse: 22147406,   total: 131133607 },
+    '5':   { house: 9263138,   nonhouse: 5264782,    total: 14527920  },
+    '6':   { house: 104682076, nonhouse: 21711832,   total: 126393908 },
+    '7':   { house: 33393220,  nonhouse: 32384852,   total: 65778072  },
+    '8':   { house: 5448617,   nonhouse: 2330720,    total: 7779338   }
+  };
+
+  // Previous week (6/8–6/14) RUC — ref date 2026-06-14
+  const rucPrevData = {
+    'all': { house: 458616853, nonhouse: 142278503, total: 600895355 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 63021795,  nonhouse: 36034590,   total: 99056385  },
+    '3':   { house: 137026378, nonhouse: 20291007,   total: 157317385 },
+    '4':   { house: 107580185, nonhouse: 21562571,   total: 129142756 },
+    '5':   { house: 9141627,   nonhouse: 5211274,    total: 14352900  },
+    '6':   { house: 103554643, nonhouse: 23216987,   total: 126771630 },
+    '7':   { house: 32870395,  nonhouse: 33687486,   total: 66557881  },
+    '8':   { house: 5421830,   nonhouse: 2274589,    total: 7696419   }
+  };
+
+  const rucData = {
+    'all': { house: 457399412, nonhouse: 140992782, total: 598392194 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 63397043,  nonhouse: 35743755,   total: 99140797  },
+    '3':   { house: 136826333, nonhouse: 19916966,   total: 156743299 },
+    '4':   { house: 106979635, nonhouse: 21269672,   total: 128249307 },
+    '5':   { house: 9040640,   nonhouse: 5224718,    total: 14265357  },
+    '6':   { house: 103056340, nonhouse: 23337177,   total: 126393516 },
+    '7':   { house: 32714876,  nonhouse: 33240446,   total: 65955322  },
+    '8':   { house: 5384546,   nonhouse: 2260048,    total: 7644595   }
+  };
+
+  // Week2 (6/22–6/28) RUC — ref date 2026-06-28; also used for June MTD and Q2
+  // Includes expiration date fixes for Del Carmen, Herms Dolton, Hidden Keys, Jai Maa
+  const rucWeek2Data = {
+    'all': { house: 457101501, nonhouse: 143567216, total: 600668717 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 63186791,  nonhouse: 35651124,   total: 98837915  },
+    '3':   { house: 136848812, nonhouse: 20463711,   total: 157312523 },
+    '4':   { house: 106797936, nonhouse: 22305515,   total: 129103451 },
+    '5':   { house: 9013151,   nonhouse: 5222234,    total: 14235385  },
+    '6':   { house: 98093299,  nonhouse: 21300123,   total: 119393422 },
+    '7':   { house: 32686548,  nonhouse: 33735359,   total: 66421907  },
+    '8':   { house: 5373662,   nonhouse: 2264562,    total: 7638224   }
+  };
+
+  // Active Campaigns — by region and period, with owner breakdown for tooltip
+  const campaignData = {
+    prev: {
+      'all': { count: 40, owners: { 'Hannah Rivera': 11, 'Sadie Orr': 10, 'Amanda Rivera': 7, 'Hunter Brandt': 4, 'Kortney Roher': 3, 'Fiona Gallagher': 3, 'Unknown': 1, 'Brad Fell': 1 } },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 12, owners: { 'Hannah Rivera': 11, 'Hunter Brandt': 1 } },
+      '3':   { count: 5,  owners: { 'Amanda Rivera': 5 } },
+      '4':   { count: 2,  owners: { 'Fiona Gallagher': 2 } },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 8,  owners: { 'Kortney Roher': 3, 'Hunter Brandt': 3, 'Fiona Gallagher': 1, 'Unknown': 1 } },
+      '7':   { count: 12, owners: { 'Sadie Orr': 10, 'Amanda Rivera': 2 } },
+      '8':   { count: 1,  owners: { 'Brad Fell': 1 } },
+    },
+    weekly: {
+      'all': { count: 42, owners: { 'Hannah Rivera': 12, 'Sadie Orr': 10, 'Amanda Rivera': 7, 'Kortney Roher': 4, 'Hunter Brandt': 4, 'Fiona Gallagher': 3, 'Unknown': 1, 'Brad Fell': 1 } },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 13, owners: { 'Hannah Rivera': 12, 'Hunter Brandt': 1 } },
+      '3':   { count: 5,  owners: { 'Amanda Rivera': 5 } },
+      '4':   { count: 2,  owners: { 'Fiona Gallagher': 2 } },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 9,  owners: { 'Kortney Roher': 4, 'Hunter Brandt': 3, 'Fiona Gallagher': 1, 'Unknown': 1 } },
+      '7':   { count: 12, owners: { 'Sadie Orr': 10, 'Amanda Rivera': 2 } },
+      '8':   { count: 1,  owners: { 'Brad Fell': 1 } },
+    },
+    week2: {
+      'all': { count: 42, owners: { 'Hannah Rivera': 14, 'Sadie Orr': 10, 'Amanda Rivera': 7, 'Kortney Roher': 3, 'Fiona Gallagher': 3, 'Hunter Brandt': 3, 'Unknown': 1, 'Brad Fell': 1 } },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 15, owners: { 'Hannah Rivera': 14, 'Hunter Brandt': 1 } },
+      '3':   { count: 6,  owners: { 'Amanda Rivera': 6 } },
+      '4':   { count: 2,  owners: { 'Fiona Gallagher': 2 } },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 7,  owners: { 'Kortney Roher': 3, 'Hunter Brandt': 2, 'Fiona Gallagher': 1, 'Unknown': 1 } },
+      '7':   { count: 11, owners: { 'Sadie Orr': 10, 'Amanda Rivera': 1 } },
+      '8':   { count: 1,  owners: { 'Brad Fell': 1 } },
+    },
+    may: {
+      'all': { count: 24, owners: { 'Amanda Rivera': 7, 'Sadie Orr': 6, 'Hunter Brandt': 4, 'Hannah Rivera': 3, 'Unknown': 1, 'Brad Fell': 1, 'Kortney Roher': 1, 'Fiona Gallagher': 1 } },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 4,  owners: { 'Hannah Rivera': 3, 'Hunter Brandt': 1 } },
+      '3':   { count: 5,  owners: { 'Amanda Rivera': 5 } },
+      '4':   { count: 1,  owners: { 'Fiona Gallagher': 1 } },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 5,  owners: { 'Hunter Brandt': 3, 'Kortney Roher': 1, 'Unknown': 1 } },
+      '7':   { count: 8,  owners: { 'Sadie Orr': 6, 'Amanda Rivera': 2 } },
+      '8':   { count: 1,  owners: { 'Brad Fell': 1 } },
+    },
+    mtd: {
+      'all': { count: 51, owners: { 'Hannah Rivera': 14, 'Sadie Orr': 11, 'Kortney Roher': 9, 'Amanda Rivera': 8, 'Hunter Brandt': 4, 'Fiona Gallagher': 3, 'Unknown': 1, 'Brad Fell': 1 } },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 15, owners: { 'Hannah Rivera': 14, 'Hunter Brandt': 1 } },
+      '3':   { count: 6,  owners: { 'Amanda Rivera': 6 } },
+      '4':   { count: 3,  owners: { 'Fiona Gallagher': 2, 'Kortney Roher': 1 } },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 13, owners: { 'Kortney Roher': 8, 'Hunter Brandt': 3, 'Fiona Gallagher': 1, 'Unknown': 1 } },
+      '7':   { count: 13, owners: { 'Sadie Orr': 11, 'Amanda Rivera': 2 } },
+      '8':   { count: 1,  owners: { 'Brad Fell': 1 } },
+    },
+  };
+
+  const vaultData = {
+    'all': { prev: 0, weekly: 20, week2: 0, may: 51, mtd: 20 },
+    '1':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
+    '2':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
+    '3':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
+    '4':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
+    '5':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
+    '6':   { prev: 0, weekly: 20, week2: 0, may: 51, mtd: 20 },
+    '7':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
+    '8':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  }
+  };
+
+  // Problematic machines: >6 tickets in rolling 30-day window ending on last day of period
+  // Current week window: 5/23–6/21 | Previous week window: 5/16–6/14
+  const problematicData = {
+    'all': { prev: 47,  weekly: 50,  week2: 42, may: 19, mtd: 42 },
+    '1':   { prev: 0,   weekly: 0,   week2: 1,  may: 0,  mtd: 1  },
+    '2':   { prev: 8,   weekly: 9,   week2: 7,  may: 5,  mtd: 7  },
+    '3':   { prev: 17,  weekly: 16,  week2: 12, may: 7,  mtd: 12 },
+    '4':   { prev: 12,  weekly: 15,  week2: 12, may: 3,  mtd: 12 },
+    '5':   { prev: 1,   weekly: 1,   week2: 1,  may: 1,  mtd: 1  },
+    '6':   { prev: 5,   weekly: 6,   week2: 7,  may: 1,  mtd: 7  },
+    '7':   { prev: 3,   weekly: 2,   week2: 1,  may: 2,  mtd: 1  },
+    '8':   { prev: 1,   weekly: 1,   week2: 1,  may: 0,  mtd: 1  }
+  };
+
+  // Unacceptable Tickets: sum(Mins to Accept + Mins to En Route + ETA to In Process + Deviation) > 120
+  // Exclusions: ETA to In Process > 100, or total > 400 (outlier)
+  const unacceptableData = {
+    'all': { prev: 57,  weekly: 55,  week2: 50, may: 133, mtd: 227 },
+    '1':   { prev: 0,   weekly: 0,   week2: 1,  may: 0,   mtd: 4   },
+    '2':   { prev: 8,   weekly: 5,   week2: 8,  may: 30,  mtd: 31  },
+    '3':   { prev: 13,  weekly: 12,  week2: 14, may: 28,  mtd: 61  },
+    '4':   { prev: 25,  weekly: 18,  week2: 15, may: 49,  mtd: 73  },
+    '5':   { prev: 0,   weekly: 4,   week2: 2,  may: 0,   mtd: 6   },
+    '6':   { prev: 6,   weekly: 6,   week2: 2,  may: 7,   mtd: 22  },
+    '7':   { prev: 5,   weekly: 9,   week2: 6,  may: 11,  mtd: 24  },
+    '8':   { prev: 0,   weekly: 1,   week2: 2,  may: 8,   mtd: 6   }
+  };
+
+  // Weekly door swings/cold calls from HubSpot (6/15–6/21)
+  const doorSwingsData = {
+    'all': { live: 109, prospect: 43  },
+    '1':   { live: 0,   prospect: 3   },
+    '2':   { live: 28,  prospect: 2   },
+    '3':   { live: 14,  prospect: 9   },
+    '4':   { live: 12,  prospect: 0   },
+    '5':   { live: 5,   prospect: 2   },
+    '6':   { live: 17,  prospect: 13  },
+    '7':   { live: 28,  prospect: 14  },
+    '8':   { live: 5,   prospect: 0   }
+  };
+
+  // Previous week door swings/cold calls from HubSpot (6/8–6/14)
+  const doorSwingsPrevData = {
+    'all': { live: 137, prospect: 56  },
+    '1':   { live: 0,   prospect: 4   },
+    '2':   { live: 26,  prospect: 2   },
+    '3':   { live: 27,  prospect: 5   },
+    '4':   { live: 10,  prospect: 1   },
+    '5':   { live: 7,   prospect: 5   },
+    '6':   { live: 42,  prospect: 10  },
+    '7':   { live: 24,  prospect: 25  },
+    '8':   { live: 1,   prospect: 4   }
+  };
+
+  // May MTD door swings/cold calls from HubSpot (5/1–5/31)
+  const doorSwingsMayData = {
+    'all': { live: 585, prospect: 242 },
+    '1':   { live: 0,   prospect: 11  },
+    '2':   { live: 66,  prospect: 13  },
+    '3':   { live: 94,  prospect: 31  },
+    '4':   { live: 63,  prospect: 2   },
+    '5':   { live: 32,  prospect: 22  },
+    '6':   { live: 167, prospect: 87  },
+    '7':   { live: 145, prospect: 73  },
+    '8':   { live: 18,  prospect: 3   }
+  };
+
+  // June MTD door swings/cold calls from HubSpot (6/1–6/26)
+  const doorSwingsJuneData = {
+    'all': { live: 566, prospect: 212 },
+    '1':   { live: 0,   prospect: 14  },
+    '2':   { live: 96,  prospect: 10  },
+    '3':   { live: 78,  prospect: 19  },
+    '4':   { live: 45,  prospect: 5   },
+    '5':   { live: 46,  prospect: 11  },
+    '6':   { live: 168, prospect: 62  },
+    '7':   { live: 116, prospect: 83  },
+    '8':   { live: 17,  prospect: 8   }
+  };
+
+  // Door swing tooltip name breakdowns (calls + meetings by rep)
+  const dsLiveNames_CurrWeek = {
+    'all': {'Hannah Rivera': 31, 'Sadie Orr': 26, 'Amanda Rivera': 17, 'Hunter Brandt': 16, 'Brad Fell': 10, 'Fiona Gallagher': 5, 'Chris Oraha': 2, 'Tom McInerney': 1, 'Kortney Roher': 1},
+    '1': {},
+    '2': {'Hannah Rivera': 27, 'Tom McInerney': 1},
+    '3': {'Amanda Rivera': 10, 'Hannah Rivera': 4},
+    '4': {'Amanda Rivera': 7, 'Fiona Gallagher': 5},
+    '5': {'Brad Fell': 5},
+    '6': {'Hunter Brandt': 16, 'Kortney Roher': 1},
+    '7': {'Sadie Orr': 26, 'Chris Oraha': 2},
+    '8': {'Brad Fell': 5},
+  };
+  const dsProspectNames_CurrWeek = {
+    'all': {'Chris Oraha': 12, 'Vishal Patel': 10, 'Amanda Rivera': 8, 'Patrick Lehmann': 4, 'Kortney Roher': 3, 'Sadie Orr': 3, 'Hannah Rivera': 2, 'Brad Fell': 1},
+    '1': {'Amanda Rivera': 3},
+    '2': {'Patrick Lehmann': 1, 'Hannah Rivera': 1},
+    '3': {'Amanda Rivera': 5, 'Patrick Lehmann': 3, 'Hannah Rivera': 1},
+    '4': {},
+    '5': {'Brad Fell': 1, 'Chris Oraha': 1},
+    '6': {'Vishal Patel': 10, 'Kortney Roher': 3},
+    '7': {'Chris Oraha': 11, 'Sadie Orr': 3},
+    '8': {},
+  };
+  const dsLiveNames_PrevWeek = {
+    'all': {'Hunter Brandt': 42, 'Hannah Rivera': 27, 'Amanda Rivera': 26, 'Sadie Orr': 24, 'Brad Fell': 7, 'Fiona Gallagher': 6, 'Kortney Roher': 3, 'Michelle Kent': 2},
+    '1': {},
+    '2': {'Hannah Rivera': 25, 'Hunter Brandt': 1},
+    '3': {'Amanda Rivera': 24, 'Hannah Rivera': 2, 'Hunter Brandt': 1},
+    '4': {'Fiona Gallagher': 6, 'Amanda Rivera': 2, 'Hunter Brandt': 2},
+    '5': {'Brad Fell': 6, 'Kortney Roher': 1},
+    '6': {'Hunter Brandt': 38, 'Kortney Roher': 2, 'Michelle Kent': 2},
+    '7': {'Sadie Orr': 24},
+    '8': {'Brad Fell': 1},
+  };
+  const dsProspectNames_PrevWeek = {
+    'all': {'Chris Oraha': 20, 'Vishal Patel': 14, 'Sadie Orr': 5, 'Amanda Rivera': 4, 'Brad Fell': 4, 'Michelle Kent': 4, 'Hannah Rivera': 2, 'Patrick Lehmann': 2, 'Tom McInerney': 1},
+    '1': {'Amanda Rivera': 2, 'Vishal Patel': 2},
+    '2': {'Vishal Patel': 1, 'Hannah Rivera': 1},
+    '3': {'Amanda Rivera': 2, 'Patrick Lehmann': 2, 'Hannah Rivera': 1},
+    '4': {'Tom McInerney': 1},
+    '5': {'Brad Fell': 4, 'Vishal Patel': 1},
+    '6': {'Vishal Patel': 6, 'Michelle Kent': 4},
+    '7': {'Chris Oraha': 20, 'Sadie Orr': 5},
+    '8': {'Vishal Patel': 4},
+  };
+  const dsLiveNames_May = {
+    'all': {'Hunter Brandt': 145, 'Sadie Orr': 143, 'Amanda Rivera': 118, 'Hannah Rivera': 82, 'Brad Fell': 37, 'Kortney Roher': 26, 'Vishal Patel': 22, 'Fiona Gallagher': 5, 'Michelle Kent': 3, 'Tom McInerney': 2, 'Nick Bretwisch': 1, 'Chris Oraha': 1},
+    '1': {},
+    '2': {'Hannah Rivera': 60, 'Hunter Brandt': 2, 'Tom McInerney': 2, 'Amanda Rivera': 1, 'Nick Bretwisch': 1},
+    '3': {'Amanda Rivera': 80, 'Hannah Rivera': 12, 'Hunter Brandt': 2},
+    '4': {'Amanda Rivera': 32, 'Vishal Patel': 17, 'Hunter Brandt': 5, 'Fiona Gallagher': 5, 'Hannah Rivera': 4},
+    '5': {'Brad Fell': 28, 'Kortney Roher': 4},
+    '6': {'Hunter Brandt': 136, 'Kortney Roher': 22, 'Vishal Patel': 5, 'Michelle Kent': 3, 'Hannah Rivera': 1},
+    '7': {'Sadie Orr': 143, 'Amanda Rivera': 1, 'Chris Oraha': 1},
+    '8': {'Brad Fell': 9, 'Hannah Rivera': 5, 'Amanda Rivera': 4},
+  };
+  const dsProspectNames_May = {
+    'all': {'Chris Oraha': 61, 'Michelle Kent': 51, 'Vishal Patel': 45, 'Sadie Orr': 25, 'Amanda Rivera': 15, 'Patrick Lehmann': 12, 'Brad Fell': 12, 'Hannah Rivera': 9, 'Kortney Roher': 8, 'Alex Hutchinson': 3, 'Tommy Bloom': 1},
+    '1': {'Amanda Rivera': 9, 'Vishal Patel': 1, 'Hannah Rivera': 1},
+    '2': {'Hannah Rivera': 8, 'Vishal Patel': 3, 'Amanda Rivera': 1, 'Patrick Lehmann': 1},
+    '3': {'Patrick Lehmann': 11, 'Vishal Patel': 10, 'Chris Oraha': 4, 'Amanda Rivera': 3, 'Alex Hutchinson': 3},
+    '4': {'Amanda Rivera': 2},
+    '5': {'Brad Fell': 12, 'Chris Oraha': 7, 'Vishal Patel': 2, 'Tommy Bloom': 1},
+    '6': {'Michelle Kent': 51, 'Vishal Patel': 26, 'Kortney Roher': 8, 'Chris Oraha': 2},
+    '7': {'Chris Oraha': 48, 'Sadie Orr': 25},
+    '8': {'Vishal Patel': 3},
+  };
+  const dsLiveNames_June = {
+    'all': {'Hunter Brandt': 156, 'Hannah Rivera': 112, 'Sadie Orr': 108, 'Amanda Rivera': 85, 'Brad Fell': 44, 'Kortney Roher': 29, 'Fiona Gallagher': 15, 'Vishal Patel': 4, 'Christian Corner': 4, 'Michelle Kent': 4, 'Tom McInerney': 3, 'Chris Oraha': 2},
+    '1': {},
+    '2': {'Hannah Rivera': 92, 'Hunter Brandt': 2, 'Tom McInerney': 2},
+    '3': {'Amanda Rivera': 60, 'Hannah Rivera': 12, 'Christian Corner': 4, 'Hunter Brandt': 2},
+    '4': {'Amanda Rivera': 19, 'Fiona Gallagher': 15, 'Hunter Brandt': 7, 'Vishal Patel': 4},
+    '5': {'Brad Fell': 36, 'Kortney Roher': 7, 'Hunter Brandt': 3},
+    '6': {'Hunter Brandt': 141, 'Kortney Roher': 22, 'Michelle Kent': 4, 'Hannah Rivera': 1},
+    '7': {'Sadie Orr': 108, 'Amanda Rivera': 4, 'Chris Oraha': 2, 'Hunter Brandt': 1, 'Tom McInerney': 1},
+    '8': {'Brad Fell': 8, 'Hannah Rivera': 7, 'Amanda Rivera': 2},
+  };
+  const dsProspectNames_June = {
+    'all': {'Chris Oraha': 61, 'Vishal Patel': 47, 'Michelle Kent': 26, 'Sadie Orr': 25, 'Amanda Rivera': 17, 'Patrick Lehmann': 8, 'Hannah Rivera': 8, 'Brad Fell': 7, 'Kortney Roher': 6, 'Tom McInerney': 4, 'Christian Corner': 1, 'Fiona Gallagher': 1, 'Tommy Bloom': 1},
+    '1': {'Amanda Rivera': 9, 'Vishal Patel': 5},
+    '2': {'Hannah Rivera': 6, 'Vishal Patel': 2, 'Patrick Lehmann': 2},
+    '3': {'Amanda Rivera': 8, 'Patrick Lehmann': 6, 'Hannah Rivera': 2, 'Vishal Patel': 1, 'Christian Corner': 1, 'Tom McInerney': 1},
+    '4': {'Tom McInerney': 3, 'Fiona Gallagher': 1, 'Tommy Bloom': 1},
+    '5': {'Brad Fell': 7, 'Chris Oraha': 3, 'Vishal Patel': 1},
+    '6': {'Vishal Patel': 30, 'Michelle Kent': 26, 'Kortney Roher': 6},
+    '7': {'Chris Oraha': 58, 'Sadie Orr': 25},
+    '8': {'Vishal Patel': 8},
+  };
+
+  // Week 6/22–6/28 door swings/cold calls from HubSpot
+  const doorSwingsWeek2Data = {
+    'all': { live: 136, prospect: 70 },
+    '1':   { live: 0,   prospect: 7  },
+    '2':   { live: 14,  prospect: 5  },
+    '3':   { live: 13,  prospect: 3  },
+    '4':   { live: 11,  prospect: 3  },
+    '5':   { live: 16,  prospect: 2  },
+    '6':   { live: 56,  prospect: 28 },
+    '7':   { live: 19,  prospect: 20 },
+    '8':   { live: 7,   prospect: 2  }
+  };
+
+  // New Pipeline Generated 6/22–6/28
+  const newPipelineWeek2Data = {
+    'all': 3, '1': 0, '2': 0, '3': 0, '4': 2, '5': 0, '6': 1, '7': 0, '8': 0
+  };
+  const pipelineWeek2Names = {
+    'all': ['Petersburg Project', 'The Weekend Winery and Brunch - New Deal', 'Ruckers Social House - New Deal'],
+    '1': [], '2': [], '3': [], '4': ['The Weekend Winery and Brunch - New Deal', 'Ruckers Social House - New Deal'],
+    '5': [], '6': ['Petersburg Project'], '7': [], '8': []
+  };
+
+  const dsLiveNames_Week2 = {
+    'all': {'Hunter Brandt': 51, 'Hannah Rivera': 22, 'Sadie Orr': 18, 'Brad Fell': 14, 'Kortney Roher': 12, 'Amanda Rivera': 8, 'Vishal Patel': 4, 'Christian Corner': 4, 'Fiona Gallagher': 2, 'Tom McInerney': 1},
+    '1': {},
+    '2': {'Hannah Rivera': 13, 'Hunter Brandt': 1},
+    '3': {'Amanda Rivera': 5, 'Christian Corner': 4, 'Hannah Rivera': 3, 'Hunter Brandt': 1},
+    '4': {'Vishal Patel': 4, 'Amanda Rivera': 3, 'Fiona Gallagher': 2, 'Hunter Brandt': 2},
+    '5': {'Brad Fell': 13, 'Kortney Roher': 3},
+    '6': {'Hunter Brandt': 47, 'Kortney Roher': 9},
+    '7': {'Sadie Orr': 18, 'Tom McInerney': 1},
+    '8': {'Hannah Rivera': 6, 'Brad Fell': 1},
+  };
+  const dsProspectNames_Week2 = {
+    'all': {'Vishal Patel': 20, 'Michelle Kent': 13, 'Chris Oraha': 13, 'Sadie Orr': 7, 'Amanda Rivera': 4, 'Hannah Rivera': 3, 'Tom McInerney': 3, 'Patrick Lehmann': 2, 'Brad Fell': 2, 'Christian Corner': 1, 'Fiona Gallagher': 1, 'Kortney Roher': 1},
+    '1': {'Amanda Rivera': 4, 'Vishal Patel': 3},
+    '2': {'Hannah Rivera': 3, 'Vishal Patel': 1, 'Patrick Lehmann': 1},
+    '3': {'Patrick Lehmann': 1, 'Christian Corner': 1, 'Tom McInerney': 1},
+    '4': {'Tom McInerney': 2, 'Fiona Gallagher': 1},
+    '5': {'Brad Fell': 2},
+    '6': {'Vishal Patel': 14, 'Michelle Kent': 13, 'Kortney Roher': 1},
+    '7': {'Chris Oraha': 13, 'Sadie Orr': 7},
+    '8': {'Vishal Patel': 2},
+  };
+
+  // New Pipeline Generated — Sales Pipeline only, excl. Closed lost/18 Months
+  // Weekly 6/15–6/21
+  const newPipelineWeeklyData = {
+    'all': 2, '1': 0, '2': 0, '3': 1, '4': 0, '5': 0, '6': 0, '7': 1, '8': 0
+  };
+  // Previous week 6/8–6/14
+  const newPipelinePrevData = {
+    'all': 2, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 2, '8': 0
+  };
+  // May MTD 5/1–5/31
+  const newPipelineMayData = {
+    'all': 15, '1': 2, '2': 1, '3': 3, '4': 0, '5': 1, '6': 3, '7': 2, '8': 3
+  };
+  // June MTD 6/1–6/26
+  const newPipelineJuneData = {
+    'all': 7, '1': 0, '2': 0, '3': 1, '4': 2, '5': 0, '6': 1, '7': 3, '8': 0
+  };
+
+  const payrollData = {
+    '6': 102326,
+    '7': 41182
+  };
+
+  function fmt(val) {
+    return '$' + Math.round(val).toLocaleString('en-US');
+  }
+
+  function updateRUC(r) {
+    const q1 = rucQ1Data[r]   ?? rucQ1Data['all'];
+    document.getElementById('ruc-house-q1').textContent    = fmt(q1.house);
+    document.getElementById('ruc-nonhouse-q1').textContent = fmt(q1.nonhouse);
+    document.getElementById('ruc-q1').textContent          = fmt(q1.total);
+    const m = rucMayData[r]   ?? rucMayData['all'];
+    document.getElementById('ruc-house-may').textContent    = fmt(m.house);
+    document.getElementById('ruc-nonhouse-may').textContent = fmt(m.nonhouse);
+    document.getElementById('ruc-total-may').textContent    = fmt(m.total);
+    const p = rucPrevData[r]  ?? rucPrevData['all'];
+    document.getElementById('ruc-house-prev').textContent    = fmt(p.house);
+    document.getElementById('ruc-nonhouse-prev').textContent = fmt(p.nonhouse);
+    document.getElementById('ruc-total-prev').textContent    = fmt(p.total);
+    const d = rucData[r]      ?? rucData['all'];
+    document.getElementById('ruc-house-weekly').textContent    = fmt(d.house);
+    document.getElementById('ruc-nonhouse-weekly').textContent = fmt(d.nonhouse);
+    document.getElementById('ruc-weekly').textContent          = fmt(d.total);
+    const w2 = rucWeek2Data[r] ?? rucWeek2Data['all'];
+    document.getElementById('ruc-house-week2').textContent    = fmt(w2.house);
+    document.getElementById('ruc-nonhouse-week2').textContent = fmt(w2.nonhouse);
+    document.getElementById('ruc-week2').textContent          = fmt(w2.total);
+    // June MTD and Q2 both use 6/28 ref date
+    document.getElementById('ruc-house-mtd').textContent       = fmt(w2.house);
+    document.getElementById('ruc-nonhouse-mtd').textContent    = fmt(w2.nonhouse);
+    document.getElementById('ruc-mtd').textContent             = fmt(w2.total);
+    document.getElementById('ruc-house-qtd').textContent       = fmt(w2.house);
+    document.getElementById('ruc-nonhouse-qtd').textContent    = fmt(w2.nonhouse);
+    document.getElementById('ruc-qtd').textContent             = fmt(w2.total);
+  }
+
+  function updateDoorSwings(r) {
+    const d    = doorSwingsData[r]     ?? doorSwingsData['all'];
+    const prev = doorSwingsPrevData[r] ?? doorSwingsPrevData['all'];
+    const may  = doorSwingsMayData[r]  ?? doorSwingsMayData['all'];
+    const jun  = doorSwingsJuneData[r] ?? doorSwingsJuneData['all'];
+    const w2   = doorSwingsWeek2Data[r] ?? doorSwingsWeek2Data['all'];
+    document.getElementById('doorswings-live-weekly').textContent     = d.live;
+    document.getElementById('doorswings-prospect-weekly').textContent = d.prospect;
+    document.getElementById('doorswings-live-prev').textContent       = prev.live;
+    document.getElementById('doorswings-prospect-prev').textContent   = prev.prospect;
+    document.getElementById('doorswings-live-may').textContent        = may.live;
+    document.getElementById('doorswings-prospect-may').textContent    = may.prospect;
+    document.getElementById('doorswings-live-mtd').textContent        = jun.live;
+    document.getElementById('doorswings-prospect-mtd').textContent    = jun.prospect;
+    setTip('doorswings-live-weekly',     d.live,    dsLiveNames_CurrWeek[r]    ?? dsLiveNames_CurrWeek['all']);
+    setTip('doorswings-prospect-weekly', d.prospect, dsProspectNames_CurrWeek[r] ?? dsProspectNames_CurrWeek['all']);
+    setTip('doorswings-live-prev',       prev.live, dsLiveNames_PrevWeek[r]    ?? dsLiveNames_PrevWeek['all']);
+    setTip('doorswings-prospect-prev',   prev.prospect, dsProspectNames_PrevWeek[r] ?? dsProspectNames_PrevWeek['all']);
+    setTip('doorswings-live-may',        may.live,  dsLiveNames_May[r]         ?? dsLiveNames_May['all']);
+    setTip('doorswings-prospect-may',    may.prospect, dsProspectNames_May[r]  ?? dsProspectNames_May['all']);
+    setTip('doorswings-live-mtd',        jun.live,  dsLiveNames_June[r]        ?? dsLiveNames_June['all']);
+    setTip('doorswings-prospect-mtd',    jun.prospect, dsProspectNames_June[r] ?? dsProspectNames_June['all']);
+    setTip('doorswings-live-week2',      w2.live,   dsLiveNames_Week2[r]       ?? dsLiveNames_Week2['all']);
+    setTip('doorswings-prospect-week2',  w2.prospect, dsProspectNames_Week2[r] ?? dsProspectNames_Week2['all']);
+  }
+
+  function updateVault(r) {
+    const d = vaultData[r] ?? { prev: 0, weekly: 0, week2: 0, may: 0, mtd: 0 };
+    document.getElementById('vault-prev').textContent   = '$' + (d.prev  ?? 0);
+    document.getElementById('vault-weekly').textContent = '$' + d.weekly;
+    document.getElementById('vault-week2').textContent  = '$' + (d.week2 ?? 0);
+    document.getElementById('vault-may').textContent    = '$' + (d.may   ?? 0);
+    document.getElementById('vault-mtd').textContent    = '$' + d.mtd;
+  }
+
+  function updateProblematic(r) {
+    const d = problematicData[r] ?? problematicData['all'];
+    document.getElementById('problematic-prev').textContent   = d.prev;
+    document.getElementById('problematic-weekly').textContent = d.weekly;
+    const w2p = document.getElementById('problematic-week2');
+    if (w2p) w2p.textContent = d.week2 ?? '—';
+    document.getElementById('problematic-may').textContent    = d.may;
+    document.getElementById('problematic-mtd').textContent    = d.mtd;
+  }
+
+  function updateUnacceptable(r) {
+    const d = unacceptableData[r] ?? unacceptableData['all'];
+    document.getElementById('unacceptable-prev').textContent   = d.prev;
+    document.getElementById('unacceptable-weekly').textContent = d.weekly;
+    const w2u = document.getElementById('unacceptable-week2');
+    if (w2u) w2u.textContent = d.week2 ?? '—';
+    document.getElementById('unacceptable-may').textContent    = d.may;
+    document.getElementById('unacceptable-mtd').textContent    = d.mtd;
+  }
+
+  function updateCampaigns(r) {
+    const reg = r ?? 'all';
+    ['prev', 'weekly', 'week2', 'may', 'mtd'].forEach(period => {
+      const el = document.getElementById('campaign-' + period);
+      if (!el) return;
+      const pd = campaignData[period];
+      const d = pd[reg] ?? pd['all'];
+      el.textContent = d.count;
+      if (d.count > 0) {
+        const tip = Object.entries(d.owners)
+          .filter(([,v]) => v > 0)
+          .sort((a, b) => b[1] - a[1])
+          .map(([k, v]) => `${k}: ${v}`)
+          .join('<br>');
+        el.dataset.tip = tip;
+        el.classList.add('tip');
+      } else {
+        delete el.dataset.tip;
+        el.classList.remove('tip');
+      }
+    });
+  }
+
+  function updatePayroll(r) {
+    const el  = document.getElementById('payroll-mtd');
+    const val = payrollData[r];
+    if (val !== undefined) {
+      el.textContent = fmt(val);
+      el.classList.remove('empty');
+    } else {
+      el.textContent = '—';
+      el.classList.add('empty');
+    }
+  }
+
+  // New UAs: deals created in Q1/Q2 with stage = IGB App Prep, IGB App Submitted,
+  // UA Signed, Takeover (UA Signed), In/Out Licensing Assigned Agent/Analyst, Pending License
+  // Extensions: contract date in Q1/Q2 from extension 2026.xlsx
+  const extensionsData = {
+    'all': { q1: 8,  q2: 3 },
+    '1':   { q1: 0,  q2: 0 },
+    '2':   { q1: 2,  q2: 0 },
+    '3':   { q1: 0,  q2: 0 },
+    '4':   { q1: 1,  q2: 0 },
+    '5':   { q1: 0,  q2: 0 },
+    '6':   { q1: 2,  q2: 1 },
+    '7':   { q1: 1,  q2: 2 },
+    '8':   { q1: 2,  q2: 0 }
+  };
+
+  const extensionsQ1Names = {
+    'all': ['SHELL, MERRIONETTE PARK','TNS CORPORATION, LAKEMOOR','LACEY\'S, OSWEGO','HOBNOBBERS, SYCAMORE','ROUTE 66 KICK STAND, GRANITE CITY','THE GARDEN FAMILY RESTAURANT, DECATUR','LAS FUENTES, MORTON GROVE','ROSEBUD CAFE, PANA'],
+    '1':[], '2': ['TNS CORPORATION, LAKEMOOR','LAS FUENTES, MORTON GROVE'],
+    '3':[], '4': ['SHELL, MERRIONETTE PARK'], '5':[],
+    '6': ['THE GARDEN FAMILY RESTAURANT, DECATUR','ROSEBUD CAFE, PANA'],
+    '7': ['ROUTE 66 KICK STAND, GRANITE CITY'],
+    '8': ['LACEY\'S, OSWEGO','HOBNOBBERS, SYCAMORE']
+  };
+  const extensionsQ2Names = {
+    'all': ['TEDDS BEVERAGE SHOP, HOOPESTON','LACEY\'S, BELLEVILLE','ACCENTURE PARTNERS LLC, TROY'],
+    '1':[], '2':[], '3':[], '4':[], '5':[],
+    '6': ['TEDDS BEVERAGE SHOP, HOOPESTON'],
+    '7': ['LACEY\'S, BELLEVILLE','ACCENTURE PARTNERS LLC, TROY'],
+    '8':[]
+  };
+
+  function updateExtensions(r) {
+    const d = extensionsData[r] ?? extensionsData['all'];
+    setTip('extensions-q1', d.q1, extensionsQ1Names[r] ?? extensionsQ1Names['all']);
+    setTip('extensions-q2', d.q2, extensionsQ2Names[r] ?? extensionsQ2Names['all']);
+  }
+
+  // New UAs: deals created in Q1/Q2 with qualifying stage (incl. Live Locations/closedwon)
+  const newUAData = {
+    'all': { q1: 9,  q2: 25 },
+    '1':   { q1: 1,  q2: 16 },
+    '2':   { q1: 0,  q2: 0  },
+    '3':   { q1: 1,  q2: 1  },
+    '4':   { q1: 1,  q2: 3  },
+    '5':   { q1: 0,  q2: 1  },
+    '6':   { q1: 2,  q2: 2  },
+    '7':   { q1: 4,  q2: 1  },
+    '8':   { q1: 0,  q2: 1  }
+  };
+
+  function updateNewUA(r) {
+    const d = newUAData[r] ?? newUAData['all'];
+    setTip('newua-q1', d.q1, uaQ1Names[r] ?? uaQ1Names['all']);
+    setTip('newua-q2', d.q2, uaQ2Names[r] ?? uaQ2Names['all']);
+  }
+
+  // ── Tooltip name lists ────────────────────────────────────────────────────
+  const pipelinePrevNames = {
+    'all': ['Allendale Quick Stop LLC', 'Bonnie cafe mt vernon new'],
+    '1':[], '2':[], '3':[], '4':[], '5':[], '6':[],
+    '7': ['Allendale Quick Stop LLC', 'Bonnie cafe mt vernon new'],
+    '8':[]
+  };
+  const pipelineWeeklyNames = {
+    'all': ['Aviator Coffee - New Deal (Westchester)', 'Creal Springs Mini Mart'],
+    '1':[], '2':[], '3': ['Aviator Coffee - New Deal (Westchester)'],
+    '4':[], '5':[], '6':[], '7': ['Creal Springs Mini Mart'], '8':[]
+  };
+  const pipelineMayNames = {
+    'all': ['Cahokia Heights Fine Dining','Headquarters Beercade','PIZZA PAVIA - New Deal','Pville Gas','The doc\'s inn','MISS KIMMEES TOP GOLF, SPRINGFIELD','Players Bar Patio Slots LLC','Union Quick Mart - New Deal','Signature Inn Bar - Danville','LENA FOOD & LIQUOR - Takeover','Fas Fuel - Belvidere','DAISY\'S CAFE - STONE PARK','Michael\'s 29 Store - Athens','Eggsperience Wheeling','TEN CAT TAVERN, CHICAGO'],
+    '1': ['Headquarters Beercade','TEN CAT TAVERN, CHICAGO'],
+    '2': ['Union Quick Mart - New Deal'],
+    '3': ['PIZZA PAVIA - New Deal','DAISY\'S CAFE - STONE PARK','Eggsperience Wheeling'],
+    '4': [],
+    '5': ['The doc\'s inn'],
+    '6': ['MISS KIMMEES TOP GOLF, SPRINGFIELD','Players Bar Patio Slots LLC','Signature Inn Bar - Danville'],
+    '7': ['Cahokia Heights Fine Dining','Pville Gas'],
+    '8': ['LENA FOOD & LIQUOR - Takeover','Fas Fuel - Belvidere','Michael\'s 29 Store - Athens']
+  };
+  const pipelineJuneNames = {
+    'all': ['Allendale Quick Stop LLC','Bonnie cafe mt vernon new','Aviator Coffee (Westchester)','Creal Springs Mini Mart','Petersburg Project','Ruckers Social House','The Weekend Winery and Brunch'],
+    '1':[], '2':[],
+    '3': ['Aviator Coffee (Westchester)'],
+    '4': ['Ruckers Social House','The Weekend Winery and Brunch'],
+    '5':[], '6': ['Petersburg Project'],
+    '7': ['Allendale Quick Stop LLC','Bonnie cafe mt vernon new','Creal Springs Mini Mart'],
+    '8':[]
+  };
+  const uaQ1Names = {
+    'all': ['Salerno\'s Pizza - Chicago','Union Tap','HAMILTON FOOD & LIQUOR LLC','LINDY\'S, SAINT ELMO','Lemont ATS Company','Twin Oaks, Greenville','JACKPOT JUNCTION 777, MARION','The Keyspot, KEYESPORT','Miss Kimmees, Zion, Takeover'],
+    '1': ['Salerno\'s Pizza - Chicago'], '2':[],
+    '3': ['Union Tap'], '4': ['Lemont ATS Company'], '5':[],
+    '6': ['HAMILTON FOOD & LIQUOR LLC','Miss Kimmees, Zion, Takeover'],
+    '7': ['LINDY\'S, SAINT ELMO','Twin Oaks, Greenville','JACKPOT JUNCTION 777, MARION','The Keyspot, KEYESPORT'],
+    '8':[]
+  };
+  const uaQ2Names = {
+    'all': ['NEW LINE TAVERN, CHICAGO','JackPot Junction - New Deal','Boulevard Sports Lounge','LA FIESTA RESTAURANT','Danny\'s Pizza Place','Gio\'s Sports Bar','North Star Restaurant Inc','Digos Tacos','Burgundy Restaurant','Charlotte\'s Bar & Grill','Jolly Inn Restaurant','O\'Rourke\'s Office','Pit Stop Lounge','Bourbon On Division','Uptown Lounge, Chicago','Headquarters Beercade','MISS KIMMEES TOP GOLF, SPRINGFIELD','Players Bar Patio Slots LLC','Union Quick Mart - New Deal','Eggsperience Wheeling','TEN CAT TAVERN, CHICAGO','Allendale Quick Stop LLC','Ruckers Social House','The Weekend Winery and Brunch','Tailgators Sports Bar'],
+    '1': ['NEW LINE TAVERN, CHICAGO','Boulevard Sports Lounge','LA FIESTA RESTAURANT','Danny\'s Pizza Place','Gio\'s Sports Bar','North Star Restaurant Inc','Digos Tacos','Burgundy Restaurant','Charlotte\'s Bar & Grill','Jolly Inn Restaurant','O\'Rourke\'s Office','Pit Stop Lounge','Bourbon On Division','Uptown Lounge, Chicago','Headquarters Beercade','TEN CAT TAVERN, CHICAGO'],
+    '2':[], '3': ['Eggsperience Wheeling'],
+    '4': ['Ruckers Social House','The Weekend Winery and Brunch','Tailgators Sports Bar'],
+    '5': ['Union Quick Mart - New Deal'],
+    '6': ['MISS KIMMEES TOP GOLF, SPRINGFIELD','Players Bar Patio Slots LLC'],
+    '7': ['Allendale Quick Stop LLC'],
+    '8': ['JackPot Junction - New Deal']
+  };
+
+  // Global fixed-position tooltip (avoids table overflow clipping)
+  const _gtip = document.createElement('div');
+  _gtip.style.cssText = 'display:none;position:fixed;background:#1a202c;color:#e2e8f0;padding:8px 14px;border-radius:7px;font-size:0.72rem;line-height:1.7;white-space:nowrap;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.45);pointer-events:none;';
+  document.body.appendChild(_gtip);
+
+  document.addEventListener('mousemove', e => {
+    if (_gtip.style.display === 'block') {
+      const x = e.clientX + 14, y = e.clientY - 10;
+      const r = _gtip.getBoundingClientRect();
+      _gtip.style.left = (x + r.width > window.innerWidth ? e.clientX - r.width - 8 : x) + 'px';
+      _gtip.style.top  = (y + r.height > window.innerHeight ? e.clientY - r.height - 8 : y) + 'px';
+    }
+  });
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest('.tip');
+    if (el && el.dataset.tip) {
+      _gtip.innerHTML = el.dataset.tip;
+      _gtip.style.display = 'block';
+    }
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest('.tip')) _gtip.style.display = 'none';
+  });
+
+  function setTip(id, count, names) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = count;
+    // names can be an array of strings or an object {name: count}
+    let list = names || [];
+    if (!Array.isArray(list)) {
+      list = Object.entries(list)
+        .filter(([,v]) => v > 0)
+        .sort((a,b) => b[1]-a[1])
+        .map(([k,v]) => `${k}: ${v}`);
+    }
+    if (list.length > 0) {
+      el.dataset.tip = list.join('<br>');
+      el.classList.add('tip');
+    } else {
+      delete el.dataset.tip;
+      el.classList.remove('tip');
+    }
+  }
+
+  function updateNewPipeline(r) {
+    setTip('newpipeline-prev',   newPipelinePrevData[r]    ?? newPipelinePrevData['all'],   pipelinePrevNames[r]   ?? pipelinePrevNames['all']);
+    setTip('newpipeline-weekly', newPipelineWeeklyData[r]  ?? newPipelineWeeklyData['all'], pipelineWeeklyNames[r] ?? pipelineWeeklyNames['all']);
+    setTip('newpipeline-may',    newPipelineMayData[r]     ?? newPipelineMayData['all'],    pipelineMayNames[r]    ?? pipelineMayNames['all']);
+    setTip('newpipeline-mtd',    newPipelineJuneData[r]    ?? newPipelineJuneData['all'],   pipelineJuneNames[r]   ?? pipelineJuneNames['all']);
+    const w2v = newPipelineWeek2Data[r];
+    const el2 = document.getElementById('newpipeline-week2');
+    if (el2) {
+      if (w2v !== null && w2v !== undefined) {
+        setTip('newpipeline-week2', w2v, pipelineWeek2Names[r] ?? pipelineWeek2Names['all']);
+      } else {
+        el2.textContent = '—';
+        el2.classList.add('empty');
+        delete el2.dataset.tip;
+        el2.classList.remove('tip');
+      }
+    }
+  }
+
+  // ── SUMMARY CHARTS ──
+  const PERSON_COLORS = [
+    '#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f',
+    '#edc948','#b07aa1','#ff9da7','#9c755f','#bab0ac',
+    '#d37295','#fabfd2','#8cd17d','#b6992d','#499894'
+  ];
+  let _colorIdx = 0;
+  const _colorMap = {};
+  function personColor(name) {
+    if (!_colorMap[name]) { _colorMap[name] = PERSON_COLORS[_colorIdx++ % PERSON_COLORS.length]; }
+    return _colorMap[name];
+  }
+
+  const _summaryCharts = {};
+
+  function buildStackedChart(canvasId, labels, periodsData, region) {
+    // periodsData: array of objects {name→count} for each label
+    const allNames = [...new Set(periodsData.flatMap(pd => Object.keys(pd)))];
+    const datasets = allNames.map(name => ({
+      label: name,
+      data: periodsData.map(pd => pd[name] || 0),
+      borderColor: personColor(name),
+      backgroundColor: personColor(name),
+      tension: 0.3,
+      pointRadius: 4,
+    }));
+    return buildChartInstance(canvasId, 'line', labels, datasets, false);
+  }
+
+  function buildSimpleChart(canvasId, labels, values, color) {
+    const datasets = [{ label: 'Count', data: values, borderColor: color, backgroundColor: color, tension: 0.3, pointRadius: 4 }];
+    return buildChartInstance(canvasId, 'line', labels, datasets, false);
+  }
+
+  function buildChartInstance(canvasId, type, labels, datasets, stacked) {
+    if (_summaryCharts[canvasId]) { _summaryCharts[canvasId].destroy(); }
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    _summaryCharts[canvasId] = new Chart(ctx, {
+      type,
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 12 } },
+        },
+        scales: {
+          x: { ticks: { font: { size: 11 } } },
+          y: { beginAtZero: true, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    return _summaryCharts[canvasId];
+  }
+
+  function buildSummaryCharts(r) {
+    const reg = r ?? 'all';
+    const labels = ['6/8–6/14', '6/15–6/21', '6/22–6/28'];
+
+    // Door Swings — Live (stacked by rep)
+    buildStackedChart('chart-live', labels, [
+      dsLiveNames_PrevWeek[reg]  ?? dsLiveNames_PrevWeek['all'],
+      dsLiveNames_CurrWeek[reg]  ?? dsLiveNames_CurrWeek['all'],
+      dsLiveNames_Week2[reg]     ?? dsLiveNames_Week2['all'],
+    ], reg);
+
+    // Door Swings — Prospect (stacked by rep)
+    buildStackedChart('chart-prospect', labels, [
+      dsProspectNames_PrevWeek[reg] ?? dsProspectNames_PrevWeek['all'],
+      dsProspectNames_CurrWeek[reg] ?? dsProspectNames_CurrWeek['all'],
+      dsProspectNames_Week2[reg]    ?? dsProspectNames_Week2['all'],
+    ], reg);
+
+    // New Pipeline (simple)
+    buildSimpleChart('chart-pipeline', labels, [
+      newPipelinePrevData[reg]    ?? newPipelinePrevData['all'],
+      newPipelineWeeklyData[reg]  ?? newPipelineWeeklyData['all'],
+      newPipelineWeek2Data[reg]   ?? newPipelineWeek2Data['all'],
+    ], '#4e79a7');
+
+    // Active Campaigns (stacked by owner)
+    buildStackedChart('chart-campaigns', labels, [
+      campaignData.prev[reg]   ? campaignData.prev[reg].owners   : campaignData.prev['all'].owners,
+      campaignData.weekly[reg] ? campaignData.weekly[reg].owners : campaignData.weekly['all'].owners,
+      campaignData.week2[reg]  ? campaignData.week2[reg].owners  : campaignData.week2['all'].owners,
+    ], reg);
+
+    // Problematic Machines (simple)
+    buildSimpleChart('chart-problematic', labels, [
+      (problematicData[reg] ?? problematicData['all']).prev,
+      (problematicData[reg] ?? problematicData['all']).weekly,
+      (problematicData[reg] ?? problematicData['all']).week2,
+    ], '#e15759');
+
+    // Unacceptable Tickets (simple)
+    buildSimpleChart('chart-unacceptable', labels, [
+      (unacceptableData[reg] ?? unacceptableData['all']).prev,
+      (unacceptableData[reg] ?? unacceptableData['all']).weekly,
+      (unacceptableData[reg] ?? unacceptableData['all']).week2,
+    ], '#f28e2b');
+
+    // Vault Discrepancy (simple)
+    buildSimpleChart('chart-vault', labels, [
+      (vaultData[reg] ?? vaultData['all']).prev,
+      (vaultData[reg] ?? vaultData['all']).weekly,
+      (vaultData[reg] ?? vaultData['all']).week2,
+    ], '#59a14f');
+
+    // Revenue Under Contract (stacked house + nonhouse)
+    const rucPrev = rucPrevData[reg] ?? rucPrevData['all'];
+    const rucW1   = rucData[reg]     ?? rucData['all'];
+    const rucW2   = rucWeek2Data[reg]?? rucWeek2Data['all'];
+    const rucM = value => Math.round(value / 1e6 * 10) / 10; // millions
+    buildChartInstance('chart-ruc', 'line', labels, [
+      { label: 'House', data: [rucM(rucPrev.house), rucM(rucW1.house), rucM(rucW2.house)], borderColor: '#4e79a7', backgroundColor: '#4e79a7', tension: 0.3, pointRadius: 4 },
+      { label: 'Non-House', data: [rucM(rucPrev.nonhouse), rucM(rucW1.nonhouse), rucM(rucW2.nonhouse)], borderColor: '#f28e2b', backgroundColor: '#f28e2b', tension: 0.3, pointRadius: 4 },
+    ], false);
+
+    // fix y-axis label for RUC chart
+    if (_summaryCharts['chart-ruc']) {
+      _summaryCharts['chart-ruc'].options.scales.y.title = { display: true, text: '$ Millions', font: { size: 10 } };
+      _summaryCharts['chart-ruc'].update();
+    }
+  }
+
+  function updateRegionLabel() {
+    const sel = document.getElementById('regionFilter');
+    document.getElementById('region-label').textContent = '— ' + sel.options[sel.selectedIndex].text;
+    updateRUC(sel.value);
+    updateVault(sel.value);
+    updateProblematic(sel.value);
+    updateCampaigns(sel ? sel.value : 'all');
+    updateUnacceptable(sel.value);
+    updatePayroll(sel.value);
+    updateDoorSwings(sel.value);
+    updateNewPipeline(sel.value);
+    updateNewUA(sel.value);
+    updateExtensions(sel.value);
+    if (document.getElementById('tab-summary').classList.contains('active')) {
+      buildSummaryCharts(sel.value);
+    }
+  }
+
+  // Init
+  updateRUC('all');
+  updateVault('all');
+  updateProblematic('all');
+  updateCampaigns('all');
+  updateUnacceptable('all');
+  updatePayroll('all');
+  updateDoorSwings('all');
+  updateNewPipeline('all');
+  updateNewUA('all');
+  updateExtensions('all');
+  setTimeout(() => buildSummaryCharts('all'), 0);
+
+  // ── SAME STORE GROWTH DATA ──
+  const ssData = [
+  {r:'6',n:' UMIYA OGDEN LLC, OGDEN',y25:null,y26:32063.76,pct:null},
+  {r:'6',n:'BKCR FOOD & LIQUOR INC, DANVILLE',y25:40692.33,y26:39340.48,pct:-3.3},
+  {r:'6',n:'DELEON LLC, TAYLORVILLE',y25:null,y26:12194.61,pct:null},
+  {r:'6',n:'DIAMONDS, CHAMPAIGN',y25:184851.46,y26:201180.77,pct:8.8},
+  {r:'6',n:'DIAMONDS, DECATUR',y25:163220.07,y26:105066.20,pct:-35.6},
+  {r:'6',n:'DIAMONDS, NORMAL (COLLEGE)',y25:257241.21,y26:268034.56,pct:4.2},
+  {r:'6',n:'DIAMONDS, NORMAL (RAAB)',y25:165392.53,y26:137992.01,pct:-16.6},
+  {r:'6',n:'FAMILY HOSPITALITY GROUP LLC, DECATUR',y25:6728.15,y26:52389.56,pct:678.7},
+  {r:'6',n:'FINDLAY FOOD MART, FINDLAY',y25:null,y26:78827.31,pct:null},
+  {r:'6',n:'FIRE HOUSE PIZZA, EAST PEORIA',y25:85495.18,y26:75467.23,pct:-11.7},
+  {r:'6',n:'HD\'S LOUNGE, DECATUR',y25:33154.06,y26:26516.63,pct:-20.0},
+  {r:'6',n:'JACKSONVILLE BEST BUFFET, JACKSONVILLE',y25:22174.69,y26:39900.80,pct:79.9},
+  {r:'6',n:'KEELEY\'S PLACE, SPRINGFIELD',y25:64397.07,y26:50349.32,pct:-21.8},
+  {r:'6',n:'KENNEDY FRIED CHICKEN, DECATUR',y25:119974.10,y26:146008.34,pct:21.7},
+  {r:'6',n:'KENTUCKY BURN, SPRINGFIELD',y25:36228.18,y26:25441.15,pct:-29.8},
+  {r:'6',n:'LACEY\'S PLACE LLC, CHAMPAIGN (503 W. TOWN)',y25:-41.04,y26:100689.97,pct:null},
+  {r:'6',n:'LACEY\'S, CHAMPAIGN (CROSSING/VILLAGE GREEN)',y25:264475.61,y26:271521.89,pct:2.7},
+  {r:'6',n:'LACEY\'S, CHAMPAIGN (NEIL)',y25:122273.33,y26:138862.35,pct:13.6},
+  {r:'6',n:'LACEY\'S, CLINTON',y25:163816.91,y26:132579.54,pct:-19.1},
+  {r:'6',n:'LACEY\'S, DECATUR (ELDORADO)',y25:76129.62,y26:98988.18,pct:30.0},
+  {r:'6',n:'LACEY\'S, DECATUR (FRENCH QUARTERS)',y25:295378.60,y26:293072.86,pct:-0.8},
+  {r:'6',n:'LACEY\'S, DECATUR (WATER)',y25:129433.29,y26:132722.36,pct:2.5},
+  {r:'6',n:'LACEY\'S, URBANA',y25:197219.80,y26:172335.20,pct:-12.6},
+  {r:'6',n:'MACON PETRO, MACON',y25:144483.45,y26:207732.37,pct:43.8},
+  {r:'6',n:'MARATHON, COWDEN',y25:71389.79,y26:101908.57,pct:42.7},
+  {r:'6',n:'MARATHON, HOOPESTON',y25:137101.57,y26:152407.44,pct:11.2},
+  {r:'6',n:'MARATHON, MARSHALL',y25:153194.29,y26:177231.23,pct:15.7},
+  {r:'6',n:'MELISTY MART, ORENA',y25:162666.81,y26:167514.90,pct:3.0},
+  {r:'6',n:'MICKIE\'S PIZZERIA, EAST PEORIA',y25:39833.36,y26:51548.09,pct:29.4},
+  {r:'6',n:'MISS KIMMEES (GRAND), SPRINGFIELD',y25:218078.48,y26:207174.01,pct:-5.0},
+  {r:'6',n:'MISS KIMMEES BRADFORDTON, SPRINGFIELD',y25:150431.85,y26:178448.05,pct:18.6},
+  {r:'6',n:'MISS KIMMEES MOUNT ZION, DECATUR',y25:null,y26:131686.84,pct:null},
+  {r:'6',n:'MISS KIMMEES, DECATUR',y25:180975.19,y26:152136.39,pct:-15.9},
+  {r:'6',n:'MISS KIMMEES, SPRINGFIELD (DIRKSEN)',y25:195222.96,y26:171832.48,pct:-12.0},
+  {r:'6',n:'MISS KIMMEES, SPRINGFIELD (DURKIN)',y25:265601.14,y26:252633.26,pct:-4.9},
+  {r:'6',n:'MISS KIMMEES, SPRINGFIELD (ILES)',y25:213639.73,y26:208905.64,pct:-2.2},
+  {r:'6',n:'MISS KIMMEES, SPRINGFIELD (SANGAMON)',y25:114454.40,y26:126498.48,pct:10.5},
+  {r:'6',n:'PANA COUNTRY CLUB, PANA',y25:15764.02,y26:21776.17,pct:38.1},
+  {r:'6',n:'PHILLIPS 66, WATSEKA',y25:118377.72,y26:162859.38,pct:37.6},
+  {r:'6',n:'RAMSEY CAFE, RAMSEY',y25:39901.52,y26:50583.03,pct:26.8},
+  {r:'6',n:'ROADWAYS PLAZA, SPRINGFIELD -221003806',y25:314630.10,y26:300428.26,pct:-4.5},
+  {r:'6',n:'ROSEBUD CAFE, PANA',y25:21203.21,y26:20498.97,pct:-3.3},
+  {r:'6',n:'SAI AAYUSH KRIT, INC, MATTOON',y25:15342.41,y26:13622.14,pct:-11.2},
+  {r:'6',n:'SCOTCHMONS EAST, WATSEKA',y25:112136.95,y26:184869.20,pct:64.9},
+  {r:'6',n:'SHELL, WATSEKA',y25:23876.52,y26:32089.47,pct:34.4},
+  {r:'6',n:'SKY FOOD MART, WATSEKA',y25:62362.34,y26:99811.49,pct:60.1},
+  {r:'6',n:'STATION 502, PANA',y25:44914.35,y26:64210.15,pct:43.0},
+  {r:'6',n:'STONEY\'S GAMING LLC, SPRINGFIELD',y25:null,y26:20742.84,pct:null},
+  {r:'6',n:'STRIKETOWN BOWL, NORTH PEKIN',y25:8785.26,y26:7963.12,pct:-9.4},
+  {r:'6',n:'STROUD LIQUORS, DANVILLE',y25:63841.25,y26:68346.87,pct:7.1},
+  {r:'6',n:'TAI PAN CHINESE, SPRINGFIELD',y25:21376.78,y26:28282.50,pct:32.3},
+  {r:'6',n:'TEDDS BEVERAGE SHOP, HOOPESTON',y25:97350.58,y26:108715.52,pct:11.7},
+  {r:'6',n:'THE BLUE STORE 2, DANVILLE',y25:87275.79,y26:104035.99,pct:19.2},
+  {r:'6',n:'THE BLUE STORE, DANVILLE',y25:101339.23,y26:93102.88,pct:-8.1},
+  {r:'6',n:'THE GARDEN FAMILY RESTAURANT, DECATUR',y25:65970.42,y26:66518.12,pct:0.8},
+  {r:'6',n:'VEGAS PLACE, DECATUR',y25:107443.21,y26:122095.32,pct:13.6},
+  {r:'6',n:'VEGAS PLACE, RANTOUL',y25:271035.54,y26:333610.31,pct:23.1},
+  {r:'2',n:'ANTIOCH LANES, ANTIOCH',y25:16235.22,y26:25538.64,pct:57.3},
+  {r:'2',n:'BARRELBOUNTY SIP & SHOP, SPRING GROVE',y25:61805.91,y26:57438.72,pct:-7.1},
+  {r:'2',n:'BP, RICHMOND',y25:123011.64,y26:109691.51,pct:-10.8},
+  {r:'2',n:'CASA CHAPALA, WHEELING',y25:65225.40,y26:39607.52,pct:-39.3},
+  {r:'2',n:'CHINA DRAGON, ALGONQUIN',y25:47119.77,y26:36244.19,pct:-23.1},
+  {r:'2',n:'DES PLAINES ELKS LODGE, DES PLAINES',y25:1639.21,y26:23209.77,pct:1315.9},
+  {r:'2',n:'G AND G VALLEY RIDGE LLC, ANTIOCH',y25:34789.56,y26:39188.39,pct:12.6},
+  {r:'2',n:'H & L LIQUOR, CARPENTERSVILLE',y25:104614.83,y26:108241.11,pct:3.5},
+  {r:'2',n:'HAPPY GANG LLC, FOX LAKE',y25:39277.45,y26:47746.15,pct:21.6},
+  {r:'2',n:'HARBOR BREWING, LAKE VILLA',y25:41996.83,y26:52227.47,pct:24.4},
+  {r:'2',n:'JALSA BAR AND RESTAURANT, CRYSTAL LAKE',y25:5842.65,y26:26611.09,pct:355.5},
+  {r:'2',n:'JAR FOOD MART INC., MCHENRY',y25:null,y26:112400.85,pct:null},
+  {r:'2',n:'KOREAN PRO BILLIARDS, NILES',y25:28285.38,y26:41074.73,pct:45.2},
+  {r:'2',n:'LACEY\'S, LAKE ZURICH',y25:140234.31,y26:183118.65,pct:30.6},
+  {r:'2',n:'LACEY\'S, MCHENRY',y25:145580.57,y26:199371.08,pct:36.9},
+  {r:'2',n:'LAS FUENTES, MORTON GROVE',y25:54082.22,y26:56480.76,pct:4.4},
+  {r:'2',n:'LUCKY BERNIE\'S, ANTIOCH',y25:382033.20,y26:347493.19,pct:-9.0},
+  {r:'2',n:'LUCKY BERNIE\'S, HUNTLEY',y25:251734.89,y26:295009.88,pct:17.2},
+  {r:'2',n:'LUCKY BERNIE\'S, SPRING GROVE',y25:182567.09,y26:175531.51,pct:-3.9},
+  {r:'2',n:'LUCKY BERNIE\'S, WOODSTOCK',y25:226955.58,y26:213552.29,pct:-5.9},
+  {r:'2',n:'LUCKY LUCY\'S 7, FOX RIVER GROVE',y25:134911.32,y26:168050.21,pct:24.6},
+  {r:'2',n:'LUCKY PENNY\'S, CARY',y25:270821.46,y26:281236.25,pct:3.8},
+  {r:'2',n:'LUCKY PENNY\'S, LAKE VILLA',y25:100247.09,y26:101371.87,pct:1.1},
+  {r:'2',n:'LUCKY PENNY\'S, LINDENHURST 1',y25:208862.68,y26:152516.83,pct:-27.0},
+  {r:'2',n:'LUCKY PENNY\'S, THIRD LAKE',y25:137796.89,y26:158562.18,pct:15.1},
+  {r:'2',n:'MAIN STREET TOWN INCORPORATED, ROUND LAKE PARK',y25:110147.01,y26:105137.23,pct:-4.5},
+  {r:'2',n:'MARIA\'S MEXICAN GRILL, INC., SPRING GROVE',y25:null,y26:43295.12,pct:null},
+  {r:'2',n:'MIJOS AMF, LLC, FOX LAKE',y25:42493.13,y26:27745.39,pct:-34.7},
+  {r:'2',n:'NOC NOC WOOD, CARPENTERSVILLE',y25:91145.61,y26:92189.96,pct:1.1},
+  {r:'2',n:'QUICK SHOP, CARPENTERSVILLE',y25:145915.29,y26:135903.53,pct:-6.9},
+  {r:'2',n:'STATION 34, MT PROSPECT',y25:111997.96,y26:130659.95,pct:16.7},
+  {r:'2',n:'STEPH\'S PLACE, LINDENHURST',y25:43326.50,y26:65092.80,pct:50.2},
+  {r:'2',n:'SUNRISE SH INC, SLEEPY HOLLOW',y25:44510.80,y26:50010.64,pct:12.4},
+  {r:'2',n:'SZECHWAN PALACE, ANTIOCH',y25:32211.78,y26:19295.74,pct:-40.1},
+  {r:'2',n:'TEEPEE LIQUORS, NORTH CHICAGO',y25:70067.51,y26:69900.95,pct:-0.2},
+  {r:'2',n:'THE LINKS ON GRAND LLC, LINDENHURST',y25:44255.31,y26:40020.03,pct:-9.6},
+  {r:'2',n:'THE TAPROOM, WAUKEGAN',y25:99192.76,y26:70267.59,pct:-29.2},
+  {r:'2',n:'TKO SERVICES LLC, WAUKEGAN',y25:22190.20,y26:21645.55,pct:-2.5},
+  {r:'2',n:'TNS CORPORATION, LAKEMOOR',y25:57680.95,y26:80690.74,pct:39.9},
+  {r:'3',n:'ATS A NICE PIZZA, ROMEOVILLE',y25:31087.32,y26:28743.15,pct:-7.5},
+  {r:'3',n:'AVA\'S CAFE LLC, NORTH RIVERSIDE',y25:142474.92,y26:129037.49,pct:-9.4},
+  {r:'3',n:'BRAIDKOT LTD, BRAIDWOOD',y25:16061.23,y26:14231.01,pct:-11.4},
+  {r:'3',n:'BURRITO GUACAMOLE INC., JOLIET',y25:null,y26:-1103.38,pct:null},
+  {r:'3',n:'CATIE\'S PLACE, NORTH RIVERSIDE',y25:249839.27,y26:219726.41,pct:-12.1},
+  {r:'3',n:'CATIE\'S PLACE, RIVER GROVE',y25:231915.21,y26:269758.18,pct:16.3},
+  {r:'3',n:'CATIE\'S PLACE, WILLOWBROOK',y25:89531.10,y26:122749.67,pct:37.1},
+  {r:'3',n:'CHEMO\'S PLACE, CICERO',y25:94998.55,y26:135288.34,pct:42.4},
+  {r:'3',n:'CHER\'S RENDEZVOUS, LLC, BERWYN',y25:78118.50,y26:101116.86,pct:29.4},
+  {r:'3',n:'CITGO, ELMWOOD PARK',y25:333124.12,y26:416490.72,pct:25.0},
+  {r:'3',n:'CONVENIENT FOODS, RIVER GROVE',y25:183991.03,y26:183415.81,pct:-0.3},
+  {r:'3',n:'CRAB DU JOUR, MELROSE PARK',y25:75405.25,y26:44769.59,pct:-40.6},
+  {r:'3',n:'FIRESIDE GRILLE, SUGAR GROVE',y25:60648.58,y26:67554.04,pct:11.4},
+  {r:'3',n:'FOREMOST FOOD & LIQUOR, MELROSE PARK',y25:95729.01,y26:133260.87,pct:39.2},
+  {r:'3',n:'LACEY\'S PLACE, WHEATON',y25:118105.66,y26:98298.59,pct:-16.8},
+  {r:'3',n:'LACEY\'S, ADDISON 1',y25:337643.36,y26:318924.93,pct:-5.5},
+  {r:'3',n:'LACEY\'S, ADDISON 2',y25:236377.44,y26:250892.66,pct:6.1},
+  {r:'3',n:'LACEY\'S, BERWYN OGDEN',y25:183276.53,y26:186614.17,pct:1.8},
+  {r:'3',n:'LACEY\'S, MAYWOOD',y25:175529.07,y26:132288.43,pct:-24.6},
+  {r:'3',n:'LACEY\'S, MELROSE PARK',y25:260637.29,y26:243434.30,pct:-6.6},
+  {r:'3',n:'LACEY\'S, NORTH RIVERSIDE',y25:176818.82,y26:123609.71,pct:-30.1},
+  {r:'3',n:'LACEY\'S, OSWEGO',y25:149478.68,y26:205195.94,pct:37.3},
+  {r:'3',n:'LACEY\'S, PLANO',y25:120757.45,y26:106667.76,pct:-11.7},
+  {r:'3',n:'LACEY\'S, RIVER GROVE',y25:194826.24,y26:162388.80,pct:-16.6},
+  {r:'3',n:'LACEY\'S, ROMEOVILLE',y25:325984.08,y26:358431.27,pct:10.0},
+  {r:'3',n:'LACEY\'S, SOUTH ELGIN',y25:185528.82,y26:134307.94,pct:-27.6},
+  {r:'3',n:'LACEY\'S, STONE PARK',y25:165688.31,y26:138495.51,pct:-16.4},
+  {r:'3',n:'LUCKY PANDA, AURORA',y25:181467.06,y26:192248.74,pct:5.9},
+  {r:'3',n:'LUCKY PENNY\'S, ROMEOVILLE',y25:269265.88,y26:254033.45,pct:-5.7},
+  {r:'3',n:'MI TIERRA, SHOREWOOD',y25:36631.66,y26:35910.34,pct:-2.0},
+  {r:'3',n:'MIRA\'S CAFE, ELK GROVE VILLAGE',y25:292289.17,y26:275860.91,pct:-5.6},
+  {r:'3',n:'NASH PARTNERS, LLC, CAROL STREAM',y25:null,y26:41508.63,pct:null},
+  {r:'3',n:'OLIVIA\'S PLACE, BERWYN',y25:85299.48,y26:104746.25,pct:22.8},
+  {r:'3',n:'ONESTOP LIQUOR & GROCERY, MELROSE PARK',y25:165769.64,y26:145186.03,pct:-12.4},
+  {r:'3',n:'ORCHARD GAMING CAFE, OSWEGO',y25:39797.66,y26:68706.74,pct:72.6},
+  {r:'3',n:'PIZZA CUCINA, OSWEGO',y25:57822.13,y26:77425.85,pct:33.9},
+  {r:'3',n:'POPS, LYONS',y25:93916.71,y26:102984.45,pct:9.7},
+  {r:'3',n:'ROCKYS GAMING BAR LLC, NORTHLAKE',y25:60625.64,y26:75740.94,pct:24.9},
+  {r:'3',n:'YE\'S CHINESE, CAROL STREAM',y25:34671.09,y26:32338.85,pct:-6.7},
+  {r:'8',n:'CHEERS CORNER, FULTON',y25:74103.65,y26:73848.21,pct:-0.3},
+  {r:'8',n:'HOBNOBBERS, SYCAMORE',y25:50480.81,y26:86903.24,pct:72.2},
+  {r:'8',n:'LACEY\'S, LOVES PARK',y25:139637.52,y26:189087.87,pct:35.4},
+  {r:'8',n:'LUCKY CAFE, LOVES PARK',y25:145723.25,y26:161387.26,pct:10.7},
+  {r:'8',n:'S & T PETROLEUM INC., HANOVER',y25:null,y26:58224.14,pct:null},
+  {r:'8',n:'SAVANNA FOOD MART INC, SAVANNA',y25:null,y26:57818.16,pct:null},
+  {r:'8',n:'SUNRISE FOOD & LIQUOR, HARVARD',y25:61854.49,y26:59300.97,pct:-4.1},
+  {r:'4',n:'ALY ANNE\'S, DWIGHT',y25:101210.77,y26:105419.15,pct:4.2},
+  {r:'4',n:'BERRYFIELD CAFE, MIDLOTHIAN',y25:93486.44,y26:70518.30,pct:-24.6},
+  {r:'4',n:'BP, HOMETOWN',y25:422618.49,y26:411053.01,pct:-2.7},
+  {r:'4',n:'CENTENNIAL LANES, TINLEY PARK',y25:40803.98,y26:38330.47,pct:-6.1},
+  {r:'4',n:'CITGO, ALSIP',y25:138618.36,y26:127856.98,pct:-7.8},
+  {r:'4',n:'DIAMONDS, CRESTWOOD',y25:81025.78,y26:117555.75,pct:45.1},
+  {r:'4',n:'DRAGON PALACE, TINLEY PARK',y25:66787.11,y26:60776.68,pct:-9.0},
+  {r:'4',n:'ESSEX INN, ESSEX',y25:48933.79,y26:80009.48,pct:63.5},
+  {r:'4',n:'EXXON, JUSTICE',y25:168519.98,y26:147126.38,pct:-12.7},
+  {r:'4',n:'F.A. TAILGATORS, INC., OAK LAWN',y25:null,y26:155482.50,pct:null},
+  {r:'4',n:'FLANAGAN\'S PUB, GRANT PARK',y25:57123.73,y26:41647.25,pct:-27.1},
+  {r:'4',n:'HENRY\'S TACOS, JUSTICE',y25:37914.98,y26:25549.42,pct:-32.6},
+  {r:'4',n:'HOME-SLICE, HOMEWOOD',y25:82958.07,y26:49217.45,pct:-40.7},
+  {r:'4',n:'K & N MARKET & WINE',y25:51473.78,y26:35852.09,pct:-30.3},
+  {r:'4',n:'KEN\'S FOOD & LIQUOR, HARVEY',y25:122132.47,y26:120329.67,pct:-1.5},
+  {r:'4',n:'LACEY\'S, BEECHER',y25:184634.22,y26:152372.21,pct:-17.5},
+  {r:'4',n:'LACEY\'S, BRADLEY',y25:285561.75,y26:228069.35,pct:-20.1},
+  {r:'4',n:'LACEY\'S, BRIDGEVIEW',y25:171992.01,y26:120611.95,pct:-29.9},
+  {r:'4',n:'LACEY\'S, CRETE',y25:176679.43,y26:161222.80,pct:-8.7},
+  {r:'4',n:'LACEY\'S, DOLTON',y25:215155.15,y26:178722.90,pct:-16.9},
+  {r:'4',n:'LACEY\'S, KANKAKEE',y25:213842.16,y26:219497.30,pct:2.6},
+  {r:'4',n:'LACEY\'S, LYNWOOD',y25:171611.28,y26:121540.00,pct:-29.2},
+  {r:'4',n:'LACEY\'S, MARKHAM',y25:180319.92,y26:158204.39,pct:-12.3},
+  {r:'4',n:'LACEY\'S, MATTESON',y25:162080.11,y26:141705.19,pct:-12.6},
+  {r:'4',n:'LACEY\'S, MIDLOTHIAN',y25:143429.55,y26:115334.97,pct:-19.6},
+  {r:'4',n:'LACEY\'S, MONEE',y25:134890.86,y26:138717.49,pct:2.8},
+  {r:'4',n:'LACEY\'S, SUMMIT',y25:291469.83,y26:215699.01,pct:-26.0},
+  {r:'4',n:'LUCKY BERNIE\'S, SOUTH CHICAGO HEIGHTS',y25:191699.28,y26:189873.17,pct:-1.0},
+  {r:'4',n:'LUCKY PENNY\'S, JUSTICE',y25:113100.80,y26:129789.90,pct:14.8},
+  {r:'4',n:'MARATHON, ALSIP',y25:257992.04,y26:290271.74,pct:12.5},
+  {r:'4',n:'MARATHON, OAK FOREST',y25:455986.88,y26:447227.69,pct:-1.9},
+  {r:'4',n:'MATTESON BP INC, MATTESON',y25:null,y26:17088.88,pct:null},
+  {r:'4',n:'MIDLOTHIAN MEMORIAL POST 2580, MIDLOTHIAN',y25:null,y26:30207.48,pct:null},
+  {r:'4',n:'MOBIL, SUMMIT',y25:104492.93,y26:128361.84,pct:22.8},
+  {r:'4',n:'PALOS LANES, PALOS HILLS',y25:67305.54,y26:78214.99,pct:16.2},
+  {r:'4',n:'PEGGY\'S DELI INC, HAZEL CREST',y25:30795.88,y26:165631.91,pct:437.8},
+  {r:'4',n:'PEPE\'S, CRESTWOOD',y25:103731.76,y26:72790.95,pct:-29.8},
+  {r:'4',n:'PORTER CULLEN\'S, EVERGREEN PARK',y25:63235.87,y26:61091.43,pct:-3.4},
+  {r:'4',n:'SAROOR, LLC, ALSIP',y25:30897.27,y26:23216.20,pct:-24.9},
+  {r:'4',n:'SHELL, ALSIP',y25:162394.53,y26:137009.30,pct:-15.6},
+  {r:'4',n:'SHELL, MARKHAM',y25:138408.24,y26:171908.62,pct:24.2},
+  {r:'4',n:'SHELL, MERRIONETTE PARK-220702038',y25:76678.75,y26:66285.03,pct:-13.6},
+  {r:'4',n:'TAQUERIA EL EDEN, BLUE ISLAND',y25:16361.87,y26:24277.31,pct:48.4},
+  {r:'4',n:'THE DOCK ON FRONT STREET, MOKENA',y25:null,y26:24211.33,pct:null},
+  {r:'7',n:'501 BLUES CLUB, HIGHLAND',y25:63313.09,y26:76410.83,pct:20.7},
+  {r:'7',n:'ACCENTURE PARTNERS LLC, TROY',y25:161371.39,y26:144008.16,pct:-10.8},
+  {r:'7',n:'AHAC LLC, PINCKNEYVILLE',y25:null,y26:35135.00,pct:null},
+  {r:'7',n:'BLACK DIAMOND ALL MART, MASCOUTAH',y25:50889.52,y26:49029.20,pct:-3.7},
+  {r:'7',n:'BLACK DIAMOND MART, SMITHTON',y25:74571.53,y26:74889.68,pct:0.4},
+  {r:'7',n:'BUXTON\'S LLC, BECKEMEYER',y25:33603.01,y26:43882.38,pct:30.6},
+  {r:'7',n:'CARLIE LLC, ZEIGLER',y25:66933.72,y26:56548.61,pct:-15.5},
+  {r:'7',n:'CHOPS FAMILY INN, ASHLEY',y25:21151.51,y26:45340.79,pct:114.4},
+  {r:'7',n:'DIAMONDS, CENTRALIA',y25:128133.73,y26:134568.45,pct:5.0},
+  {r:'7',n:'DIETERICH MART INC, DIETERICH',y25:30435.10,y26:27162.04,pct:-10.8},
+  {r:'7',n:'DJR PROPERTIES, HIGHLAND',y25:null,y26:24346.90,pct:null},
+  {r:'7',n:'D\'S WESTSIDE LOUNGE, CARLYLE',y25:101078.93,y26:104331.90,pct:3.2},
+  {r:'7',n:'EDDIES RISE N DINE, BREESE',y25:33347.56,y26:18656.57,pct:-44.1},
+  {r:'7',n:'FORTUNES LLC, TRENTON',y25:47525.21,y26:120392.44,pct:153.3},
+  {r:'7',n:'FRANKS CORNER KITCHEN, BECKMEYER',y25:136141.09,y26:132947.18,pct:-2.3},
+  {r:'7',n:'FUZZ JAY & ZACH\'S ACES & EIGHTS INC., NASHVILLE',y25:53826.36,y26:93124.88,pct:73.0},
+  {r:'7',n:'GLENNON BEHRMAN, ALBERS',y25:33068.31,y26:42116.71,pct:27.4},
+  {r:'7',n:'HAPPY HOUR SPORTS BAR, WATERLOO',y25:97372.32,y26:115551.56,pct:18.7},
+  {r:'7',n:'HUDDLE BAR & GRILL INC, CASEYVILLE',y25:49150.12,y26:36270.44,pct:-26.2},
+  {r:'7',n:'KGD GEGS LLC, TRENTON',y25:83538.51,y26:90747.76,pct:8.6},
+  {r:'7',n:'KORTE MEAT PROCESSING INC, HIGHLAND',y25:25871.86,y26:10987.42,pct:-57.5},
+  {r:'7',n:'LA OFICINA BAR AND GAMING INC, COLLINSVILLE',y25:120578.93,y26:128843.10,pct:6.9},
+  {r:'7',n:'LACEY\'S, BELLEVILLE',y25:263230.11,y26:235442.27,pct:-10.6},
+  {r:'7',n:'LACEY\'S, HIGHLAND',y25:298274.58,y26:294455.31,pct:-1.3},
+  {r:'7',n:'LACEY\'S, ROBINSON',y25:124776.46,y26:152368.94,pct:22.1},
+  {r:'7',n:'LAKESIDE GAMING LLC, HERRIN',y25:null,y26:13957.96,pct:null},
+  {r:'7',n:'LUCKY KNUTTS LLC, KEYESPORT',y25:null,y26:100634.03,pct:null},
+  {r:'7',n:'LUCKY LADYZ INC., DESOTO',y25:null,y26:7003.84,pct:null},
+  {r:'7',n:'LUCKY\'S SWEETS & SLOTS, GODFREY',y25:137856.31,y26:140307.26,pct:1.8},
+  {r:'7',n:'OM KRISHNA 4 LLC, HERRIN',y25:null,y26:45655.37,pct:null},
+  {r:'7',n:'PINBALL PALACE LLC, CARLYLE',y25:null,y26:23098.65,pct:null},
+  {r:'7',n:'ROGERS MINI MART, ST. LIBORY',y25:120845.25,y26:107913.52,pct:-10.7},
+  {r:'7',n:'ROUTE 66 KICK STAND, GRANITE CITY',y25:114413.41,y26:121200.36,pct:5.9},
+  {r:'7',n:'SIN CITY SLOTS AND CAFE, BECKEMEYER',y25:69576.79,y26:63134.32,pct:-9.3},
+  {r:'7',n:'SORENTO FOOD MART LLC, SORENTO',y25:null,y26:34491.45,pct:null},
+  {r:'7',n:'SUN CATCHERS TAN, INC., WOOD RIVER',y25:8475.75,y26:19580.31,pct:131.0},
+  {r:'7',n:'SWAMP TALES, CARLYLE',y25:57506.13,y26:90757.96,pct:57.8},
+  {r:'7',n:'T & M RAILSHAKE INC., HIGHLAND',y25:15889.30,y26:11245.36,pct:-29.2},
+  {r:'7',n:'THE BLUE ROOM, NEW MINDEN',y25:65562.88,y26:89243.07,pct:36.1},
+  {r:'7',n:'THE POUR HOUSE, MARISSA',y25:46221.41,y26:49530.54,pct:7.2},
+  {r:'7',n:'THE WHITE HOUSE BREESE LLC, BREESE',y25:93609.31,y26:72230.11,pct:-22.8},
+  {r:'7',n:'ZEIGLER PETRO, ZEIGLER',y25:96358.84,y26:96262.73,pct:-0.1},
+  {r:'5',n:'ALL SAINTS INC, NEPONSET',y25:null,y26:52084.50,pct:null},
+  {r:'5',n:'ASTORIA TAVERN INC, ASTORIA',y25:null,y26:36433.08,pct:null},
+  {r:'5',n:'AUGUSTA QUICK STOP, AUGUSTA',y25:57831.12,y26:69707.19,pct:20.5},
+  {r:'5',n:'BUSHNELL FOOD MART, BUSHNELL',y25:94087.39,y26:84860.16,pct:-9.8},
+  {r:'5',n:'BUSHNELL LIQUOR, BUSHNELL',y25:24215.27,y26:12143.24,pct:-49.9},
+  {r:'5',n:'CONVENIENT QUICK STOP, GOLDEN',y25:84174.92,y26:92504.38,pct:9.9},
+  {r:'5',n:'DALE MARSHALL INC, NEW WINDSOR',y25:18584.94,y26:18482.49,pct:-0.6},
+  {r:'5',n:'GRAND TOBACCO, GALESBURG',y25:166834.40,y26:128034.96,pct:-23.3},
+  {r:'5',n:'JP FOOD & LIQUOR, ABINGDON',y25:99903.52,y26:103013.27,pct:3.1},
+  {r:'5',n:'LAFAYETTE MART, MACOMB',y25:45605.28,y26:52203.33,pct:14.5},
+  {r:'5',n:'LEWISTOWN SMOKE SHOP LLC, LEWISTOWN',y25:null,y26:40540.28,pct:null},
+  {r:'5',n:'PAYSON CONVENIENCE QUICK STOP, PAYSON',y25:74101.10,y26:76091.72,pct:2.7},
+  {r:'5',n:'ROKET STOP, INC., TAYLOR RIDGE',y25:null,y26:34057.57,pct:null},
+  {r:'5',n:'SILVIS MART, SILVIS',y25:51726.95,y26:45817.21,pct:-11.4},
+  {r:'5',n:'WOODHULL TRUCK PLAZA, LLC, WOODHULL',y25:32784.83,y26:18914.95,pct:-42.3},
+  {r:'3',n:'BIG APPLE MT, PLAINFIELD',y25:1100.57,y26:10448.74,pct:849.4},
+  {r:'3',n:'BIG APPLE, JOLIET',y25:null,y26:7177.28,pct:null},
+  {r:'2',n:'BLACK LUNG BREWING, ROUND LAKE BEACH',y25:24744.84,y26:6372.99,pct:-74.2},
+  {r:'2',n:'HARBOR BREWING, WINTHROP HARBOR',y25:7700.60,y26:0.00,pct:-100.0},
+  {r:'4',n:'HERMS DOLTON LLC, DOLTON',y25:null,y26:-816.52,pct:null},
+  {r:'7',n:'HIDDEN KEYS VENTURES LLC, KEYESPORT',y25:null,y26:1657.02,pct:null},
+  {r:'3',n:'JAI MAA GROUP INC, MELROSE PARK',y25:null,y26:626.33,pct:null},
+  {r:'4',n:'L & M FOODS, CHICAGO HEIGHTS',y25:36404.56,y26:12644.14,pct:-65.3},
+  {r:'6',n:'LAS MARGARITAS MEXICAN RESTAURANT, DECATUR',y25:18521.81,y26:13284.29,pct:-28.3},
+  {r:'4',n:'LOCAL CANTINA, OAK LAWN',y25:15449.43,y26:12509.35,pct:-19.0},
+  {r:'4',n:'PARK FOODS INC, UNIVERSITY PARK',y25:15203.57,y26:3582.50,pct:-76.4},
+  {r:'2',n:'RON & PAT\'S PIZZA SHACK, ANTIOCH',y25:14370.17,y26:16915.75,pct:17.7},
+  {r:'8',n:'SONNY\'S LLC, DIXON',y25:22039.56,y26:3253.16,pct:-85.2},
+  {r:'7',n:'TACOS & TORTAS DON CHENCHO, GRANITE CITY',y25:24235.40,y26:13616.06,pct:-43.8},
+  {r:'6',n:'URVASHI FOOD INC, NIANTIC',y25:null,y26:258.75,pct:null}
+  ];
+
+  function fmtDollar(v) { return v == null ? '—' : '$' + v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+  function fmtPct(p) {
+    if (p == null) return '<span class="pct-neu">N/A</span>';
+    const cls = p > 0 ? 'pct-pos' : p < 0 ? 'pct-neg' : 'pct-neu';
+    const sign = p > 0 ? '+' : '';
+    return `<span class="${cls}">${sign}${p.toFixed(1)}%</span>`;
+  }
+
+  function renderSSTable(regionVal) {
+    const filtered = regionVal === 'all' ? ssData : ssData.filter(d => d.r === regionVal);
+    const tbody = document.getElementById('ss-tbody');
+    const tfoot = document.getElementById('ss-tfoot');
+
+    let sum25 = 0, sum26 = 0;
+    tbody.innerHTML = filtered.map(d => {
+      if (d.y25 != null) sum25 += d.y25;
+      sum26 += d.y26;
+      return `<tr>
+        <td class="kpi-name" style="font-weight:400;">${d.n}</td>
+        <td style="text-align:center;color:#718096;">${fmtDollar(d.y25)}</td>
+        <td style="text-align:center;color:#dd6b20;font-weight:600;">${fmtDollar(d.y26)}</td>
+        <td style="text-align:center;">${fmtPct(d.pct)}</td>
+      </tr>`;
+    }).join('');
+
+    const totalPct = sum25 > 0 ? ((sum26 - sum25) / sum25 * 100) : null;
+    tfoot.innerHTML = `<tr>
+      <td>Total (${filtered.length} locations)</td>
+      <td style="text-align:center;">${fmtDollar(Math.round(sum25))}</td>
+      <td style="text-align:center;color:#dd6b20;">${fmtDollar(Math.round(sum26))}</td>
+      <td style="text-align:center;">${fmtPct(totalPct != null ? Math.round(totalPct*10)/10 : null)}</td>
+    </tr>`;
+
+    document.getElementById('ss-count').textContent = `${filtered.length} locations`;
+  }
+
+  // Wire SS into region filter
+  const _origUpdateRegionLabel = updateRegionLabel;
+  function updateRegionLabel() {
+    const sel = document.getElementById('regionFilter');
+    document.getElementById('region-label').textContent = '— ' + sel.options[sel.selectedIndex].text;
+    updateRUC(sel.value); updateVault(sel.value); updateProblematic(sel.value); updateCampaigns(sel ? sel.value : 'all');
+    updateUnacceptable(sel.value); updatePayroll(sel.value); updateDoorSwings(sel.value);
+    updateNewPipeline(sel.value); updateNewUA(sel.value); updateExtensions(sel.value);
+    renderSSTable(sel.value);
+    if (document.getElementById('tab-summary').classList.contains('active')) {
+      buildSummaryCharts(sel.value);
+    }
+  }
+
+  renderSSTable('all');
+</script>
+
+</body>
+</html>
