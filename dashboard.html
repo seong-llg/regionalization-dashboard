@@ -75,8 +75,12 @@
       background: #fff; border: none; cursor: pointer;
       color: #718096; transition: all 0.2s;
     }
-    .view-toggle-btn:first-child { border-right: 1px solid #e2e8f0; }
+    .view-toggle-btn:not(:last-child) { border-right: 1px solid #e2e8f0; }
     .view-toggle-btn.active { background: #1a1a2e; color: #fff; }
+
+    /* ── WEEKLY PANEL SCROLL ── */
+    .view-panel table { min-width: 100%; }
+    .view-panel { overflow-x: auto; }
 
     /* ── KPI TABLE ── */
     .kpi-table-wrapper {
@@ -191,9 +195,9 @@
 
 <!-- POSITION TABS -->
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('dm', this)">District Manager</button>
+  <button class="tab-btn active" onclick="switchTab('rd', this)">Regional Director</button>
   <button class="tab-btn" onclick="switchTab('ops', this)">Ops Lead</button>
-  <button class="tab-btn" onclick="switchTab('rd', this)">Regional Director</button>
+  <button class="tab-btn" onclick="switchTab('dm', this)">District Manager</button>
   <button class="tab-btn" onclick="switchTab('ls', this)">Legacy Sales</button>
   <button class="tab-btn" onclick="switchTab('summary', this)">Summary</button>
 </div>
@@ -202,67 +206,112 @@
 <main>
 
   <!-- ── DISTRICT MANAGER ── -->
-  <div id="tab-dm" class="tab-content active">
+  <div id="tab-dm" class="tab-content">
     <div class="section-header">
       <div class="section-title">District Manager KPIs</div>
       <div class="view-toggle">
-        <button class="view-toggle-btn active" onclick="switchView('dm', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn active" onclick="switchView('dm', 'weekly', this)">Weekly</button>
+        <button class="view-toggle-btn" onclick="switchView('dm', 'mtd', this)">MTD</button>
         <button class="view-toggle-btn" onclick="switchView('dm', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
     <div class="kpi-table-wrapper">
-      <!-- Weekly/MTD -->
+      <!-- Weekly -->
       <div id="dm-weekly" class="view-panel active">
-        <div class="trend-sub-header">Weekly Trend</div>
         <table>
           <thead>
             <tr>
               <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">4/27 – 5/3</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/4 – 5/10</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/11 – 5/17</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/18 – 5/24</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/25 – 5/31</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/1 – 6/7</th>
               <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
               <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
               <th class="center weekly-col">6/22 – 6/28</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="kpi-name">Door Swings / Cold Calls — Live</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w427">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w504">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w511">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w518">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w525">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w601">—</td>
               <td class="value-cell weekly-val" id="doorswings-live-prev">—</td>
               <td class="value-cell weekly-val" id="doorswings-live-weekly">—</td>
               <td class="value-cell weekly-val" id="doorswings-live-week2">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Door Swings / Cold Calls — Prospect</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w427">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w504">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w511">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w518">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w525">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w601">—</td>
               <td class="value-cell weekly-val" id="doorswings-prospect-prev">—</td>
               <td class="value-cell weekly-val" id="doorswings-prospect-weekly">—</td>
               <td class="value-cell weekly-val" id="doorswings-prospect-week2">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">New Pipeline Generated</td>
+              <td class="value-cell weekly-val" id="newpipeline-w427">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-w504">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-w511">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-w518">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-w525">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-w601">—</td>
               <td class="value-cell weekly-val" id="newpipeline-prev">—</td>
               <td class="value-cell weekly-val" id="newpipeline-weekly">—</td>
               <td class="value-cell weekly-val" id="newpipeline-week2">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Marketing to Location Ratio</td>
               <td class="value-cell empty weekly-val">—</td>
               <td class="value-cell empty weekly-val">—</td>
               <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Active Campaigns</td>
+              <td class="value-cell weekly-val" id="campaign-w427">—</td>
+              <td class="value-cell weekly-val" id="campaign-w504">—</td>
+              <td class="value-cell weekly-val" id="campaign-w511">—</td>
+              <td class="value-cell weekly-val" id="campaign-w518">—</td>
+              <td class="value-cell weekly-val" id="campaign-w525">—</td>
+              <td class="value-cell weekly-val" id="campaign-w601">—</td>
               <td class="value-cell weekly-val" id="campaign-prev">—</td>
               <td class="value-cell weekly-val" id="campaign-weekly">—</td>
               <td class="value-cell weekly-val" id="campaign-week2">—</td>
+              <td class="value-cell weekly-val" id="campaign-w629">—</td>
             </tr>
           </tbody>
         </table>
-        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+      </div>
+      <!-- MTD -->
+      <div id="dm-mtd" class="view-panel">
         <table>
           <thead>
             <tr>
               <th>KPI</th>
               <th class="center mtd-col" style="opacity:0.55;">May</th>
-              <th class="center mtd-col">June</th>
+              <th class="center mtd-col" style="opacity:0.55;">June</th>
+              <th class="center mtd-col">July</th>
             </tr>
           </thead>
           <tbody>
@@ -270,19 +319,23 @@
               <td class="kpi-name">Door Swings / Cold Calls — Live</td>
               <td class="value-cell mtd-val" id="doorswings-live-may">—</td>
               <td class="value-cell mtd-val" id="doorswings-live-mtd">—</td>
+              <td class="value-cell mtd-val" id="doorswings-live-july">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Door Swings / Cold Calls — Prospect</td>
               <td class="value-cell mtd-val" id="doorswings-prospect-may">—</td>
               <td class="value-cell mtd-val" id="doorswings-prospect-mtd">—</td>
+              <td class="value-cell mtd-val" id="doorswings-prospect-july">—</td>
             </tr>
             <tr>
               <td class="kpi-name">New Pipeline Generated</td>
               <td class="value-cell mtd-val" id="newpipeline-may">—</td>
               <td class="value-cell mtd-val" id="newpipeline-mtd">—</td>
+              <td class="value-cell mtd-val" id="newpipeline-july">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Marketing to Location Ratio</td>
+              <td class="value-cell empty mtd-val">—</td>
               <td class="value-cell empty mtd-val">—</td>
               <td class="value-cell empty mtd-val">—</td>
             </tr>
@@ -290,6 +343,7 @@
               <td class="kpi-name">Active Campaigns</td>
               <td class="value-cell mtd-val" id="campaign-may">—</td>
               <td class="value-cell mtd-val" id="campaign-mtd">—</td>
+              <td class="value-cell mtd-val" id="campaign-july">—</td>
             </tr>
           </tbody>
         </table>
@@ -301,7 +355,8 @@
             <tr>
               <th>KPI</th>
               <th class="center q1-col">Q1 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jan – Mar)</span></th>
-              <th class="center qtd-col">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+              <th class="center qtd-col" style="opacity:0.55;">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+              <th class="center q3-col">Q3 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jul – Sep)</span></th>
             </tr>
           </thead>
           <tbody>
@@ -309,16 +364,19 @@
               <td class="kpi-name"># of New UAs</td>
               <td class="value-cell q1-val" id="newua-q1">—</td>
               <td class="value-cell qtd-val" id="newua-q2">—</td>
+              <td class="value-cell q3-val" id="newua-q3">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Extensions</td>
               <td class="value-cell q1-val" id="extensions-q1">—</td>
               <td class="value-cell qtd-val" id="extensions-q2">—</td>
+              <td class="value-cell q3-val" id="extensions-q3">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Marketing Budget / Spend Responsibility</td>
               <td class="value-cell empty q1-val">—</td>
               <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell empty q3-val">—</td>
             </tr>
           </tbody>
         </table>
@@ -353,21 +411,28 @@
     <div class="section-header">
       <div class="section-title">Ops Lead KPIs</div>
       <div class="view-toggle">
-        <button class="view-toggle-btn active" onclick="switchView('ops', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn active" onclick="switchView('ops', 'weekly', this)">Weekly</button>
+        <button class="view-toggle-btn" onclick="switchView('ops', 'mtd', this)">MTD</button>
         <button class="view-toggle-btn" onclick="switchView('ops', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
     <div class="kpi-table-wrapper">
-      <!-- Weekly/MTD -->
+      <!-- Weekly -->
       <div id="ops-weekly" class="view-panel active">
-        <div class="trend-sub-header">Weekly Trend</div>
         <table>
           <thead>
             <tr>
               <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">4/27 – 5/3</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/4 – 5/10</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/11 – 5/17</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/18 – 5/24</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/25 – 5/31</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/1 – 6/7</th>
               <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
               <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
               <th class="center weekly-col">6/22 – 6/28</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
             </tr>
           </thead>
           <tbody>
@@ -376,40 +441,67 @@
                 Problematic Machines
                 <span class="kpi-note">Non-compliant · 7+ tickets in prior 30 days</span>
               </td>
+              <td class="value-cell weekly-val" id="problematic-w427">—</td>
+              <td class="value-cell weekly-val" id="problematic-w504">—</td>
+              <td class="value-cell weekly-val" id="problematic-w511">—</td>
+              <td class="value-cell weekly-val" id="problematic-w518">—</td>
+              <td class="value-cell weekly-val" id="problematic-w525">—</td>
+              <td class="value-cell weekly-val" id="problematic-w601">—</td>
               <td class="value-cell weekly-val" id="problematic-prev">—</td>
               <td class="value-cell weekly-val" id="problematic-weekly">—</td>
               <td class="value-cell weekly-val" id="problematic-week2">—</td>
+              <td class="value-cell weekly-val" id="problematic-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Unacceptable Tickets<span style="display:block;font-size:0.75rem;color:#a0aec0;margin-top:3px;">Accept + En Route + In Process &gt; 120 mins</span></td>
+              <td class="value-cell weekly-val" id="unacceptable-w427">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-w504">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-w511">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-w518">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-w525">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-w601">—</td>
               <td class="value-cell weekly-val" id="unacceptable-prev">—</td>
               <td class="value-cell weekly-val" id="unacceptable-weekly">—</td>
               <td class="value-cell weekly-val" id="unacceptable-week2">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Average Utilization</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Payroll Actual vs Budgeted</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">
                 Controllable Vault Discrepancies
                 <span class="kpi-note">Cash only · excludes coin and break-ins</span>
               </td>
+              <td class="value-cell weekly-val" id="vault-w427">—</td>
+              <td class="value-cell weekly-val" id="vault-w504">—</td>
+              <td class="value-cell weekly-val" id="vault-w511">—</td>
+              <td class="value-cell weekly-val" id="vault-w518">—</td>
+              <td class="value-cell weekly-val" id="vault-w525">—</td>
+              <td class="value-cell weekly-val" id="vault-w601">—</td>
               <td class="value-cell weekly-val" id="vault-prev">—</td>
               <td class="value-cell weekly-val" id="vault-weekly">—</td>
               <td class="value-cell weekly-val" id="vault-week2">—</td>
+              <td class="value-cell weekly-val" id="vault-w629">—</td>
             </tr>
           </tbody>
         </table>
-        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+      </div>
+      <!-- MTD -->
+      <div id="ops-mtd" class="view-panel">
         <table>
           <thead>
             <tr>
@@ -496,67 +588,87 @@
   </div>
 
   <!-- ── REGIONAL DIRECTOR ── -->
-  <div id="tab-rd" class="tab-content">
+  <div id="tab-rd" class="tab-content active">
     <div class="section-header">
       <div class="section-title">Regional Director KPIs</div>
       <div class="view-toggle">
-        <button class="view-toggle-btn active" onclick="switchView('rd', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn active" onclick="switchView('rd', 'weekly', this)">Weekly</button>
+        <button class="view-toggle-btn" onclick="switchView('rd', 'mtd', this)">MTD</button>
         <button class="view-toggle-btn" onclick="switchView('rd', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
     <div class="kpi-table-wrapper">
-      <!-- Weekly/MTD -->
+      <!-- Weekly -->
       <div id="rd-weekly" class="view-panel active">
-        <div class="trend-sub-header">Weekly Trend</div>
         <table>
           <thead>
             <tr>
               <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">4/27 – 5/3</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/4 – 5/10</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/11 – 5/17</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/18 – 5/24</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/25 – 5/31</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/1 – 6/7</th>
               <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
               <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
               <th class="center weekly-col">6/22 – 6/28</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="kpi-name">Monthly Payroll</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-            </tr>
-            <tr>
-              <td class="kpi-name">District P&amp;L</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-            </tr>
-            <tr>
               <td class="kpi-name">Revenue Under Contract — House</td>
+              <td class="value-cell weekly-val" id="ruc-house-w427">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-w504">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-w511">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-w518">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-w525">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-w601">—</td>
               <td class="value-cell weekly-val" id="ruc-house-prev">—</td>
               <td class="value-cell weekly-val" id="ruc-house-weekly">—</td>
               <td class="value-cell weekly-val" id="ruc-house-week2">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Revenue Under Contract — Non-House</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w427">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w504">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w511">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w518">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w525">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w601">—</td>
               <td class="value-cell weekly-val" id="ruc-nonhouse-prev">—</td>
               <td class="value-cell weekly-val" id="ruc-nonhouse-weekly">—</td>
               <td class="value-cell weekly-val" id="ruc-nonhouse-week2">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Revenue Under Contract — Total</td>
+              <td class="value-cell weekly-val" id="ruc-total-w427">—</td>
+              <td class="value-cell weekly-val" id="ruc-total-w504">—</td>
+              <td class="value-cell weekly-val" id="ruc-total-w511">—</td>
+              <td class="value-cell weekly-val" id="ruc-total-w518">—</td>
+              <td class="value-cell weekly-val" id="ruc-total-w525">—</td>
+              <td class="value-cell weekly-val" id="ruc-total-w601">—</td>
               <td class="value-cell weekly-val" id="ruc-total-prev">—</td>
               <td class="value-cell weekly-val" id="ruc-weekly">—</td>
               <td class="value-cell weekly-val" id="ruc-week2">—</td>
+              <td class="value-cell weekly-val" id="ruc-total-w629">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Spend Against Budget</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell empty weekly-val">—</td><td class="value-cell empty weekly-val">—</td>
             </tr>
           </tbody>
         </table>
-        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+      </div>
+      <!-- MTD -->
+      <div id="rd-mtd" class="view-panel">
         <table>
           <thead>
             <tr>
@@ -570,6 +682,11 @@
               <td class="kpi-name">Monthly Payroll</td>
               <td class="value-cell empty mtd-val">—</td>
               <td class="value-cell mtd-val" id="payroll-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Monthly NTI</td>
+              <td class="value-cell mtd-val" id="nti-may">—</td>
+              <td class="value-cell mtd-val" id="nti-mtd">—</td>
             </tr>
             <tr>
               <td class="kpi-name">District P&amp;L</td>
@@ -606,7 +723,8 @@
             <tr>
               <th>KPI</th>
               <th class="center q1-col">Q1 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jan – Mar)</span></th>
-              <th class="center qtd-col">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+              <th class="center qtd-col" style="opacity:0.55;">Q2 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Apr – Jun)</span></th>
+              <th class="center q3-col">Q3 2026<br/><span style="font-size:0.7rem;font-weight:400;">(Jul – Sep)</span></th>
             </tr>
           </thead>
           <tbody>
@@ -614,31 +732,37 @@
               <td class="kpi-name">Operating Margin</td>
               <td class="value-cell empty q1-val">—</td>
               <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell empty q3-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Regional Market Share Growth</td>
-              <td class="value-cell empty q1-val">—</td>
-              <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell q1-val" id="rd-mktshare-q1">—</td>
+              <td class="value-cell empty qtd-val" id="rd-mktshare-q2">—</td>
+              <td class="value-cell empty q3-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">New UAs / New Accounts</td>
-              <td class="value-cell empty q1-val">—</td>
-              <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell q1-val tip" id="rd-newua-q1">—</td>
+              <td class="value-cell qtd-val tip" id="rd-newua-q2">—</td>
+              <td class="value-cell q3-val tip" id="rd-newua-q3">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Revenue Under Contract — House</td>
               <td class="value-cell q1-val" id="ruc-house-q1">—</td>
               <td class="value-cell qtd-val" id="ruc-house-qtd">—</td>
+              <td class="value-cell empty q3-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Revenue Under Contract — Non-House</td>
               <td class="value-cell q1-val" id="ruc-nonhouse-q1">—</td>
               <td class="value-cell qtd-val" id="ruc-nonhouse-qtd">—</td>
+              <td class="value-cell empty q3-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Revenue Under Contract — Total</td>
               <td class="value-cell q1-val" id="ruc-q1">—</td>
               <td class="value-cell qtd-val" id="ruc-qtd">—</td>
+              <td class="value-cell empty q3-val">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Retention (Staff)</td>
@@ -659,7 +783,7 @@
   <!-- ── SUMMARY ── -->
   <div id="tab-summary" class="tab-content">
     <div class="section-header">
-      <div class="section-title">KPI Summary — Weekly Trend (6/8–6/28)</div>
+      <div class="section-title">KPI Summary - Weekly Trend</div>
     </div>
     <div class="chart-grid">
       <div class="chart-card">
@@ -702,39 +826,63 @@
     <div class="section-header">
       <div class="section-title">Legacy Sales KPIs</div>
       <div class="view-toggle">
-        <button class="view-toggle-btn active" onclick="switchView('ls', 'weekly', this)">Weekly / MTD</button>
+        <button class="view-toggle-btn active" onclick="switchView('ls', 'weekly', this)">Weekly</button>
+        <button class="view-toggle-btn" onclick="switchView('ls', 'mtd', this)">MTD</button>
         <button class="view-toggle-btn" onclick="switchView('ls', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
     <div class="kpi-table-wrapper">
-      <!-- Weekly/MTD -->
+      <!-- Weekly -->
       <div id="ls-weekly" class="view-panel active">
-        <div class="trend-sub-header">Weekly Trend</div>
         <table>
           <thead>
             <tr>
               <th>KPI</th>
+              <th class="center weekly-col" style="opacity:0.55;">4/27 – 5/3</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/4 – 5/10</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/11 – 5/17</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/18 – 5/24</th>
+              <th class="center weekly-col" style="opacity:0.55;">5/25 – 5/31</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/1 – 6/7</th>
               <th class="center weekly-col" style="opacity:0.55;">6/8 – 6/14</th>
               <th class="center weekly-col" style="opacity:0.55;">6/15 – 6/21</th>
               <th class="center weekly-col">6/22 – 6/28</th>
+              <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="kpi-name">Pipeline Added per Month</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
+              <td class="value-cell weekly-val" id="ls-pipeline-w427">—</td><td class="value-cell weekly-val" id="ls-pipeline-w504">—</td>
+              <td class="value-cell weekly-val" id="ls-pipeline-w511">—</td><td class="value-cell weekly-val" id="ls-pipeline-w518">—</td>
+              <td class="value-cell weekly-val" id="ls-pipeline-w525">—</td><td class="value-cell weekly-val" id="ls-pipeline-w601">—</td>
+              <td class="value-cell weekly-val" id="ls-pipeline-prev">—</td><td class="value-cell weekly-val" id="ls-pipeline-weekly">—</td>
+              <td class="value-cell weekly-val" id="ls-pipeline-week2">—</td>
+              <td class="value-cell weekly-val" id="ls-pipeline-w629">—</td>
             </tr>
             <tr>
-              <td class="kpi-name"># of Meetings</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
-              <td class="value-cell empty weekly-val">—</td>
+              <td class="kpi-name"># of Meetings — Live</td>
+              <td class="value-cell weekly-val" id="ls-meetings-live-w427">—</td><td class="value-cell weekly-val" id="ls-meetings-live-w504">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-live-w511">—</td><td class="value-cell weekly-val" id="ls-meetings-live-w518">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-live-w525">—</td><td class="value-cell weekly-val" id="ls-meetings-live-w601">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-live-prev">—</td><td class="value-cell weekly-val" id="ls-meetings-live-weekly">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-live-week2">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-live-w629">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name"># of Meetings — Prospect</td>
+              <td class="value-cell weekly-val" id="ls-meetings-pros-w427">—</td><td class="value-cell weekly-val" id="ls-meetings-pros-w504">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-pros-w511">—</td><td class="value-cell weekly-val" id="ls-meetings-pros-w518">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-pros-w525">—</td><td class="value-cell weekly-val" id="ls-meetings-pros-w601">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-pros-prev">—</td><td class="value-cell weekly-val" id="ls-meetings-pros-weekly">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-pros-week2">—</td>
+              <td class="value-cell weekly-val" id="ls-meetings-pros-w629">—</td>
             </tr>
           </tbody>
         </table>
-        <div class="trend-sub-header">Monthly Trend (MTD)</div>
+      </div>
+      <!-- MTD -->
+      <div id="ls-mtd" class="view-panel">
         <table>
           <thead>
             <tr>
@@ -746,13 +894,18 @@
           <tbody>
             <tr>
               <td class="kpi-name">Pipeline Added per Month</td>
-              <td class="value-cell empty mtd-val">—</td>
-              <td class="value-cell empty mtd-val">—</td>
+              <td class="value-cell mtd-val" id="ls-pipeline-may">—</td>
+              <td class="value-cell mtd-val" id="ls-pipeline-mtd">—</td>
             </tr>
             <tr>
-              <td class="kpi-name"># of Meetings</td>
-              <td class="value-cell empty mtd-val">—</td>
-              <td class="value-cell empty mtd-val">—</td>
+              <td class="kpi-name"># of Meetings — Live</td>
+              <td class="value-cell mtd-val" id="ls-meetings-live-may">—</td>
+              <td class="value-cell mtd-val" id="ls-meetings-live-mtd">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name"># of Meetings — Prospect</td>
+              <td class="value-cell mtd-val" id="ls-meetings-pros-may">—</td>
+              <td class="value-cell mtd-val" id="ls-meetings-pros-mtd">—</td>
             </tr>
           </tbody>
         </table>
@@ -788,6 +941,14 @@
 </main>
 
 <script>
+  // ── EMPTY DATA HELPERS (must be defined first) ──
+  const _emptyDS       = () => ({ 'all':{live:0,prospect:0},'1':{live:0,prospect:0},'2':{live:0,prospect:0},'3':{live:0,prospect:0},'4':{live:0,prospect:0},'5':{live:0,prospect:0},'6':{live:0,prospect:0},'7':{live:0,prospect:0},'8':{live:0,prospect:0} });
+  const _emptyNames    = () => ({ 'all':{},'1':{},'2':{},'3':{},'4':{},'5':{},'6':{},'7':{},'8':{} });
+  const _emptyPL       = () => ({ 'all':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0 });
+  const _emptyPLNames  = () => ({ 'all':[],'1':[],'2':[],'3':[],'4':[],'5':[],'6':[],'7':[],'8':[] });
+  const _emptyRUC      = () => ({ 'all':{house:0,nonhouse:0,total:0},'1':{house:0,nonhouse:0,total:0},'2':{house:0,nonhouse:0,total:0},'3':{house:0,nonhouse:0,total:0},'4':{house:0,nonhouse:0,total:0},'5':{house:0,nonhouse:0,total:0},'6':{house:0,nonhouse:0,total:0},'7':{house:0,nonhouse:0,total:0},'8':{house:0,nonhouse:0,total:0} });
+  const _emptyCampaign = () => ({ 'all':{count:0,owners:{}},'1':{count:0,owners:{}},'2':{count:0,owners:{}},'3':{count:0,owners:{}},'4':{count:0,owners:{}},'5':{count:0,owners:{}},'6':{count:0,owners:{}},'7':{count:0,owners:{}},'8':{count:0,owners:{}} });
+
   document.getElementById('last-updated').textContent = new Date().toLocaleString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric',
     hour: 'numeric', minute: '2-digit', hour12: true
@@ -805,8 +966,10 @@
   }
 
   function switchView(tabId, view, btn) {
-    document.getElementById(tabId + '-weekly').classList.toggle('active', view === 'weekly');
-    document.getElementById(tabId + '-quarterly').classList.toggle('active', view === 'quarterly');
+    ['weekly', 'mtd', 'quarterly'].forEach(v => {
+      const el = document.getElementById(tabId + '-' + v);
+      if (el) el.classList.toggle('active', v === view);
+    });
     btn.closest('.view-toggle').querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     if (tabId === 'dm') {
@@ -828,6 +991,34 @@
     '7':   { house: 27417320,  nonhouse: 32823886,   total: 60241206  },
     '8':   { house: 5402318,   nonhouse: 3323371,    total: 8725690   }
   };
+
+
+  // Q4 2025 Market Share by region (LLG NTI ÷ Total Market NTI)
+  const mktShareQ4Data = {
+    'all': 3.32, '1': 0.00, '2': 4.28, '3': 3.29, '4': 4.70, '5': 1.35, '6': 4.55, '7': 2.97, '8': 0.76
+  };
+  // Q1 2026 Market Share by region
+  const mktShareQ1Data = {
+    'all': 3.33, '1': 0.00, '2': 4.19, '3': 3.30, '4': 4.56, '5': 1.42, '6': 4.49, '7': 3.20, '8': 0.79
+  };
+  // Growth = Q1 2026 share − Q4 2025 share (percentage points)
+  const mktShareGrowthQ1Data = {
+    'all': 0.01, '1': 0.00, '2': -0.09, '3': 0.01, '4': -0.14, '5': 0.07, '6': -0.06, '7': 0.23, '8': 0.03
+  };
+
+  function updateMarketShare(region) {
+    const r = region ?? 'all';
+    const q1El = document.getElementById('rd-mktshare-q1');
+    if (!q1El) return;
+    const growth = mktShareGrowthQ1Data[r] ?? mktShareGrowthQ1Data['all'];
+    const q4share = mktShareQ4Data[r] ?? mktShareQ4Data['all'];
+    const q1share = mktShareQ1Data[r] ?? mktShareQ1Data['all'];
+    const sign = growth >= 0 ? '+' : '';
+    q1El.textContent = `${sign}${growth.toFixed(2)}pp`;
+    q1El.dataset.tip = `Q4 2025: ${q4share.toFixed(2)}%<br>Q1 2026: ${q1share.toFixed(2)}%<br>Growth: ${sign}${growth.toFixed(2)}pp`;
+    q1El.classList.add('tip');
+    q1El.style.color = growth >= 0 ? '#48bb78' : '#fc8181';
+  }
 
   // May MTD RUC — ref date 2026-05-31
   const rucMayData = {
@@ -870,11 +1061,11 @@
   // Week2 (6/22–6/28) RUC — ref date 2026-06-28; also used for June MTD and Q2
   // Includes expiration date fixes for Del Carmen, Herms Dolton, Hidden Keys, Jai Maa
   const rucWeek2Data = {
-    'all': { house: 457101501, nonhouse: 143567216, total: 600668717 },
+    'all': { house: 457101501, nonhouse: 143647152, total: 600748653 },
     '1':   { house: 0,         nonhouse: 0,          total: 0         },
     '2':   { house: 63186791,  nonhouse: 35651124,   total: 98837915  },
     '3':   { house: 136848812, nonhouse: 20463711,   total: 157312523 },
-    '4':   { house: 106797936, nonhouse: 22305515,   total: 129103451 },
+    '4':   { house: 106797936, nonhouse: 22385451,   total: 129183387 },
     '5':   { house: 9013151,   nonhouse: 5222234,    total: 14235385  },
     '6':   { house: 98093299,  nonhouse: 21300123,   total: 119393422 },
     '7':   { house: 32686548,  nonhouse: 33735359,   total: 66421907  },
@@ -883,6 +1074,9 @@
 
   // Active Campaigns — by region and period, with owner breakdown for tooltip
   const campaignData = {
+    w427: _emptyCampaign(), w504: _emptyCampaign(), w511: _emptyCampaign(),
+    w518: _emptyCampaign(), w525: _emptyCampaign(), w601: _emptyCampaign(), w629: _emptyCampaign(),
+    july: _emptyCampaign(),
     prev: {
       'all': { count: 40, owners: { 'Hannah Rivera': 11, 'Sadie Orr': 10, 'Amanda Rivera': 7, 'Hunter Brandt': 4, 'Kortney Roher': 3, 'Fiona Gallagher': 3, 'Unknown': 1, 'Brad Fell': 1 } },
       '1':   { count: 0,  owners: {} },
@@ -941,197 +1135,433 @@
   };
 
   const vaultData = {
-    'all': { prev: 0, weekly: 20, week2: 0, may: 51, mtd: 20 },
-    '1':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
-    '2':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
-    '3':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
-    '4':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
-    '5':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
-    '6':   { prev: 0, weekly: 20, week2: 0, may: 51, mtd: 20 },
-    '7':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  },
-    '8':   { prev: 0, weekly: 0,  week2: 0, may: 0,  mtd: 0  }
+    'all': { w427:0, w504:1,  w511:0, w518:0, w525:50, w601:20, prev:0, weekly:20,  week2:0, w629:-6583, may:51, mtd:-6543 },
+    '1':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  },
+    '2':   { w427:0, w504:1,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:1,  mtd:0  },
+    '3':   { w427:0, w504:0,  w511:0, w518:0, w525:50, w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:50, mtd:0  },
+    '4':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  },
+    '5':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  },
+    '6':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:20, prev:0, weekly:20,  week2:0, w629:0,     may:0,  mtd:40 },
+    '7':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-6583, may:0,  mtd:-6583 },
+    '8':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  }
   };
 
   // Problematic machines: >6 tickets in rolling 30-day window ending on last day of period
   // Current week window: 5/23–6/21 | Previous week window: 5/16–6/14
   const problematicData = {
-    'all': { prev: 47,  weekly: 50,  week2: 42, may: 19, mtd: 42 },
-    '1':   { prev: 0,   weekly: 0,   week2: 1,  may: 0,  mtd: 1  },
-    '2':   { prev: 8,   weekly: 9,   week2: 7,  may: 5,  mtd: 7  },
-    '3':   { prev: 17,  weekly: 16,  week2: 12, may: 7,  mtd: 12 },
-    '4':   { prev: 12,  weekly: 15,  week2: 12, may: 3,  mtd: 12 },
-    '5':   { prev: 1,   weekly: 1,   week2: 1,  may: 1,  mtd: 1  },
-    '6':   { prev: 5,   weekly: 6,   week2: 7,  may: 1,  mtd: 7  },
-    '7':   { prev: 3,   weekly: 2,   week2: 1,  may: 2,  mtd: 1  },
-    '8':   { prev: 1,   weekly: 1,   week2: 1,  may: 0,  mtd: 1  }
+    'all': { w427:8, w504:2, w511:2, w518:6, w525:19, w601:36, prev: 47,  weekly: 50,  week2: 42, w629:0, may: 19, mtd: 42 },
+    '1':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 0,  w629:0, may: 0,  mtd: 0  },
+    '2':   { w427:1, w504:0, w511:1, w518:3, w525:5,  w601:6,  prev: 8,   weekly: 9,   week2: 7,  w629:0, may: 5,  mtd: 7  },
+    '3':   { w427:2, w504:0, w511:0, w518:1, w525:7,  w601:12, prev: 17,  weekly: 16,  week2: 12, w629:0, may: 7,  mtd: 12 },
+    '4':   { w427:2, w504:0, w511:0, w518:0, w525:3,  w601:8,  prev: 12,  weekly: 15,  week2: 12, w629:0, may: 3,  mtd: 12 },
+    '5':   { w427:0, w504:0, w511:0, w518:0, w525:1,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:0, may: 1,  mtd: 1  },
+    '6':   { w427:2, w504:1, w511:0, w518:0, w525:1,  w601:4,  prev: 5,   weekly: 6,   week2: 8,  w629:0, may: 1,  mtd: 8  },
+    '7':   { w427:1, w504:1, w511:1, w518:2, w525:2,  w601:4,  prev: 3,   weekly: 2,   week2: 1,  w629:0, may: 2,  mtd: 1  },
+    '8':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:0, may: 0,  mtd: 1  }
+  };
+
+  // Tooltip data: "Location — Machine (N tickets)" per period per region
+  const problematicNames = {
+    w427: {
+      'all': ["LACEY'S, ROMEOVILLE — M3T TR8011 (10)", "LACEY'S, OSWEGO —  1770000-XX CM-1 COSMIC CABINET (9)", "LUCKY'S SWEETS & SLOTS, GODFREY — M3T TR8011 (8)", "LACEY'S, DECATUR (WATER) — M3T TR1016 (8)", "Vegas Place Rantoul — M3T TR1016 (8)", "Lucky Bernie's Antioch — M3T TR1016 (7)", "MARATHON, OAK FOREST — M3T TR1016 (7)", "BP Hometown — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Bernie's Antioch — M3T TR1016 (7)"],
+      '3': ["LACEY'S, ROMEOVILLE — M3T TR8011 (10)", "LACEY'S, OSWEGO — 1770000-XX CM-1 COSMIC CABINET (9)"],
+      '4': ["MARATHON, OAK FOREST — M3T TR1016 (7)", "BP, HOMETOWN — M3T TR1016 (7)"],
+      '5': [], '6': ["LACEY'S, DECATUR (WATER) — M3T TR1016 (8)", "VEGAS PLACE, RANTOUL — M3T TR1016 (8)"],
+      '7': ["LUCKY'S SWEETS & SLOTS, GODFREY — M3T TR8011 (8)"], '8': [],
+    },
+    w504: {
+      'all': ["Swamp Tales — M3T TR8011 (7)", "LACEY'S, DECATUR (WATER) — M3T TR1016 (7)"],
+      '1': [], '2': [], '3': [], '4': [], '5': [],
+      '6': ["LACEY'S, DECATUR (WATER) — M3T TR1016 (7)"],
+      '7': ["Swamp Tales — M3T TR8011 (7)"], '8': [],
+    },
+    w511: {
+      'all': ["Swamp Tales — M3T TR8011 (8)", "Lucky Penny's Cary — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Penny's Cary — M3T TR1016 (7)"], '3': [], '4': [], '5': [], '6': [],
+      '7': ["Swamp Tales — M3T TR8011 (8)"], '8': [],
+    },
+    w518: {
+      'all': ["Lucky Penny's Cary — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (10)", "Swamp Tales — M3T TR8011 (9)", "Barrelbounty Sip & Shop — M3T TR1016 (7)", "Ava's Cafe — M3T TR1016 (7)", "The Pour House Bar & Grill — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Penny's Cary — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (10)", "Barrelbounty Sip & Shop — M3T TR1016 (7)"],
+      '3': ["Ava's Cafe — M3T TR1016 (7)"], '4': [], '5': [], '6': [],
+      '7': ["Swamp Tales — M3T TR8011 (9)", "The Pour House Bar & Grill — M3T TR1016 (7)"], '8': [],
+    },
+    w525: {
+      'all': ["Lucky Bernie's Spring Grove — M3T TR8011 (13)", "Lucky Penny's Cary — M3T TR1016 (13)", "Swamp Tales — M3T TR8011 (11)", "Catie's Place North Riverside — WMS S32 (10)", "The Pour House Bar & Grill — M3T TR1016 (9)", "Ava's Cafe — M3T TR1016 (9)", "Payson Convenience Quick Stop — M3T TR8011 (9)", "Barrelbounty Sip & Shop — M3T TR1016 (8)", "Mira's Cafe — M3T TR1016 (8)", "Lucky Bernie's Antioch — M3T TR1016 (8)", "Catie's Place River Grove — M3T TR8011 (8)", "Lacey's Decatur (French Quarters) — M3T TR8011 (8)", "Olivia's Place — M3T TR8011 (8)", "Lacey's Stone Park — M3T TR8011 (7)", "Agora Liquors — M3T TR8011 (7)", "Catie's Place North Riverside — M3T TR1016 (7)", "Lacey's Beecher — M3T TR8011 (7)", "Peggy's Deli — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Bernie's Spring Grove — M3T TR8011 (13)", "Lucky Penny's Cary — M3T TR1016 (13)", "Barrelbounty Sip & Shop — M3T TR1016 (8)", "Lucky Bernie's Antioch — M3T TR1016 (8)", "Agora Liquors — M3T TR8011 (7)"],
+      '3': ["Catie's Place North Riverside — WMS S32 (10)", "Ava's Cafe — M3T TR1016 (9)", "Mira's Cafe — M3T TR1016 (8)", "Catie's Place River Grove — M3T TR8011 (8)", "Olivia's Place — M3T TR8011 (8)", "Lacey's Stone Park — M3T TR8011 (7)", "Catie's Place North Riverside — M3T TR1016 (7)"],
+      '4': ["Lacey's Beecher — M3T TR8011 (7)", "Peggy's Deli — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '5': ["Payson Convenience Quick Stop — M3T TR8011 (9)"],
+      '6': ["Lacey's Decatur (French Quarters) — M3T TR8011 (8)"],
+      '7': ["Swamp Tales — M3T TR8011 (11)", "The Pour House Bar & Grill — M3T TR1016 (9)"], '8': [],
+    },
+    w601: {
+      'all': ["Lucky Penny's Cary — M3T TR1016 (15)", "Catie's Place North Riverside — M3T TR1016 (14)", "Lucky Bernie's Spring Grove — M3T TR8011 (14)", "Lucky Bernie's Antioch — M3T TR1016 (13)", "Catie's Place North Riverside — WMS S32 (12)", "Diamonds Decatur — M3T TR8011 (11)", "Lacey's Decatur (French Quarters) — M3T TR8011 (11)", "Olivia's Place — M3T TR8011 (10)", "Ava's Cafe — M3T TR1016 (10)", "Lacey's Stone Park — M3T TR8011 (10)", "Barrelbounty Sip & Shop — M3T TR1016 (10)", "Mira's Cafe — M3T TR1016 (10)", "Swamp Tales — M3T TR8011 (10)", "Sin City Slots And Cafe — M3T TR8011 (10)", "Catie's Place River Grove — M3T TR8011 (9)", "Peggy's Deli — M3T TR1016 (9)", "Payson Convenience Quick Stop — M3T TR8011 (9)", "Lacey's Markham — M3T TR1016 (9)", "Lacey's Melrose Park — M3T TR1016 (9)", "Pops Lyons — M3T TR1016 (9)", "Vegas Place Rantoul — M3T TR1016 (8)", "Mobil Summit — M3T TR1016 (8)", "The Pour House Bar & Grill — M3T TR1016 (8)", "Cher's Rendezvous — M3T TR1016 (8)", "Lacey's Beecher — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (7)", "Midlothian Memorial Post 2580 — M3T TR1016 (7)", "Marathon Oak Forest — M3T TR1016 (7)", "Station 34 Mt Prospect — M3T TR1016 (7)", "Lacey's South Elgin — M3T TR8011 (7)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)", "Lacey's Romeoville — M3T TR8011 (7)", "Lucky Penny's Justice — M3T TR8011 (7)", "Agora Liquors — M3T TR8011 (7)", "Lacey's Belleville — 1770000-XX CM-1 COSMIC CABINET (7)", "Hobnobbers — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Penny's Cary — M3T TR1016 (15)", "Lucky Bernie's Spring Grove — M3T TR8011 (14)", "Lucky Bernie's Antioch — M3T TR1016 (13)", "Barrelbounty Sip & Shop — M3T TR1016 (10)", "Station 34 Mt Prospect — M3T TR1016 (7)", "Agora Liquors — M3T TR8011 (7)"],
+      '3': ["Catie's Place North Riverside — M3T TR1016 (14)", "Catie's Place North Riverside — WMS S32 (12)", "Olivia's Place — M3T TR8011 (10)", "Ava's Cafe — M3T TR1016 (10)", "Lacey's Stone Park — M3T TR8011 (10)", "Mira's Cafe — M3T TR1016 (10)", "Catie's Place River Grove — M3T TR8011 (9)", "Lacey's Melrose Park — M3T TR1016 (9)", "Pops Lyons — M3T TR1016 (9)", "Cher's Rendezvous — M3T TR1016 (8)", "Lacey's South Elgin — M3T TR8011 (7)", "Lacey's Romeoville — M3T TR8011 (7)"],
+      '4': ["Peggy's Deli — M3T TR1016 (9)", "Lacey's Markham — M3T TR1016 (9)", "Mobil Summit — M3T TR1016 (8)", "Lacey's Beecher — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (7)", "Midlothian Memorial Post 2580 — M3T TR1016 (7)", "Marathon Oak Forest — M3T TR1016 (7)", "Lucky Penny's Justice — M3T TR8011 (7)"],
+      '5': ["Payson Convenience Quick Stop — M3T TR8011 (9)"],
+      '6': ["Diamonds Decatur — M3T TR8011 (11)", "Lacey's Decatur (French Quarters) — M3T TR8011 (11)", "Vegas Place Rantoul — M3T TR1016 (8)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)"],
+      '7': ["Swamp Tales — M3T TR8011 (10)", "Sin City Slots And Cafe — M3T TR8011 (10)", "The Pour House Bar & Grill — M3T TR1016 (8)", "Lacey's Belleville — 1770000-XX CM-1 COSMIC CABINET (7)"],
+      '8': ["Hobnobbers — M3T TR1016 (7)"],
+    },
+    prev: {
+      'all': ["Catie's Place North Riverside — M3T TR1016 (16)", "Lucky Penny's Cary — M3T TR1016 (14)", "Lucky Bernie's Spring Grove — M3T TR8011 (14)", "Vegas Place Rantoul — M3T TR1016 (12)", "Lacey's Decatur (French Quarters) — M3T TR8011 (12)", "Lacey's Melrose Park — M3T TR1016 (11)", "Catie's Place North Riverside — WMS S32 (11)", "Diamonds Decatur — M3T TR8011 (11)", "Lacey's Markham — M3T TR1016 (10)", "Payson Convenience Quick Stop — M3T TR8011 (10)", "Lucky Bernie's Antioch — M3T TR1016 (10)", "Olivia's Place — M3T TR8011 (10)", "Lacey's Stone Park — M3T TR8011 (10)", "Crab Du Jour — M3T TR1016 (9)", "Ava's Cafe — M3T TR1016 (9)", "Pops Lyons — M3T TR1016 (9)", "Rocky's Gaming Bar — M3T TR1016 (9)", "Mira's Cafe — M3T TR1016 (9)", "Swamp Tales — M3T TR8011 (9)", "Lacey's Matteson — M3T TR8011 (9)", "Sin City Slots And Cafe — M3T TR8011 (9)", "Lacey's Beecher — M3T TR8011 (9)", "Catie's Place River Grove — M3T TR8011 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Mobil Summit — M3T TR1016 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "Phillips 66 Watseka — M3T TR1016 (8)", "BP Hometown — M3T TR1016 (8)", "Berkots Braidwood — M3T TR1016 (8)", "The Pour House Bar & Grill — M3T TR1016 (8)", "Diamonds Crestwood — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Des Plaines Lodge — M3T TR1016 (7)", "Aly Anne's — M3T TR1016 (7)", "Lacey's Oswego — M3T TR8011 (7)", "Lucky Penny's Third Lake — M3T TR1016 (7)", "Saroor — M3T TR1016 (7)", "Station 34 Mt Prospect — M3T TR1016 (7)", "Citgo Alsip — M3T TR1016 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Hobnobbers — M3T TR1016 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "BP Hometown — Novomatic VIP Lounge (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Happy Gang — Spielo Prodigy Slant (7)", "Lacey's North Riverside — M3T TR8011 (7)", "Vegas Place Rantoul — IGT PEAK 49 (7)"],
+      '1': [], '2': ["Lucky Penny's Cary — M3T TR1016 (14)", "Lucky Bernie's Spring Grove — M3T TR8011 (14)", "Lucky Bernie's Antioch — M3T TR1016 (10)", "Des Plaines Lodge — M3T TR1016 (7)", "Lucky Penny's Third Lake — M3T TR1016 (7)", "Station 34 Mt Prospect — M3T TR1016 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "Happy Gang — Spielo Prodigy Slant (7)"],
+      '3': ["Catie's Place North Riverside — M3T TR1016 (16)", "Lacey's Melrose Park — M3T TR1016 (11)", "Catie's Place North Riverside — WMS S32 (11)", "Olivia's Place — M3T TR8011 (10)", "Lacey's Stone Park — M3T TR8011 (10)", "Crab Du Jour — M3T TR1016 (9)", "Ava's Cafe — M3T TR1016 (9)", "Pops Lyons — M3T TR1016 (9)", "Rocky's Gaming Bar — M3T TR1016 (9)", "Mira's Cafe — M3T TR1016 (9)", "Catie's Place River Grove — M3T TR8011 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Berkots Braidwood — M3T TR1016 (8)", "Lacey's Oswego — M3T TR8011 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Lacey's North Riverside — M3T TR8011 (7)"],
+      '4': ["Lacey's Markham — M3T TR1016 (10)", "Lacey's Matteson — M3T TR8011 (9)", "Lacey's Beecher — M3T TR8011 (9)", "Mobil Summit — M3T TR1016 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "BP Hometown — M3T TR1016 (8)", "Diamonds Crestwood — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Aly Anne's — M3T TR1016 (7)", "Saroor — M3T TR1016 (7)", "Citgo Alsip — M3T TR1016 (7)", "BP Hometown — Novomatic VIP Lounge (7)"],
+      '5': ["Payson Convenience Quick Stop — M3T TR8011 (10)"],
+      '6': ["Vegas Place Rantoul — M3T TR1016 (12)", "Lacey's Decatur (French Quarters) — M3T TR8011 (12)", "Diamonds Decatur — M3T TR8011 (11)", "Phillips 66 Watseka — M3T TR1016 (8)", "Vegas Place Rantoul — IGT PEAK 49 (7)"],
+      '7': ["Swamp Tales — M3T TR8011 (9)", "Sin City Slots And Cafe — M3T TR8011 (9)", "The Pour House Bar & Grill — M3T TR1016 (8)"],
+      '8': ["Hobnobbers — M3T TR1016 (7)"],
+    },
+    weekly: {
+      'all': ["Catie's Place North Riverside — M3T TR1016 (19)", "Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — M3T TR1016 (13)", "Vegas Place Rantoul — M3T TR1016 (13)", "Lacey's Decatur (French Quarters) — M3T TR8011 (13)", "Sin City Slots And Cafe — M3T TR8011 (11)", "Lucky Bernie's Antioch — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (11)", "Rocky's Gaming Bar — M3T TR1016 (10)", "Mira's Cafe — M3T TR1016 (10)", "Lucky Penny's Cary — M3T TR1016 (10)", "Crab Du Jour — M3T TR1016 (10)", "Lacey's Markham — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Pops Lyons — M3T TR1016 (9)", "Berkots Braidwood — M3T TR1016 (9)", "Phillips 66 Watseka — M3T TR1016 (9)", "Lacey's Stone Park — M3T TR8011 (9)", "Diamonds Crestwood — M3T TR1016 (9)", "Catie's Place River Grove — M3T TR8011 (9)", "Payson Convenience Quick Stop — M3T TR8011 (9)", "Swamp Tales — M3T TR8011 (9)", "Lacey's Matteson — M3T TR8011 (9)", "Happy Gang — Spielo Prodigy Slant (8)", "Centennial Lanes 2.0 — M3T TR1016 (8)", "Lucky Penny's Third Lake — M3T TR1016 (8)", "Station 34 Mt Prospect — M3T TR1016 (8)", "Alsip Marathon — M3T TR8011 (8)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (8)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)", "Lacey's Beecher — M3T TR8011 (7)", "Aly Anne's — M3T TR1016 (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "BP Hometown — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Lacey's North Riverside — M3T TR8011 (7)", "Saroor — M3T TR1016 (7)", "Diamonds Decatur — M3T TR8011 (7)", "Agora Liquors — M3T TR8011 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "Lacey's Summit — M3T TR1016 (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Lacey's Mchenry — M3T TR1016 (7)", "Lacey's Romeoville — M3T TR8011 (7)", "Sunrise Harvard — M3T TR8011 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Bernie's Antioch — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (11)", "Lucky Penny's Cary — M3T TR1016 (10)", "Happy Gang — Spielo Prodigy Slant (8)", "Lucky Penny's Third Lake — M3T TR1016 (8)", "Station 34 Mt Prospect — M3T TR1016 (8)", "Agora Liquors — M3T TR8011 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "Lacey's Mchenry — M3T TR1016 (7)"],
+      '3': ["Catie's Place North Riverside — M3T TR1016 (19)", "Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — M3T TR1016 (13)", "Rocky's Gaming Bar — M3T TR1016 (10)", "Mira's Cafe — M3T TR1016 (10)", "Crab Du Jour — M3T TR1016 (10)", "Pops Lyons — M3T TR1016 (9)", "Berkots Braidwood — M3T TR1016 (9)", "Lacey's Stone Park — M3T TR8011 (9)", "Catie's Place River Grove — M3T TR8011 (9)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Lacey's North Riverside — M3T TR8011 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Lacey's Romeoville — M3T TR8011 (7)"],
+      '4': ["Lacey's Markham — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Diamonds Crestwood — M3T TR1016 (9)", "Lacey's Matteson — M3T TR8011 (9)", "Centennial Lanes 2.0 — M3T TR1016 (8)", "Alsip Marathon — M3T TR8011 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (8)", "Lacey's Beecher — M3T TR8011 (7)", "Aly Anne's — M3T TR1016 (7)", "BP Hometown — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Saroor — M3T TR1016 (7)", "Lacey's Summit — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '5': ["Payson Convenience Quick Stop — M3T TR8011 (9)"],
+      '6': ["Vegas Place Rantoul — M3T TR1016 (13)", "Lacey's Decatur (French Quarters) — M3T TR8011 (13)", "Phillips 66 Watseka — M3T TR1016 (9)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "Diamonds Decatur — M3T TR8011 (7)"],
+      '7': ["Sin City Slots And Cafe — M3T TR8011 (11)", "Swamp Tales — M3T TR8011 (9)"],
+      '8': ["Sunrise Harvard — M3T TR8011 (7)"],
+    },
+    week2: {
+      'all': ["Catie's Place North Riverside — M3T TR1016 (17)", "Catie's Place North Riverside — WMS S32 (13)", "Lucky Bernie's Antioch — M3T TR1016 (12)", "Lacey's Melrose Park — M3T TR1016 (11)", "Lacey's Decatur (French Quarters) — M3T TR8011 (11)", "Rocky's Gaming Bar — M3T TR1016 (11)", "Vegas Place Rantoul — M3T TR1016 (11)", "Berkots Braidwood — M3T TR1016 (10)", "Lacey's Melrose Park — SG SK-1 KASCADA SLANT (10)", "The Dock On Front Street — M3T TR8011 (10)", "Happy Gang — Spielo Prodigy Slant (9)", "Lucky Penny's Cary — M3T TR1016 (9)", "Lucky Penny's Third Lake — M3T TR1016 (9)", "Saroor — M3T TR1016 (9)", "Sunrise Harvard — M3T TR8011 (9)", "Phillips 66 Watseka — M3T TR1016 (9)", "Lucky Penny's Romeoville — M3T TR1016 (9)", "Lacey's Kankakee — M3T TR8011 (9)", "Sin City Slots And Cafe — M3T TR8011 (9)", "Centennial Lanes 2.0 — M3T TR1016 (9)", "Diamonds Crestwood — M3T TR1016 (8)", "Crab Du Jour — M3T TR1016 (8)", "BP Hometown — M3T TR1016 (8)", "Pops Lyons — M3T TR1016 (8)", "Lacey's Markham — M3T TR1016 (8)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Diamonds Decatur — IGT PEAK 49 (8)", "Diamonds Decatur — M3T TR8011 (8)", "Lucky Penny's Lindenhurst — M3T TR1016 (8)", "Lacey's Summit — M3T TR1016 (8)", "Lacey's Mchenry — M3T TR1016 (8)", "Ken's Food & Liquor — M3T TR8011 (8)", "Lacey's Matteson — M3T TR8011 (8)", "Lacey's North Riverside — M3T TR8011 (8)", "Station 34 Mt Prospect — M3T TR1016 (7)", "Tai Pan Chinese — M3T TR1016 (7)", "Grand Tobacco — Aristocrat HELIX PLUS SLANT (7)", "Marathon Oak Forest — M3T TR1016 (7)", "Lacey's Melrose Park — Aristocrat HELIX PLUS UPRIGHT (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)", "MISS KIMMEES MOUNT ZION, DECATUR — M3T TR8011 (7)"],
+      '1': [], '2': ["Lucky Bernie's Antioch — M3T TR1016 (12)", "Happy Gang — Spielo Prodigy Slant (9)", "Lucky Penny's Cary — M3T TR1016 (9)", "Lucky Penny's Third Lake — M3T TR1016 (9)", "Lucky Penny's Lindenhurst — M3T TR1016 (8)", "Lacey's Mchenry — M3T TR1016 (8)", "Station 34 Mt Prospect — M3T TR1016 (7)"],
+      '3': ["Catie's Place North Riverside — M3T TR1016 (17)", "Catie's Place North Riverside — WMS S32 (13)", "Lacey's Melrose Park — M3T TR1016 (11)", "Rocky's Gaming Bar — M3T TR1016 (11)", "Berkots Braidwood — M3T TR1016 (10)", "Lacey's Melrose Park — SG SK-1 KASCADA SLANT (10)", "Lucky Penny's Romeoville — M3T TR1016 (9)", "Crab Du Jour — M3T TR1016 (8)", "Pops Lyons — M3T TR1016 (8)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lacey's North Riverside — M3T TR8011 (8)", "Lacey's Melrose Park — Aristocrat HELIX PLUS UPRIGHT (7)"],
+      '4': ["The Dock On Front Street — M3T TR8011 (10)", "Saroor — M3T TR1016 (9)", "Lacey's Kankakee — M3T TR8011 (9)", "Centennial Lanes 2.0 — M3T TR1016 (9)", "Diamonds Crestwood — M3T TR1016 (8)", "BP Hometown — M3T TR1016 (8)", "Lacey's Markham — M3T TR1016 (8)", "Lacey's Summit — M3T TR1016 (8)", "Ken's Food & Liquor — M3T TR8011 (8)", "Lacey's Matteson — M3T TR8011 (8)", "Marathon Oak Forest — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '5': ["Grand Tobacco — Aristocrat HELIX PLUS SLANT (7)"],
+      '6': ["Lacey's Decatur (French Quarters) — M3T TR8011 (11)", "Vegas Place Rantoul — M3T TR1016 (11)", "Phillips 66 Watseka — M3T TR1016 (9)", "Diamonds Decatur — IGT PEAK 49 (8)", "Diamonds Decatur — M3T TR8011 (8)", "Tai Pan Chinese — M3T TR1016 (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "MISS KIMMEES MOUNT ZION, DECATUR — M3T TR8011 (7)"],
+      '7': ["Sin City Slots And Cafe — M3T TR8011 (9)"],
+      '8': ["Sunrise Harvard — M3T TR8011 (9)"],
+    },
+    may: {
+      'all': ["Lucky Bernie's Spring Grove — M3T TR8011 (13)", "Lucky Penny's Cary — M3T TR1016 (13)", "Swamp Tales — M3T TR8011 (11)", "Catie's Place North Riverside — WMS S32 (10)", "The Pour House Bar & Grill — M3T TR1016 (9)", "Ava's Cafe — M3T TR1016 (9)", "Payson Convenience Quick Stop — M3T TR8011 (9)", "Barrelbounty Sip & Shop — M3T TR1016 (8)", "Mira's Cafe — M3T TR1016 (8)", "Lucky Bernie's Antioch — M3T TR1016 (8)", "Catie's Place River Grove — M3T TR8011 (8)", "Lacey's Decatur (French Quarters) — M3T TR8011 (8)", "Olivia's Place — M3T TR8011 (8)", "Lacey's Stone Park — M3T TR8011 (7)", "Agora Liquors — M3T TR8011 (7)", "Catie's Place North Riverside — M3T TR1016 (7)", "Lacey's Beecher — M3T TR8011 (7)", "Peggy's Deli — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Bernie's Spring Grove — M3T TR8011 (13)", "Lucky Penny's Cary — M3T TR1016 (13)", "Barrelbounty Sip & Shop — M3T TR1016 (8)", "Lucky Bernie's Antioch — M3T TR1016 (8)", "Agora Liquors — M3T TR8011 (7)"],
+      '3': ["Catie's Place North Riverside — WMS S32 (10)", "Ava's Cafe — M3T TR1016 (9)", "Mira's Cafe — M3T TR1016 (8)", "Catie's Place River Grove — M3T TR8011 (8)", "Olivia's Place — M3T TR8011 (8)", "Lacey's Stone Park — M3T TR8011 (7)", "Catie's Place North Riverside — M3T TR1016 (7)"],
+      '4': ["Lacey's Beecher — M3T TR8011 (7)", "Peggy's Deli — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '5': ["Payson Convenience Quick Stop — M3T TR8011 (9)"],
+      '6': ["Lacey's Decatur (French Quarters) — M3T TR8011 (8)"],
+      '7': ["Swamp Tales — M3T TR8011 (11)", "The Pour House Bar & Grill — M3T TR1016 (9)"], '8': [],
+    },
+    mtd: {
+      'all': ["Catie's Place North Riverside — M3T TR1016 (19)", "Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — M3T TR1016 (13)", "Vegas Place Rantoul — M3T TR1016 (13)", "Lacey's Decatur (French Quarters) — M3T TR8011 (13)", "Sin City Slots And Cafe — M3T TR8011 (11)", "Lucky Bernie's Antioch — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (11)", "Rocky's Gaming Bar — M3T TR1016 (10)", "Mira's Cafe — M3T TR1016 (10)", "Lucky Penny's Cary — M3T TR1016 (10)", "Crab Du Jour — M3T TR1016 (10)", "Lacey's Markham — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Pops Lyons — M3T TR1016 (9)", "Berkots Braidwood — M3T TR1016 (9)", "Phillips 66 Watseka — M3T TR1016 (9)", "Lacey's Stone Park — M3T TR8011 (9)", "Diamonds Crestwood — M3T TR1016 (9)", "Catie's Place River Grove — M3T TR8011 (9)", "Payson Convenience Quick Stop — M3T TR8011 (9)", "Swamp Tales — M3T TR8011 (9)", "Lacey's Matteson — M3T TR8011 (9)", "Happy Gang — Spielo Prodigy Slant (8)", "Centennial Lanes 2.0 — M3T TR1016 (8)", "Lucky Penny's Third Lake — M3T TR1016 (8)", "Station 34 Mt Prospect — M3T TR1016 (8)", "Alsip Marathon — M3T TR8011 (8)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (8)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)", "Lacey's Beecher — M3T TR8011 (7)", "Aly Anne's — M3T TR1016 (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "BP Hometown — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Lacey's North Riverside — M3T TR8011 (7)", "Saroor — M3T TR1016 (7)", "Diamonds Decatur — M3T TR8011 (7)", "Agora Liquors — M3T TR8011 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "Lacey's Summit — M3T TR1016 (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Lacey's Mchenry — M3T TR1016 (7)", "Lacey's Romeoville — M3T TR8011 (7)", "Sunrise Harvard — M3T TR8011 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '1': [], '2': ["Lucky Bernie's Antioch — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (11)", "Lucky Penny's Cary — M3T TR1016 (10)", "Happy Gang — Spielo Prodigy Slant (8)", "Lucky Penny's Third Lake — M3T TR1016 (8)", "Station 34 Mt Prospect — M3T TR1016 (8)", "Agora Liquors — M3T TR8011 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "Lacey's Mchenry — M3T TR1016 (7)"],
+      '3': ["Catie's Place North Riverside — M3T TR1016 (19)", "Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — M3T TR1016 (13)", "Rocky's Gaming Bar — M3T TR1016 (10)", "Mira's Cafe — M3T TR1016 (10)", "Crab Du Jour — M3T TR1016 (10)", "Pops Lyons — M3T TR1016 (9)", "Berkots Braidwood — M3T TR1016 (9)", "Lacey's Stone Park — M3T TR8011 (9)", "Catie's Place River Grove — M3T TR8011 (9)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Lacey's North Riverside — M3T TR8011 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Lacey's Romeoville — M3T TR8011 (7)"],
+      '4': ["Lacey's Markham — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Diamonds Crestwood — M3T TR1016 (9)", "Lacey's Matteson — M3T TR8011 (9)", "Centennial Lanes 2.0 — M3T TR1016 (8)", "Alsip Marathon — M3T TR8011 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (8)", "Lacey's Beecher — M3T TR8011 (7)", "Aly Anne's — M3T TR1016 (7)", "BP Hometown — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Saroor — M3T TR1016 (7)", "Lacey's Summit — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
+      '5': ["Payson Convenience Quick Stop — M3T TR8011 (9)"],
+      '6': ["Vegas Place Rantoul — M3T TR1016 (13)", "Lacey's Decatur (French Quarters) — M3T TR8011 (13)", "Phillips 66 Watseka — M3T TR1016 (9)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "Diamonds Decatur — M3T TR8011 (7)"],
+      '7': ["Sin City Slots And Cafe — M3T TR8011 (11)", "Swamp Tales — M3T TR8011 (9)"],
+      '8': ["Sunrise Harvard — M3T TR8011 (7)"],
+    },
   };
 
   // Unacceptable Tickets: sum(Mins to Accept + Mins to En Route + ETA to In Process + Deviation) > 120
   // Exclusions: ETA to In Process > 100, or total > 400 (outlier)
   const unacceptableData = {
-    'all': { prev: 57,  weekly: 55,  week2: 50, may: 133, mtd: 227 },
-    '1':   { prev: 0,   weekly: 0,   week2: 1,  may: 0,   mtd: 4   },
-    '2':   { prev: 8,   weekly: 5,   week2: 8,  may: 30,  mtd: 31  },
-    '3':   { prev: 13,  weekly: 12,  week2: 14, may: 28,  mtd: 61  },
-    '4':   { prev: 25,  weekly: 18,  week2: 15, may: 49,  mtd: 73  },
-    '5':   { prev: 0,   weekly: 4,   week2: 2,  may: 0,   mtd: 6   },
-    '6':   { prev: 6,   weekly: 6,   week2: 2,  may: 7,   mtd: 22  },
-    '7':   { prev: 5,   weekly: 9,   week2: 6,  may: 11,  mtd: 24  },
-    '8':   { prev: 0,   weekly: 1,   week2: 2,  may: 8,   mtd: 6   }
+    'all': { w427:0,  w504:11, w511:16, w518:61, w525:47, w601:63, prev: 57,  weekly: 55,  week2: 50, w629:0, may: 133, mtd: 227 },
+    '1':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 1,  w629:0, may: 0,   mtd: 4   },
+    '2':   { w427:0,  w504:2,  w511:3,  w518:13, w525:12, w601:10, prev: 8,   weekly: 5,   week2: 8,  w629:0, may: 30,  mtd: 31  },
+    '3':   { w427:0,  w504:2,  w511:5,  w518:10, w525:11, w601:22, prev: 13,  weekly: 12,  week2: 14, w629:0, may: 28,  mtd: 61  },
+    '4':   { w427:0,  w504:2,  w511:5,  w518:28, w525:14, w601:15, prev: 25,  weekly: 18,  week2: 15, w629:0, may: 49,  mtd: 73  },
+    '5':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 4,   week2: 2,  w629:0, may: 0,   mtd: 6   },
+    '6':   { w427:0,  w504:0,  w511:0,  w518:5,  w525:4,  w601:9,  prev: 6,   weekly: 6,   week2: 2,  w629:0, may: 7,   mtd: 22  },
+    '7':   { w427:0,  w504:5,  w511:1,  w518:3,  w525:2,  w601:4,  prev: 5,   weekly: 9,   week2: 6,  w629:0, may: 11,  mtd: 24  },
+    '8':   { w427:0,  w504:0,  w511:2,  w518:2,  w525:4,  w601:3,  prev: 0,   weekly: 1,   week2: 2,  w629:0, may: 8,   mtd: 6   }
   };
 
   // Weekly door swings/cold calls from HubSpot (6/15–6/21)
   const doorSwingsData = {
-    'all': { live: 109, prospect: 43  },
+    'all': { live: 94,  prospect: 47  },
     '1':   { live: 0,   prospect: 3   },
-    '2':   { live: 28,  prospect: 2   },
-    '3':   { live: 14,  prospect: 9   },
-    '4':   { live: 12,  prospect: 0   },
+    '2':   { live: 17,  prospect: 2   },
+    '3':   { live: 13,  prospect: 9   },
+    '4':   { live: 11,  prospect: 0   },
     '5':   { live: 5,   prospect: 2   },
-    '6':   { live: 17,  prospect: 13  },
-    '7':   { live: 28,  prospect: 14  },
+    '6':   { live: 17,  prospect: 17  },
+    '7':   { live: 26,  prospect: 14  },
     '8':   { live: 5,   prospect: 0   }
   };
 
   // Previous week door swings/cold calls from HubSpot (6/8–6/14)
   const doorSwingsPrevData = {
-    'all': { live: 137, prospect: 56  },
-    '1':   { live: 0,   prospect: 4   },
-    '2':   { live: 26,  prospect: 2   },
-    '3':   { live: 27,  prospect: 5   },
-    '4':   { live: 10,  prospect: 1   },
-    '5':   { live: 7,   prospect: 5   },
-    '6':   { live: 42,  prospect: 10  },
-    '7':   { live: 24,  prospect: 25  },
+    'all': { live: 145, prospect: 53  },
+    '1':   { live: 0,   prospect: 7   },
+    '2':   { live: 30,  prospect: 0   },
+    '3':   { live: 30,  prospect: 5   },
+    '4':   { live: 11,  prospect: 1   },
+    '5':   { live: 7,   prospect: 4   },
+    '6':   { live: 44,  prospect: 7   },
+    '7':   { live: 22,  prospect: 25  },
     '8':   { live: 1,   prospect: 4   }
   };
 
-  // May MTD door swings/cold calls from HubSpot (5/1–5/31)
+  // May MTD door swings/cold calls from HubSpot (5/1–5/31) — using hs_timestamp
   const doorSwingsMayData = {
-    'all': { live: 585, prospect: 242 },
+    'all': { live: 587, prospect: 237 },
     '1':   { live: 0,   prospect: 11  },
-    '2':   { live: 66,  prospect: 13  },
-    '3':   { live: 94,  prospect: 31  },
-    '4':   { live: 63,  prospect: 2   },
-    '5':   { live: 32,  prospect: 22  },
-    '6':   { live: 167, prospect: 87  },
-    '7':   { live: 145, prospect: 73  },
+    '2':   { live: 67,  prospect: 13  },
+    '3':   { live: 95,  prospect: 31  },
+    '4':   { live: 62,  prospect: 0   },
+    '5':   { live: 33,  prospect: 22  },
+    '6':   { live: 168, prospect: 84  },
+    '7':   { live: 144, prospect: 73  },
     '8':   { live: 18,  prospect: 3   }
   };
 
-  // June MTD door swings/cold calls from HubSpot (6/1–6/26)
+  // June MTD door swings/cold calls from HubSpot (6/1–6/30) — complete month, deduped by hs_object_id
   const doorSwingsJuneData = {
-    'all': { live: 566, prospect: 212 },
-    '1':   { live: 0,   prospect: 14  },
-    '2':   { live: 96,  prospect: 10  },
-    '3':   { live: 78,  prospect: 19  },
-    '4':   { live: 45,  prospect: 5   },
-    '5':   { live: 46,  prospect: 11  },
-    '6':   { live: 168, prospect: 62  },
-    '7':   { live: 116, prospect: 83  },
-    '8':   { live: 17,  prospect: 8   }
+    'all': { live: 591, prospect: 150 },
+    '1':   { live: 0,   prospect: 11  },
+    '2':   { live: 106, prospect: 7   },
+    '3':   { live: 82,  prospect: 11  },
+    '4':   { live: 48,  prospect: 2   },
+    '5':   { live: 50,  prospect: 5   },
+    '6':   { live: 179, prospect: 42  },
+    '7':   { live: 110, prospect: 65  },
+    '8':   { live: 16,  prospect: 7   }
+  };
+  // July MTD door swings/cold calls from HubSpot (7/1–7/5)
+  const doorSwingsJulyData = {
+    'all': { live: 20, prospect: 2 },
+    '1':   { live: 0,  prospect: 0 },
+    '2':   { live: 0,  prospect: 0 },
+    '3':   { live: 2,  prospect: 0 },
+    '4':   { live: 0,  prospect: 0 },
+    '5':   { live: 0,  prospect: 0 },
+    '6':   { live: 10, prospect: 0 },
+    '7':   { live: 8,  prospect: 2 },
+    '8':   { live: 0,  prospect: 0 }
   };
 
   // Door swing tooltip name breakdowns (calls + meetings by rep)
   const dsLiveNames_CurrWeek = {
-    'all': {'Hannah Rivera': 31, 'Sadie Orr': 26, 'Amanda Rivera': 17, 'Hunter Brandt': 16, 'Brad Fell': 10, 'Fiona Gallagher': 5, 'Chris Oraha': 2, 'Tom McInerney': 1, 'Kortney Roher': 1},
+    'all': {'Sadie Orr': 24, 'Hannah Rivera': 19, 'Amanda Rivera': 16, 'Hunter Brandt': 16, 'Brad Fell': 10, 'Fiona Gallagher': 5, 'Chris Oraha': 2, 'Tom McInerney': 1, 'Kortney Roher': 1},
     '1': {},
-    '2': {'Hannah Rivera': 27, 'Tom McInerney': 1},
-    '3': {'Amanda Rivera': 10, 'Hannah Rivera': 4},
-    '4': {'Amanda Rivera': 7, 'Fiona Gallagher': 5},
+    '2': {'Hannah Rivera': 16, 'Tom McInerney': 1},
+    '3': {'Amanda Rivera': 10, 'Hannah Rivera': 3},
+    '4': {'Amanda Rivera': 6, 'Fiona Gallagher': 5},
     '5': {'Brad Fell': 5},
     '6': {'Hunter Brandt': 16, 'Kortney Roher': 1},
-    '7': {'Sadie Orr': 26, 'Chris Oraha': 2},
+    '7': {'Sadie Orr': 24, 'Chris Oraha': 2},
     '8': {'Brad Fell': 5},
   };
   const dsProspectNames_CurrWeek = {
-    'all': {'Chris Oraha': 12, 'Vishal Patel': 10, 'Amanda Rivera': 8, 'Patrick Lehmann': 4, 'Kortney Roher': 3, 'Sadie Orr': 3, 'Hannah Rivera': 2, 'Brad Fell': 1},
+    'all': {'Vishal Patel': 13, 'Chris Oraha': 12, 'Amanda Rivera': 8, 'Patrick Lehmann': 4, 'Sadie Orr': 4, 'Kortney Roher': 3, 'Hannah Rivera': 2, 'Brad Fell': 1},
     '1': {'Amanda Rivera': 3},
-    '2': {'Patrick Lehmann': 1, 'Hannah Rivera': 1},
+    '2': {'Hannah Rivera': 1, 'Patrick Lehmann': 1},
     '3': {'Amanda Rivera': 5, 'Patrick Lehmann': 3, 'Hannah Rivera': 1},
     '4': {},
-    '5': {'Brad Fell': 1, 'Chris Oraha': 1},
-    '6': {'Vishal Patel': 10, 'Kortney Roher': 3},
-    '7': {'Chris Oraha': 11, 'Sadie Orr': 3},
+    '5': {'Chris Oraha': 1, 'Brad Fell': 1},
+    '6': {'Vishal Patel': 13, 'Kortney Roher': 3, 'Chris Oraha': 1},
+    '7': {'Chris Oraha': 10, 'Sadie Orr': 4},
     '8': {},
   };
   const dsLiveNames_PrevWeek = {
-    'all': {'Hunter Brandt': 42, 'Hannah Rivera': 27, 'Amanda Rivera': 26, 'Sadie Orr': 24, 'Brad Fell': 7, 'Fiona Gallagher': 6, 'Kortney Roher': 3, 'Michelle Kent': 2},
+    'all': {'Hunter Brandt': 42, 'Hannah Rivera': 32, 'Amanda Rivera': 28, 'Sadie Orr': 24, 'Brad Fell': 7, 'Fiona Gallagher': 6, 'Kortney Roher': 3, 'Michelle Kent': 2, 'Tom McInerney': 1},
     '1': {},
-    '2': {'Hannah Rivera': 25, 'Hunter Brandt': 1},
-    '3': {'Amanda Rivera': 24, 'Hannah Rivera': 2, 'Hunter Brandt': 1},
-    '4': {'Fiona Gallagher': 6, 'Amanda Rivera': 2, 'Hunter Brandt': 2},
+    '2': {'Hannah Rivera': 29, 'Hunter Brandt': 1},
+    '3': {'Amanda Rivera': 25, 'Hannah Rivera': 3, 'Hunter Brandt': 1, 'Tom McInerney': 1},
+    '4': {'Fiona Gallagher': 6, 'Amanda Rivera': 3, 'Hunter Brandt': 2},
     '5': {'Brad Fell': 6, 'Kortney Roher': 1},
-    '6': {'Hunter Brandt': 38, 'Kortney Roher': 2, 'Michelle Kent': 2},
-    '7': {'Sadie Orr': 24},
+    '6': {'Hunter Brandt': 38, 'Sadie Orr': 2, 'Michelle Kent': 2, 'Kortney Roher': 2},
+    '7': {'Sadie Orr': 22},
     '8': {'Brad Fell': 1},
   };
   const dsProspectNames_PrevWeek = {
-    'all': {'Chris Oraha': 20, 'Vishal Patel': 14, 'Sadie Orr': 5, 'Amanda Rivera': 4, 'Brad Fell': 4, 'Michelle Kent': 4, 'Hannah Rivera': 2, 'Patrick Lehmann': 2, 'Tom McInerney': 1},
-    '1': {'Amanda Rivera': 2, 'Vishal Patel': 2},
-    '2': {'Vishal Patel': 1, 'Hannah Rivera': 1},
+    'all': {'Chris Oraha': 20, 'Vishal Patel': 12, 'Sadie Orr': 5, 'Amanda Rivera': 4, 'Brad Fell': 4, 'Michelle Kent': 4, 'Patrick Lehmann': 2, 'Hannah Rivera': 1, 'Tom McInerney': 1},
+    '1': {'Vishal Patel': 5, 'Amanda Rivera': 2},
+    '2': {},
     '3': {'Amanda Rivera': 2, 'Patrick Lehmann': 2, 'Hannah Rivera': 1},
     '4': {'Tom McInerney': 1},
-    '5': {'Brad Fell': 4, 'Vishal Patel': 1},
-    '6': {'Vishal Patel': 6, 'Michelle Kent': 4},
+    '5': {'Brad Fell': 4},
+    '6': {'Michelle Kent': 4, 'Vishal Patel': 3},
     '7': {'Chris Oraha': 20, 'Sadie Orr': 5},
     '8': {'Vishal Patel': 4},
   };
   const dsLiveNames_May = {
-    'all': {'Hunter Brandt': 145, 'Sadie Orr': 143, 'Amanda Rivera': 118, 'Hannah Rivera': 82, 'Brad Fell': 37, 'Kortney Roher': 26, 'Vishal Patel': 22, 'Fiona Gallagher': 5, 'Michelle Kent': 3, 'Tom McInerney': 2, 'Nick Bretwisch': 1, 'Chris Oraha': 1},
+    'all': {'Hunter Brandt': 145, 'Sadie Orr': 143, 'Amanda Rivera': 118, 'Hannah Rivera': 82, 'Brad Fell': 38, 'Kortney Roher': 26, 'Vishal Patel': 22, 'Fiona Gallagher': 5, 'Michelle Kent': 3, 'Tom McInerney': 2, 'Other(77425146)': 1, 'Nick Bretwisch': 1, 'Chris Oraha': 1},
     '1': {},
-    '2': {'Hannah Rivera': 60, 'Hunter Brandt': 2, 'Tom McInerney': 2, 'Amanda Rivera': 1, 'Nick Bretwisch': 1},
-    '3': {'Amanda Rivera': 80, 'Hannah Rivera': 12, 'Hunter Brandt': 2},
-    '4': {'Amanda Rivera': 32, 'Vishal Patel': 17, 'Hunter Brandt': 5, 'Fiona Gallagher': 5, 'Hannah Rivera': 4},
-    '5': {'Brad Fell': 28, 'Kortney Roher': 4},
-    '6': {'Hunter Brandt': 136, 'Kortney Roher': 22, 'Vishal Patel': 5, 'Michelle Kent': 3, 'Hannah Rivera': 1},
-    '7': {'Sadie Orr': 143, 'Amanda Rivera': 1, 'Chris Oraha': 1},
+    '2': {'Hannah Rivera': 60, 'Tom McInerney': 2, 'Hunter Brandt': 2, 'Other(77425146)': 1, 'Nick Bretwisch': 1, 'Amanda Rivera': 1},
+    '3': {'Amanda Rivera': 81, 'Hannah Rivera': 12, 'Hunter Brandt': 2},
+    '4': {'Amanda Rivera': 31, 'Vishal Patel': 17, 'Hunter Brandt': 5, 'Fiona Gallagher': 5, 'Hannah Rivera': 4},
+    '5': {'Brad Fell': 29, 'Kortney Roher': 4},
+    '6': {'Hunter Brandt': 136, 'Kortney Roher': 22, 'Vishal Patel': 5, 'Michelle Kent': 3, 'Sadie Orr': 1, 'Hannah Rivera': 1},
+    '7': {'Sadie Orr': 142, 'Amanda Rivera': 1, 'Chris Oraha': 1},
     '8': {'Brad Fell': 9, 'Hannah Rivera': 5, 'Amanda Rivera': 4},
   };
   const dsProspectNames_May = {
-    'all': {'Chris Oraha': 61, 'Michelle Kent': 51, 'Vishal Patel': 45, 'Sadie Orr': 25, 'Amanda Rivera': 15, 'Patrick Lehmann': 12, 'Brad Fell': 12, 'Hannah Rivera': 9, 'Kortney Roher': 8, 'Alex Hutchinson': 3, 'Tommy Bloom': 1},
-    '1': {'Amanda Rivera': 9, 'Vishal Patel': 1, 'Hannah Rivera': 1},
+    'all': {'Chris Oraha': 61, 'Michelle Kent': 51, 'Vishal Patel': 44, 'Sadie Orr': 25, 'Amanda Rivera': 12, 'Patrick Lehmann': 12, 'Brad Fell': 12, 'Hannah Rivera': 9, 'Kortney Roher': 6, 'Alex Hutchinson': 4, 'Tommy Bloom': 1},
+    '1': {'Amanda Rivera': 9, 'Hannah Rivera': 1, 'Vishal Patel': 1},
     '2': {'Hannah Rivera': 8, 'Vishal Patel': 3, 'Amanda Rivera': 1, 'Patrick Lehmann': 1},
-    '3': {'Patrick Lehmann': 11, 'Vishal Patel': 10, 'Chris Oraha': 4, 'Amanda Rivera': 3, 'Alex Hutchinson': 3},
-    '4': {'Amanda Rivera': 2},
+    '3': {'Patrick Lehmann': 11, 'Vishal Patel': 10, 'Alex Hutchinson': 4, 'Chris Oraha': 4, 'Amanda Rivera': 2},
+    '4': {},
     '5': {'Brad Fell': 12, 'Chris Oraha': 7, 'Vishal Patel': 2, 'Tommy Bloom': 1},
-    '6': {'Michelle Kent': 51, 'Vishal Patel': 26, 'Kortney Roher': 8, 'Chris Oraha': 2},
+    '6': {'Michelle Kent': 51, 'Vishal Patel': 25, 'Kortney Roher': 6, 'Chris Oraha': 2},
     '7': {'Chris Oraha': 48, 'Sadie Orr': 25},
     '8': {'Vishal Patel': 3},
   };
   const dsLiveNames_June = {
-    'all': {'Hunter Brandt': 156, 'Hannah Rivera': 112, 'Sadie Orr': 108, 'Amanda Rivera': 85, 'Brad Fell': 44, 'Kortney Roher': 29, 'Fiona Gallagher': 15, 'Vishal Patel': 4, 'Christian Corner': 4, 'Michelle Kent': 4, 'Tom McInerney': 3, 'Chris Oraha': 2},
+    'all': {'Hunter Brandt': 160, 'Hannah Rivera': 123, 'Sadie Orr': 106, 'Amanda Rivera': 88, 'Brad Fell': 49, 'Kortney Roher': 30, 'Fiona Gallagher': 15, 'Vishal Patel': 5, 'Christian Corner': 5, 'Tom McInerney': 4, 'Michelle Kent': 4, 'Chris Oraha': 2},
     '1': {},
-    '2': {'Hannah Rivera': 92, 'Hunter Brandt': 2, 'Tom McInerney': 2},
-    '3': {'Amanda Rivera': 60, 'Hannah Rivera': 12, 'Christian Corner': 4, 'Hunter Brandt': 2},
-    '4': {'Amanda Rivera': 19, 'Fiona Gallagher': 15, 'Hunter Brandt': 7, 'Vishal Patel': 4},
-    '5': {'Brad Fell': 36, 'Kortney Roher': 7, 'Hunter Brandt': 3},
-    '6': {'Hunter Brandt': 141, 'Kortney Roher': 22, 'Michelle Kent': 4, 'Hannah Rivera': 1},
-    '7': {'Sadie Orr': 108, 'Amanda Rivera': 4, 'Chris Oraha': 2, 'Hunter Brandt': 1, 'Tom McInerney': 1},
-    '8': {'Brad Fell': 8, 'Hannah Rivera': 7, 'Amanda Rivera': 2},
+    '2': {'Hannah Rivera': 103, 'Tom McInerney': 2, 'Amanda Rivera': 1},
+    '3': {'Amanda Rivera': 64, 'Hannah Rivera': 12, 'Christian Corner': 5, 'Tom McInerney': 1},
+    '4': {'Amanda Rivera': 23, 'Fiona Gallagher': 15, 'Vishal Patel': 5, 'Hunter Brandt': 5},
+    '5': {'Brad Fell': 40, 'Kortney Roher': 7, 'Hunter Brandt': 3},
+    '6': {'Hunter Brandt': 151, 'Kortney Roher': 23, 'Michelle Kent': 4, 'Hannah Rivera': 1},
+    '7': {'Sadie Orr': 106, 'Chris Oraha': 2, 'Hunter Brandt': 1, 'Tom McInerney': 1},
+    '8': {'Brad Fell': 9, 'Hannah Rivera': 7},
   };
   const dsProspectNames_June = {
-    'all': {'Chris Oraha': 61, 'Vishal Patel': 47, 'Michelle Kent': 26, 'Sadie Orr': 25, 'Amanda Rivera': 17, 'Patrick Lehmann': 8, 'Hannah Rivera': 8, 'Brad Fell': 7, 'Kortney Roher': 6, 'Tom McInerney': 4, 'Christian Corner': 1, 'Fiona Gallagher': 1, 'Tommy Bloom': 1},
-    '1': {'Amanda Rivera': 9, 'Vishal Patel': 5},
-    '2': {'Hannah Rivera': 6, 'Vishal Patel': 2, 'Patrick Lehmann': 2},
-    '3': {'Amanda Rivera': 8, 'Patrick Lehmann': 6, 'Hannah Rivera': 2, 'Vishal Patel': 1, 'Christian Corner': 1, 'Tom McInerney': 1},
-    '4': {'Tom McInerney': 3, 'Fiona Gallagher': 1, 'Tommy Bloom': 1},
-    '5': {'Brad Fell': 7, 'Chris Oraha': 3, 'Vishal Patel': 1},
-    '6': {'Vishal Patel': 30, 'Michelle Kent': 26, 'Kortney Roher': 6},
-    '7': {'Chris Oraha': 58, 'Sadie Orr': 25},
-    '8': {'Vishal Patel': 8},
+    'all': {'Chris Oraha': 46, 'Vishal Patel': 38, 'Sadie Orr': 22, 'Amanda Rivera': 16, 'Michelle Kent': 12, 'Hannah Rivera': 6, 'Kortney Roher': 4, 'Tom McInerney': 2, 'Patrick Lehmann': 2, 'Brad Fell': 2},
+    '1': {'Amanda Rivera': 8, 'Vishal Patel': 3},
+    '2': {'Hannah Rivera': 5, 'Vishal Patel': 2},
+    '3': {'Amanda Rivera': 8, 'Patrick Lehmann': 2, 'Hannah Rivera': 1},
+    '4': {'Tom McInerney': 2},
+    '5': {'Chris Oraha': 3, 'Brad Fell': 2},
+    '6': {'Vishal Patel': 26, 'Michelle Kent': 12, 'Kortney Roher': 4},
+    '7': {'Chris Oraha': 43, 'Sadie Orr': 22},
+    '8': {'Vishal Patel': 7},
+  };
+  // July MTD (7/1–7/5) owner breakdowns
+  const dsLiveNames_JulyMTD = {
+    'all': {'Hunter Brandt': 11, 'Amanda Rivera': 4, 'Sadie Orr': 4, 'Kortney Roher': 1},
+    '1': {}, '2': {}, '3': {'Amanda Rivera': 2}, '4': {}, '5': {},
+    '6': {'Hunter Brandt': 9, 'Kortney Roher': 1},
+    '7': {'Sadie Orr': 4, 'Hunter Brandt': 2, 'Amanda Rivera': 2},
+    '8': {}
+  };
+  const dsProspectNames_JulyMTD = {
+    'all': {'Chris Oraha': 2},
+    '1': {}, '2': {}, '3': {}, '4': {}, '5': {}, '6': {},
+    '7': {'Chris Oraha': 2},
+    '8': {}
+  };
+
+  // ── HISTORICAL WEEK DATA (4/27–6/7) — pulled from HubSpot ──
+
+  // w427: 4/27–5/3
+  const doorSwingsW427Data = {'all':{live:175,prospect:59},'1':{live:0,prospect:0},'2':{live:37,prospect:3},'3':{live:18,prospect:15},'4':{live:12,prospect:2},'5':{live:10,prospect:0},'6':{live:33,prospect:13},'7':{live:58,prospect:25},'8':{live:7,prospect:1}};
+  const dsLiveNames_W427 = {'all':{'Sadie Orr':57,'Hannah Rivera':38,'Amanda Rivera':22,'Hunter Brandt':21,'Brad Fell':15,'Kortney Roher':10,'Nick Bretwisch':4,'Vishal Patel':4,'Michelle Kent':2,'Tom McInerney':1,'Alex Hutchinson':1},'1':{},'2':{'Hannah Rivera':34,'Nick Bretwisch':2,'Tom McInerney':1},'3':{'Amanda Rivera':16,'Hannah Rivera':2},'4':{'Amanda Rivera':6,'Hunter Brandt':5,'Alex Hutchinson':1},'5':{'Brad Fell':10},'6':{'Hunter Brandt':16,'Kortney Roher':10,'Vishal Patel':4,'Michelle Kent':2,'Hannah Rivera':1},'7':{'Sadie Orr':57,'Nick Bretwisch':1},'8':{'Brad Fell':5,'Hannah Rivera':1,'Nick Bretwisch':1}};
+  const dsProspectNames_W427 = {'all':{'Chris Oraha':18,'Michelle Kent':13,'Vishal Patel':12,'Sadie Orr':7,'Alex Hutchinson':3,'Hannah Rivera':2,'Amanda Rivera':2,'Tommy Bloom':1,'Kortney Roher':1},'1':{},'2':{'Hannah Rivera':2,'Michelle Kent':1},'3':{'Vishal Patel':11,'Alex Hutchinson':3,'Amanda Rivera':1},'4':{'Tommy Bloom':1,'Amanda Rivera':1},'5':{},'6':{'Michelle Kent':12,'Kortney Roher':1},'7':{'Chris Oraha':18,'Sadie Orr':7},'8':{'Vishal Patel':1}};
+  const newPipelineW427Data = {'all':5,'1':1,'2':2,'3':0,'4':0,'5':0,'6':1,'7':1,'8':0};
+  const pipelineW427Names = {'all':['Uptown Lounge, Chicago','ANDY ALIJOSKI BAR - New Deal','the Hive - New Deal','The Uptown Saloon - New Deal','Cahokia Heights Fine Dining - New Deal'],'1':['Uptown Lounge, Chicago'],'2':['ANDY ALIJOSKI BAR - New Deal','the Hive - New Deal'],'3':[],'4':[],'5':[],'6':['The Uptown Saloon - New Deal'],'7':['Cahokia Heights Fine Dining - New Deal'],'8':[]};
+  // w427: 4/27–5/3 RUC — ref date 2026-05-03
+  // Missing H/NH confirmed by user: Harbor Brewing (house), all others non-house
+  const rucW427Data = {
+    'all': { house: 462395618, nonhouse: 144193879, total: 606589497 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 63577549,  nonhouse: 36966591,   total: 100544140 },
+    '3':   { house: 137803220, nonhouse: 21454765,   total: 159257985 },
+    '4':   { house: 111971276, nonhouse: 23189181,   total: 135160457 },
+    '5':   { house: 9325692,   nonhouse: 5498975,    total: 14824667  },
+    '6':   { house: 100670800, nonhouse: 21011194,   total: 121681994 },
+    '7':   { house: 33633281,  nonhouse: 33659113,   total: 67292394  },
+    '8':   { house: 5413800,   nonhouse: 2414060,    total: 7827860   },
+  };
+
+  // w504: 5/4–5/10
+  const doorSwingsW504Data = {'all':{live:144,prospect:46},'1':{live:0,prospect:4},'2':{live:7,prospect:1},'3':{live:22,prospect:10},'4':{live:13,prospect:0},'5':{live:7,prospect:5},'6':{live:49,prospect:8},'7':{live:45,prospect:18},'8':{live:1,prospect:0}};
+  const dsLiveNames_W504 = {'all':{'Sadie Orr':45,'Hunter Brandt':37,'Amanda Rivera':20,'Hannah Rivera':13,'Kortney Roher':13,'Vishal Patel':7,'Fiona Gallagher':4,'Brad Fell':4,'Tom McInerney':1},'1':{},'2':{'Hannah Rivera':6,'Tom McInerney':1},'3':{'Amanda Rivera':16,'Hannah Rivera':6},'4':{'Vishal Patel':5,'Amanda Rivera':4,'Fiona Gallagher':4},'5':{'Brad Fell':4,'Kortney Roher':3},'6':{'Hunter Brandt':37,'Kortney Roher':10,'Vishal Patel':2},'7':{'Sadie Orr':45},'8':{'Hannah Rivera':1}};
+  const dsProspectNames_W504 = {'all':{'Chris Oraha':13,'Patrick Lehmann':9,'Amanda Rivera':5,'Sadie Orr':5,'Michelle Kent':4,'Vishal Patel':3,'Kortney Roher':3,'Brad Fell':3,'Hannah Rivera':1},'1':{'Amanda Rivera':4},'2':{'Hannah Rivera':1},'3':{'Patrick Lehmann':9,'Amanda Rivera':1},'4':{},'5':{'Brad Fell':3,'Vishal Patel':2},'6':{'Michelle Kent':4,'Kortney Roher':3,'Vishal Patel':1},'7':{'Chris Oraha':13,'Sadie Orr':5},'8':{}};
+  const newPipelineW504Data = {'all':2,'1':0,'2':0,'3':1,'4':0,'5':0,'6':1,'7':0,'8':0};
+  const pipelineW504Names = {'all':['PIZZA PAVIA - New Deal','The Country Store on 104 - New Deal'],'1':[],'2':[],'3':['PIZZA PAVIA - New Deal'],'4':[],'5':[],'6':['The Country Store on 104 - New Deal'],'7':[],'8':[]};
+  // w504: 5/4–5/10 RUC — ref date 2026-05-10
+  const rucW504Data = {
+    'all': { house: 463955927, nonhouse: 144022020, total: 607977947 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 63440032,  nonhouse: 36797023,   total: 100237055 },
+    '3':   { house: 140046591, nonhouse: 21326607,   total: 161373198 },
+    '4':   { house: 111875635, nonhouse: 22888994,   total: 134764629 },
+    '5':   { house: 9322696,   nonhouse: 5423780,    total: 14746476  },
+    '6':   { house: 100301195, nonhouse: 22009840,   total: 122311035 },
+    '7':   { house: 33540788,  nonhouse: 33181040,   total: 66721828  },
+    '8':   { house: 5428990,   nonhouse: 2394736,    total: 7823726   },
+  };
+
+  // w511: 5/11–5/17
+  const doorSwingsW511Data = {'all':{live:190,prospect:72},'1':{live:0,prospect:6},'2':{live:39,prospect:4},'3':{live:34,prospect:3},'4':{live:23,prospect:0},'5':{live:12,prospect:4},'6':{live:38,prospect:34},'7':{live:34,prospect:21},'8':{live:10,prospect:0}};
+  const dsLiveNames_W511 = {'all':{'Hannah Rivera':50,'Amanda Rivera':42,'Hunter Brandt':38,'Sadie Orr':33,'Brad Fell':16,'Vishal Patel':5,'Kortney Roher':3,'Chris Oraha':1,'Fiona Gallagher':1,'Michelle Kent':1},'1':{},'2':{'Hannah Rivera':37,'Hunter Brandt':1,'Amanda Rivera':1},'3':{'Amanda Rivera':29,'Hannah Rivera':4,'Hunter Brandt':1},'4':{'Amanda Rivera':10,'Vishal Patel':5,'Hannah Rivera':4,'Hunter Brandt':3,'Fiona Gallagher':1},'5':{'Brad Fell':12},'6':{'Hunter Brandt':33,'Kortney Roher':3,'Michelle Kent':1,'Hannah Rivera':1},'7':{'Sadie Orr':33,'Chris Oraha':1},'8':{'Hannah Rivera':4,'Brad Fell':4,'Amanda Rivera':2}};
+  const dsProspectNames_W511 = {'all':{'Michelle Kent':17,'Chris Oraha':15,'Vishal Patel':13,'Sadie Orr':10,'Amanda Rivera':7,'Hannah Rivera':4,'Kortney Roher':3,'Brad Fell':2,'Alex Hutchinson':1},'1':{'Amanda Rivera':5,'Hannah Rivera':1},'2':{'Hannah Rivera':3,'Amanda Rivera':1},'3':{'Alex Hutchinson':1,'Amanda Rivera':1,'Chris Oraha':1},'4':{},'5':{'Brad Fell':2,'Chris Oraha':2},'6':{'Michelle Kent':17,'Vishal Patel':13,'Kortney Roher':3,'Chris Oraha':1},'7':{'Chris Oraha':11,'Sadie Orr':10},'8':{}};
+  const newPipelineW511Data = {'all':3,'1':0,'2':0,'3':0,'4':0,'5':1,'6':1,'7':1,'8':0};
+  const pipelineW511Names = {'all':['The doc`s inn','Americas Check Cashing & Liquor Store','Pville Gas'],'1':[],'2':[],'3':[],'4':[],'5':['The doc`s inn'],'6':['Americas Check Cashing & Liquor Store'],'7':['Pville Gas'],'8':[]};
+  const rucW511Data = {
+    'all': { house: 467226929, nonhouse: 142307296, total: 609534225 },
+    '1': { house: 0, nonhouse: 0, total: 0 },
+    '2': { house: 63318095, nonhouse: 36602944, total: 99921039 },
+    '3': { house: 139292165, nonhouse: 21165037, total: 160457202 },
+    '4': { house: 110616364, nonhouse: 22179150, total: 132795514 },
+    '5': { house: 9229477, nonhouse: 5350614, total: 14580091 },
+    '6': { house: 105619064, nonhouse: 21809263, total: 127428327 },
+    '7': { house: 33705106, nonhouse: 32836862, total: 66541968 },
+    '8': { house: 5446658, nonhouse: 2363426, total: 7810084 },
+  };
+
+  // w518: 5/18–5/24
+  const doorSwingsW518Data = {'all':{live:131,prospect:66},'1':{live:0,prospect:1},'2':{live:12,prospect:3},'3':{live:13,prospect:11},'4':{live:19,prospect:0},'5':{live:5,prospect:4},'6':{live:53,prospect:25},'7':{live:29,prospect:21},'8':{live:0,prospect:1}};
+  const dsLiveNames_W518 = {'all':{'Hunter Brandt':40,'Sadie Orr':28,'Amanda Rivera':27,'Hannah Rivera':12,'Kortney Roher':10,'Vishal Patel':8,'Brad Fell':4,'Tom McInerney':1,'Michelle Kent':1},'1':{},'2':{'Hannah Rivera':11,'Tom McInerney':1},'3':{'Amanda Rivera':12,'Hannah Rivera':1},'4':{'Amanda Rivera':14,'Vishal Patel':5},'5':{'Brad Fell':4,'Kortney Roher':1},'6':{'Hunter Brandt':40,'Kortney Roher':9,'Vishal Patel':3,'Michelle Kent':1},'7':{'Sadie Orr':28,'Amanda Rivera':1},'8':{}};
+  const dsProspectNames_W518 = {'all':{'Vishal Patel':19,'Chris Oraha':17,'Michelle Kent':13,'Sadie Orr':9,'Hannah Rivera':3,'Alex Hutchinson':2,'Kortney Roher':2,'Brad Fell':1},'1':{'Vishal Patel':1},'2':{'Hannah Rivera':3},'3':{'Vishal Patel':8,'Alex Hutchinson':2,'Chris Oraha':1},'4':{},'5':{'Chris Oraha':3,'Brad Fell':1},'6':{'Michelle Kent':13,'Vishal Patel':9,'Kortney Roher':2,'Chris Oraha':1},'7':{'Chris Oraha':12,'Sadie Orr':9},'8':{'Vishal Patel':1}};
+  const newPipelineW518Data = {'all':6,'1':0,'2':0,'3':2,'4':0,'5':0,'6':2,'7':0,'8':2};
+  const pipelineW518Names = {'all':['DAISY`S CAFE - STONE PARK','Eggsperience Wheeling','Signature Inn Bar Project - Danville','Michael`s 29 Store - New Deal','Fas Fuel - Belvidere','Michael`s 29 Store - Athens'],'1':[],'2':[],'3':['DAISY`S CAFE - STONE PARK','Eggsperience Wheeling'],'4':[],'5':[],'6':['Signature Inn Bar Project - Danville','Michael`s 29 Store - New Deal'],'7':[],'8':['Fas Fuel - Belvidere','Michael`s 29 Store - Athens']};
+  const rucW518Data = {
+    'all': { house: 464567691, nonhouse: 141868112, total: 606435803 },
+    '1': { house: 0, nonhouse: 0, total: 0 },
+    '2': { house: 63224802, nonhouse: 36402506, total: 99627308 },
+    '3': { house: 138988033, nonhouse: 21060147, total: 160048180 },
+    '4': { house: 109813688, nonhouse: 22180325, total: 131994013 },
+    '5': { house: 9237323, nonhouse: 5322492, total: 14559815 },
+    '6': { house: 104347880, nonhouse: 21930513, total: 126278393 },
+    '7': { house: 33554821, nonhouse: 32635054, total: 66189875 },
+    '8': { house: 5401144, nonhouse: 2337075, total: 7738219 },
+  };
+
+  // w525: 5/25–5/31
+  const doorSwingsW525Data = {'all':{live:90,prospect:51},'1':{live:0,prospect:0},'2':{live:2,prospect:4},'3':{live:23,prospect:6},'4':{live:7,prospect:0},'5':{live:8,prospect:8},'6':{live:25,prospect:19},'7':{live:19,prospect:13},'8':{live:6,prospect:1}};
+  const dsLiveNames_W525 = {'all':{'Hunter Brandt':29,'Amanda Rivera':27,'Sadie Orr':19,'Brad Fell':12,'Vishal Patel':2,'Tiffany Sadler':1},'1':{},'2':{'Tiffany Sadler':1,'Hunter Brandt':1},'3':{'Amanda Rivera':22,'Hunter Brandt':1},'4':{'Amanda Rivera':3,'Hunter Brandt':2,'Vishal Patel':2},'5':{'Brad Fell':8},'6':{'Hunter Brandt':25},'7':{'Sadie Orr':19},'8':{'Brad Fell':4,'Amanda Rivera':2}};
+  const dsProspectNames_W525 = {'all':{'Michelle Kent':16,'Chris Oraha':10,'Vishal Patel':9,'Sadie Orr':7,'Brad Fell':6,'Patrick Lehmann':3},'1':{},'2':{'Vishal Patel':3,'Patrick Lehmann':1},'3':{'Chris Oraha':2,'Patrick Lehmann':2,'Vishal Patel':2},'4':{},'5':{'Brad Fell':6,'Chris Oraha':2},'6':{'Michelle Kent':16,'Vishal Patel':3},'7':{'Sadie Orr':7,'Chris Oraha':6},'8':{'Vishal Patel':1}};
+  const newPipelineW525Data = {'all':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0};
+  const pipelineW525Names = {'all':[],'1':[],'2':[],'3':[],'4':[],'5':[],'6':[],'7':[],'8':[]};
+  const rucW525Data = {
+    'all': { house: 461773658, nonhouse: 140617326, total: 602390984 },
+    '1': { house: 0, nonhouse: 0, total: 0 },
+    '2': { house: 62793289, nonhouse: 36169193, total: 98962482 },
+    '3': { house: 137630854, nonhouse: 20884513, total: 158515367 },
+    '4': { house: 108875066, nonhouse: 22094613, total: 130969679 },
+    '5': { house: 9244837, nonhouse: 5264782, total: 14509619 },
+    '6': { house: 104401556, nonhouse: 21511991, total: 125913547 },
+    '7': { house: 33391364, nonhouse: 32361514, total: 65752878 },
+    '8': { house: 5436692, nonhouse: 2330720, total: 7767412 },
+  };
+
+  // w601: 6/1–6/7
+  const doorSwingsW601Data = {'all':{live:187,prospect:47},'1':{live:0,prospect:0},'2':{live:34,prospect:4},'3':{live:24,prospect:2},'4':{live:13,prospect:1},'5':{live:17,prospect:2},'6':{live:56,prospect:17},'7':{live:41,prospect:19},'8':{live:2,prospect:2}};
+  const dsLiveNames_W601 = {'all':{'Hunter Brandt':49,'Sadie Orr':40,'Hannah Rivera':38,'Amanda Rivera':28,'Kortney Roher':14,'Brad Fell':12,'Fiona Gallagher':2,'Michelle Kent':2,'Tom McInerney':1,'Vishal Patel':1},'1':{},'2':{'Hannah Rivera':33,'Tom McInerney':1},'3':{'Amanda Rivera':21,'Hannah Rivera':3},'4':{'Amanda Rivera':7,'Hunter Brandt':3,'Fiona Gallagher':2,'Vishal Patel':1},'5':{'Brad Fell':11,'Hunter Brandt':3,'Kortney Roher':3},'6':{'Hunter Brandt':42,'Kortney Roher':11,'Michelle Kent':2,'Hannah Rivera':1},'7':{'Sadie Orr':40,'Hunter Brandt':1},'8':{'Hannah Rivera':1,'Brad Fell':1}};
+  const dsProspectNames_W601 = {'all':{'Vishal Patel':11,'Chris Oraha':11,'Sadie Orr':10,'Michelle Kent':9,'Hannah Rivera':2,'Kortney Roher':2,'Amanda Rivera':1,'Tommy Bloom':1},'1':{},'2':{'Hannah Rivera':2,'Vishal Patel':2},'3':{'Amanda Rivera':1,'Vishal Patel':1},'4':{'Tommy Bloom':1},'5':{'Chris Oraha':2},'6':{'Michelle Kent':9,'Vishal Patel':6,'Kortney Roher':2},'7':{'Sadie Orr':10,'Chris Oraha':9},'8':{'Vishal Patel':2}};
+  const newPipelineW601Data = {'all':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0};
+  const pipelineW601Names = {'all':[],'1':[],'2':[],'3':[],'4':[],'5':[],'6':[],'7':[],'8':[]};
+  const rucW601Data = {
+    'all': { house: 460264314, nonhouse: 143005751, total: 603270065 },
+    '1': { house: 0, nonhouse: 0, total: 0 },
+    '2': { house: 62935899, nonhouse: 36097807, total: 99033706 },
+    '3': { house: 137590900, nonhouse: 20718082, total: 158308982 },
+    '4': { house: 108439209, nonhouse: 21701016, total: 130140225 },
+    '5': { house: 9204103, nonhouse: 5244338, total: 14448441 },
+    '6': { house: 103612512, nonhouse: 23036509, total: 126649021 },
+    '7': { house: 33010572, nonhouse: 33922075, total: 66932647 },
+    '8': { house: 5471119, nonhouse: 2285924, total: 7757043 },
   };
 
   // Week 6/22–6/28 door swings/cold calls from HubSpot
   const doorSwingsWeek2Data = {
-    'all': { live: 136, prospect: 70 },
-    '1':   { live: 0,   prospect: 7  },
-    '2':   { live: 14,  prospect: 5  },
-    '3':   { live: 13,  prospect: 3  },
+    'all': { live: 139, prospect: 60 },
+    '1':   { live: 0,   prospect: 4  },
+    '2':   { live: 17,  prospect: 5  },
+    '3':   { live: 12,  prospect: 3  },
     '4':   { live: 11,  prospect: 3  },
     '5':   { live: 16,  prospect: 2  },
-    '6':   { live: 56,  prospect: 28 },
-    '7':   { live: 19,  prospect: 20 },
+    '6':   { live: 56,  prospect: 23 },
+    '7':   { live: 20,  prospect: 18 },
     '8':   { live: 7,   prospect: 2  }
   };
 
@@ -1146,25 +1576,25 @@
   };
 
   const dsLiveNames_Week2 = {
-    'all': {'Hunter Brandt': 51, 'Hannah Rivera': 22, 'Sadie Orr': 18, 'Brad Fell': 14, 'Kortney Roher': 12, 'Amanda Rivera': 8, 'Vishal Patel': 4, 'Christian Corner': 4, 'Fiona Gallagher': 2, 'Tom McInerney': 1},
+    'all': {'Hunter Brandt': 51, 'Hannah Rivera': 24, 'Sadie Orr': 19, 'Brad Fell': 14, 'Kortney Roher': 12, 'Amanda Rivera': 8, 'Vishal Patel': 4, 'Christian Corner': 4, 'Fiona Gallagher': 2, 'Tom McInerney': 1},
     '1': {},
-    '2': {'Hannah Rivera': 13, 'Hunter Brandt': 1},
-    '3': {'Amanda Rivera': 5, 'Christian Corner': 4, 'Hannah Rivera': 3, 'Hunter Brandt': 1},
-    '4': {'Vishal Patel': 4, 'Amanda Rivera': 3, 'Fiona Gallagher': 2, 'Hunter Brandt': 2},
+    '2': {'Hannah Rivera': 15, 'Hunter Brandt': 1, 'Amanda Rivera': 1},
+    '3': {'Amanda Rivera': 4, 'Christian Corner': 4, 'Hannah Rivera': 3, 'Hunter Brandt': 1},
+    '4': {'Vishal Patel': 4, 'Amanda Rivera': 3, 'Hunter Brandt': 2, 'Fiona Gallagher': 2},
     '5': {'Brad Fell': 13, 'Kortney Roher': 3},
     '6': {'Hunter Brandt': 47, 'Kortney Roher': 9},
-    '7': {'Sadie Orr': 18, 'Tom McInerney': 1},
+    '7': {'Sadie Orr': 19, 'Tom McInerney': 1},
     '8': {'Hannah Rivera': 6, 'Brad Fell': 1},
   };
   const dsProspectNames_Week2 = {
-    'all': {'Vishal Patel': 20, 'Michelle Kent': 13, 'Chris Oraha': 13, 'Sadie Orr': 7, 'Amanda Rivera': 4, 'Hannah Rivera': 3, 'Tom McInerney': 3, 'Patrick Lehmann': 2, 'Brad Fell': 2, 'Christian Corner': 1, 'Fiona Gallagher': 1, 'Kortney Roher': 1},
-    '1': {'Amanda Rivera': 4, 'Vishal Patel': 3},
+    'all': {'Michelle Kent': 14, 'Chris Oraha': 12, 'Vishal Patel': 11, 'Sadie Orr': 6, 'Amanda Rivera': 4, 'Hannah Rivera': 3, 'Tom McInerney': 3, 'Patrick Lehmann': 2, 'Brad Fell': 2, 'Christian Corner': 1, 'Fiona Gallagher': 1, 'Kortney Roher': 1},
+    '1': {'Amanda Rivera': 4},
     '2': {'Hannah Rivera': 3, 'Vishal Patel': 1, 'Patrick Lehmann': 1},
-    '3': {'Patrick Lehmann': 1, 'Christian Corner': 1, 'Tom McInerney': 1},
+    '3': {'Tom McInerney': 1, 'Patrick Lehmann': 1, 'Christian Corner': 1},
     '4': {'Tom McInerney': 2, 'Fiona Gallagher': 1},
     '5': {'Brad Fell': 2},
-    '6': {'Vishal Patel': 14, 'Michelle Kent': 13, 'Kortney Roher': 1},
-    '7': {'Chris Oraha': 13, 'Sadie Orr': 7},
+    '6': {'Michelle Kent': 14, 'Vishal Patel': 8, 'Kortney Roher': 1},
+    '7': {'Chris Oraha': 12, 'Sadie Orr': 6},
     '8': {'Vishal Patel': 2},
   };
 
@@ -1182,8 +1612,14 @@
     'all': 15, '1': 2, '2': 1, '3': 3, '4': 0, '5': 1, '6': 3, '7': 2, '8': 3
   };
   // June MTD 6/1–6/26
+  // Complete June (6/1–6/30), deduped by hs_object_id
   const newPipelineJuneData = {
-    'all': 7, '1': 0, '2': 0, '3': 1, '4': 2, '5': 0, '6': 1, '7': 3, '8': 0
+    'all': 8, '1': 1, '2': 0, '3': 1, '4': 2, '5': 0, '6': 1, '7': 3, '8': 0
+  };
+
+  // July MTD (7/1–7/5)
+  const newPipelineJulyData = {
+    'all': 2, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 2, '8': 0
   };
 
   const payrollData = {
@@ -1191,101 +1627,157 @@
     '7': 41182
   };
 
+  // Monthly NTI by region (from IGB NTI reports)
+  const ntiData = {
+    'all': { may: 9900940, june: 9300564 },
+    '1':   { may: 0,       june: 0       },
+    '2':   { may: 1414115, june: 1334765 },
+    '3':   { may: 2111960, june: 2119828 },
+    '4':   { may: 1823323, june: 1664850 },
+    '5':   { may: 388908,  june: 335109  },
+    '6':   { may: 2754811, june: 2579866 },
+    '7':   { may: 1208900, june: 1072458 },
+    '8':   { may: 198922,  june: 193687  }
+  };
+
   function fmt(val) {
     return '$' + Math.round(val).toLocaleString('en-US');
   }
 
   function updateRUC(r) {
-    const q1 = rucQ1Data[r]   ?? rucQ1Data['all'];
+    // Quarterly
+    const q1 = rucQ1Data[r] ?? rucQ1Data['all'];
     document.getElementById('ruc-house-q1').textContent    = fmt(q1.house);
     document.getElementById('ruc-nonhouse-q1').textContent = fmt(q1.nonhouse);
     document.getElementById('ruc-q1').textContent          = fmt(q1.total);
-    const m = rucMayData[r]   ?? rucMayData['all'];
-    document.getElementById('ruc-house-may').textContent    = fmt(m.house);
-    document.getElementById('ruc-nonhouse-may').textContent = fmt(m.nonhouse);
-    document.getElementById('ruc-total-may').textContent    = fmt(m.total);
-    const p = rucPrevData[r]  ?? rucPrevData['all'];
-    document.getElementById('ruc-house-prev').textContent    = fmt(p.house);
-    document.getElementById('ruc-nonhouse-prev').textContent = fmt(p.nonhouse);
-    document.getElementById('ruc-total-prev').textContent    = fmt(p.total);
-    const d = rucData[r]      ?? rucData['all'];
-    document.getElementById('ruc-house-weekly').textContent    = fmt(d.house);
-    document.getElementById('ruc-nonhouse-weekly').textContent = fmt(d.nonhouse);
-    document.getElementById('ruc-weekly').textContent          = fmt(d.total);
+    // MTD / QTD (reuse week2 ref date)
     const w2 = rucWeek2Data[r] ?? rucWeek2Data['all'];
-    document.getElementById('ruc-house-week2').textContent    = fmt(w2.house);
-    document.getElementById('ruc-nonhouse-week2').textContent = fmt(w2.nonhouse);
-    document.getElementById('ruc-week2').textContent          = fmt(w2.total);
-    // June MTD and Q2 both use 6/28 ref date
-    document.getElementById('ruc-house-mtd').textContent       = fmt(w2.house);
-    document.getElementById('ruc-nonhouse-mtd').textContent    = fmt(w2.nonhouse);
-    document.getElementById('ruc-mtd').textContent             = fmt(w2.total);
-    document.getElementById('ruc-house-qtd').textContent       = fmt(w2.house);
-    document.getElementById('ruc-nonhouse-qtd').textContent    = fmt(w2.nonhouse);
-    document.getElementById('ruc-qtd').textContent             = fmt(w2.total);
+    document.getElementById('ruc-house-may').textContent    = fmt((rucMayData[r] ?? rucMayData['all']).house);
+    document.getElementById('ruc-nonhouse-may').textContent = fmt((rucMayData[r] ?? rucMayData['all']).nonhouse);
+    document.getElementById('ruc-total-may').textContent    = fmt((rucMayData[r] ?? rucMayData['all']).total);
+    document.getElementById('ruc-house-mtd').textContent    = fmt(w2.house);
+    document.getElementById('ruc-nonhouse-mtd').textContent = fmt(w2.nonhouse);
+    document.getElementById('ruc-mtd').textContent          = fmt(w2.total);
+    document.getElementById('ruc-house-qtd').textContent    = fmt(w2.house);
+    document.getElementById('ruc-nonhouse-qtd').textContent = fmt(w2.nonhouse);
+    document.getElementById('ruc-qtd').textContent          = fmt(w2.total);
+    // Weekly trend cells
+    WEEK_KEYS.forEach(key => {
+      const d = _rucByKey[key][r] ?? _rucByKey[key]['all'];
+      const hEl = document.getElementById('ruc-house-' + key);
+      const nEl = document.getElementById('ruc-nonhouse-' + key);
+      const tEl = document.getElementById('ruc-total-' + key) ?? document.getElementById('ruc-' + key);
+      if (hEl) hEl.textContent = fmt(d.house);
+      if (nEl) nEl.textContent = fmt(d.nonhouse);
+      if (tEl) tEl.textContent = fmt(d.total);
+    });
   }
 
+  const _dsDataByKey = {
+    w427: doorSwingsW427Data, w504: doorSwingsW504Data, w511: doorSwingsW511Data,
+    w518: doorSwingsW518Data, w525: doorSwingsW525Data, w601: doorSwingsW601Data,
+    prev: doorSwingsPrevData, weekly: doorSwingsData, week2: doorSwingsWeek2Data,
+    w629: {'all':{live:56,prospect:6},'1':{live:0,prospect:0},'2':{live:10,prospect:0},'3':{live:7,prospect:0},'4':{live:4,prospect:0},'5':{live:4,prospect:0},'6':{live:18,prospect:1},'7':{live:12,prospect:5},'8':{live:1,prospect:0}}
+  };
+  const _dsLiveByKey = {
+    w427: dsLiveNames_W427, w504: dsLiveNames_W504, w511: dsLiveNames_W511,
+    w518: dsLiveNames_W518, w525: dsLiveNames_W525, w601: dsLiveNames_W601,
+    prev: dsLiveNames_PrevWeek, weekly: dsLiveNames_CurrWeek, week2: dsLiveNames_Week2,
+    w629: {'all':{'Hunter Brandt':19,'Amanda Rivera':12,'Hannah Rivera':10,'Sadie Orr':8,'Brad Fell':5,'Christian Corner':1,'Kortney Roher':1},'1':{},'2':{'Hannah Rivera':10},'3':{'Amanda Rivera':6,'Christian Corner':1},'4':{'Amanda Rivera':4},'5':{'Brad Fell':4},'6':{'Hunter Brandt':17,'Kortney Roher':1},'7':{'Sadie Orr':8,'Amanda Rivera':2,'Hunter Brandt':2},'8':{'Brad Fell':1}}
+  };
+  const _dsProspectByKey = {
+    w427: dsProspectNames_W427, w504: dsProspectNames_W504, w511: dsProspectNames_W511,
+    w518: dsProspectNames_W518, w525: dsProspectNames_W525, w601: dsProspectNames_W601,
+    prev: dsProspectNames_PrevWeek, weekly: dsProspectNames_CurrWeek, week2: dsProspectNames_Week2,
+    w629: {'all':{'Chris Oraha':3,'Sadie Orr':2,'Michelle Kent':1},'1':{},'2':{},'3':{},'4':{},'5':{},'6':{'Michelle Kent':1},'7':{'Chris Oraha':3,'Sadie Orr':2},'8':{}}
+  };
+  const _plDataByKey = {
+    w427: newPipelineW427Data, w504: newPipelineW504Data, w511: newPipelineW511Data,
+    w518: newPipelineW518Data, w525: newPipelineW525Data, w601: newPipelineW601Data,
+    prev: newPipelinePrevData, weekly: newPipelineWeeklyData, week2: newPipelineWeek2Data,
+    w629: {'all':3,'1':1,'2':0,'3':0,'4':0,'5':0,'6':0,'7':2,'8':0}
+  };
+  const _plNamesByKey = {
+    w427: pipelineW427Names, w504: pipelineW504Names, w511: pipelineW511Names,
+    w518: pipelineW518Names, w525: pipelineW525Names, w601: pipelineW601Names,
+    prev: {'all':['Allendale Quick Stop LLC','Bonnie cafe mt vernon new'],'1':[],'2':[],'3':[],'4':[],'5':[],'6':[],'7':['Allendale Quick Stop LLC','Bonnie cafe mt vernon new'],'8':[]},
+    weekly: {'all':['Aviator Coffee - New Deal (Westchester)','Creal Springs Mini Mart'],'1':[],'2':[],'3':['Aviator Coffee - New Deal (Westchester)'],'4':[],'5':[],'6':[],'7':['Creal Springs Mini Mart'],'8':[]},
+    week2: pipelineWeek2Names,
+    w629: {'all':['Sole Stone - New Deal','Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],'1':['Sole Stone - New Deal'],'2':[],'3':[],'4':[],'5':[],'6':[],'7':['Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],'8':[]}
+  };
+  const _rucByKey = {
+    w427: rucW427Data, w504: rucW504Data, w511: rucW511Data,
+    w518: rucW518Data, w525: rucW525Data, w601: rucW601Data,
+    prev: rucPrevData, weekly: rucData, week2: rucWeek2Data,
+    w629: {'all':{house:0,nonhouse:0,total:0},'1':{house:0,nonhouse:0,total:0},'2':{house:0,nonhouse:0,total:0},'3':{house:0,nonhouse:0,total:0},'4':{house:0,nonhouse:0,total:0},'5':{house:0,nonhouse:0,total:0},'6':{house:0,nonhouse:0,total:0},'7':{house:0,nonhouse:0,total:0},'8':{house:0,nonhouse:0,total:0}}
+  };
+  const WEEK_KEYS = ['w427','w504','w511','w518','w525','w601','prev','weekly','week2','w629'];
+
   function updateDoorSwings(r) {
-    const d    = doorSwingsData[r]     ?? doorSwingsData['all'];
-    const prev = doorSwingsPrevData[r] ?? doorSwingsPrevData['all'];
-    const may  = doorSwingsMayData[r]  ?? doorSwingsMayData['all'];
-    const jun  = doorSwingsJuneData[r] ?? doorSwingsJuneData['all'];
-    const w2   = doorSwingsWeek2Data[r] ?? doorSwingsWeek2Data['all'];
-    document.getElementById('doorswings-live-weekly').textContent     = d.live;
-    document.getElementById('doorswings-prospect-weekly').textContent = d.prospect;
-    document.getElementById('doorswings-live-prev').textContent       = prev.live;
-    document.getElementById('doorswings-prospect-prev').textContent   = prev.prospect;
+    // MTD cells
+    const may = doorSwingsMayData[r]  ?? doorSwingsMayData['all'];
+    const jun = doorSwingsJuneData[r] ?? doorSwingsJuneData['all'];
+    const jul = doorSwingsJulyData[r] ?? doorSwingsJulyData['all'];
     document.getElementById('doorswings-live-may').textContent        = may.live;
     document.getElementById('doorswings-prospect-may').textContent    = may.prospect;
     document.getElementById('doorswings-live-mtd').textContent        = jun.live;
     document.getElementById('doorswings-prospect-mtd').textContent    = jun.prospect;
-    setTip('doorswings-live-weekly',     d.live,    dsLiveNames_CurrWeek[r]    ?? dsLiveNames_CurrWeek['all']);
-    setTip('doorswings-prospect-weekly', d.prospect, dsProspectNames_CurrWeek[r] ?? dsProspectNames_CurrWeek['all']);
-    setTip('doorswings-live-prev',       prev.live, dsLiveNames_PrevWeek[r]    ?? dsLiveNames_PrevWeek['all']);
-    setTip('doorswings-prospect-prev',   prev.prospect, dsProspectNames_PrevWeek[r] ?? dsProspectNames_PrevWeek['all']);
-    setTip('doorswings-live-may',        may.live,  dsLiveNames_May[r]         ?? dsLiveNames_May['all']);
-    setTip('doorswings-prospect-may',    may.prospect, dsProspectNames_May[r]  ?? dsProspectNames_May['all']);
-    setTip('doorswings-live-mtd',        jun.live,  dsLiveNames_June[r]        ?? dsLiveNames_June['all']);
-    setTip('doorswings-prospect-mtd',    jun.prospect, dsProspectNames_June[r] ?? dsProspectNames_June['all']);
-    setTip('doorswings-live-week2',      w2.live,   dsLiveNames_Week2[r]       ?? dsLiveNames_Week2['all']);
-    setTip('doorswings-prospect-week2',  w2.prospect, dsProspectNames_Week2[r] ?? dsProspectNames_Week2['all']);
+    document.getElementById('doorswings-live-july').textContent       = jul.live;
+    document.getElementById('doorswings-prospect-july').textContent   = jul.prospect;
+    setTip('doorswings-live-may',      may.live,     dsLiveNames_May[r]       ?? dsLiveNames_May['all']);
+    setTip('doorswings-prospect-may',  may.prospect, dsProspectNames_May[r]   ?? dsProspectNames_May['all']);
+    setTip('doorswings-live-mtd',      jun.live,     dsLiveNames_June[r]      ?? dsLiveNames_June['all']);
+    setTip('doorswings-prospect-mtd',  jun.prospect, dsProspectNames_June[r]  ?? dsProspectNames_June['all']);
+    setTip('doorswings-live-july',     jul.live,     dsLiveNames_JulyMTD[r]   ?? dsLiveNames_JulyMTD['all']);
+    setTip('doorswings-prospect-july', jul.prospect, dsProspectNames_JulyMTD[r] ?? dsProspectNames_JulyMTD['all']);
+    // Weekly trend cells
+    WEEK_KEYS.forEach(key => {
+      const d = _dsDataByKey[key][r] ?? _dsDataByKey[key]['all'];
+      const lEl = document.getElementById('doorswings-live-' + key);
+      const pEl = document.getElementById('doorswings-prospect-' + key);
+      if (lEl) { lEl.textContent = d.live; setTip('doorswings-live-' + key, d.live, _dsLiveByKey[key][r] ?? _dsLiveByKey[key]['all']); }
+      if (pEl) { pEl.textContent = d.prospect; setTip('doorswings-prospect-' + key, d.prospect, _dsProspectByKey[key][r] ?? _dsProspectByKey[key]['all']); }
+    });
   }
 
   function updateVault(r) {
-    const d = vaultData[r] ?? { prev: 0, weekly: 0, week2: 0, may: 0, mtd: 0 };
-    document.getElementById('vault-prev').textContent   = '$' + (d.prev  ?? 0);
-    document.getElementById('vault-weekly').textContent = '$' + d.weekly;
-    document.getElementById('vault-week2').textContent  = '$' + (d.week2 ?? 0);
-    document.getElementById('vault-may').textContent    = '$' + (d.may   ?? 0);
-    document.getElementById('vault-mtd').textContent    = '$' + d.mtd;
+    const d = vaultData[r] ?? vaultData['all'];
+    document.getElementById('vault-may').textContent = '$' + (d.may ?? 0);
+    document.getElementById('vault-mtd').textContent = '$' + (d.mtd ?? 0);
+    WEEK_KEYS.forEach(key => {
+      const el = document.getElementById('vault-' + key);
+      if (el) el.textContent = '$' + (d[key] ?? 0);
+    });
   }
 
   function updateProblematic(r) {
     const d = problematicData[r] ?? problematicData['all'];
-    document.getElementById('problematic-prev').textContent   = d.prev;
-    document.getElementById('problematic-weekly').textContent = d.weekly;
-    const w2p = document.getElementById('problematic-week2');
-    if (w2p) w2p.textContent = d.week2 ?? '—';
-    document.getElementById('problematic-may').textContent    = d.may;
-    document.getElementById('problematic-mtd').textContent    = d.mtd;
+    const n = problematicNames[r] ?? problematicNames['all'] ?? {};
+    setTip('problematic-may', d.may, (problematicNames.may ?? {})[r] ?? (problematicNames.may ?? {})['all'] ?? []);
+    setTip('problematic-mtd', d.mtd, (problematicNames.mtd ?? {})[r] ?? (problematicNames.mtd ?? {})['all'] ?? []);
+    WEEK_KEYS.forEach(key => {
+      const el = document.getElementById('problematic-' + key);
+      if (el) setTip('problematic-' + key, d[key] ?? '—', (problematicNames[key] ?? {})[r] ?? (problematicNames[key] ?? {})['all'] ?? []);
+    });
   }
 
   function updateUnacceptable(r) {
     const d = unacceptableData[r] ?? unacceptableData['all'];
-    document.getElementById('unacceptable-prev').textContent   = d.prev;
-    document.getElementById('unacceptable-weekly').textContent = d.weekly;
-    const w2u = document.getElementById('unacceptable-week2');
-    if (w2u) w2u.textContent = d.week2 ?? '—';
-    document.getElementById('unacceptable-may').textContent    = d.may;
-    document.getElementById('unacceptable-mtd').textContent    = d.mtd;
+    document.getElementById('unacceptable-may').textContent = d.may;
+    document.getElementById('unacceptable-mtd').textContent = d.mtd;
+    WEEK_KEYS.forEach(key => {
+      const el = document.getElementById('unacceptable-' + key);
+      if (el) el.textContent = d[key] ?? '—';
+    });
   }
 
   function updateCampaigns(r) {
     const reg = r ?? 'all';
-    ['prev', 'weekly', 'week2', 'may', 'mtd'].forEach(period => {
+    [...WEEK_KEYS, 'may', 'mtd', 'july'].forEach(period => {
       const el = document.getElementById('campaign-' + period);
       if (!el) return;
       const pd = campaignData[period];
+      if (!pd) return;
       const d = pd[reg] ?? pd['all'];
       el.textContent = d.count;
       if (d.count > 0) {
@@ -1315,19 +1807,27 @@
     }
   }
 
+  function updateNTI(r) {
+    const d = ntiData[r] ?? ntiData['all'];
+    const mayEl = document.getElementById('nti-may');
+    const mtdEl = document.getElementById('nti-mtd');
+    if (mayEl) mayEl.textContent = fmt(d.may);
+    if (mtdEl) mtdEl.textContent = fmt(d.june);
+  }
+
   // New UAs: deals created in Q1/Q2 with stage = IGB App Prep, IGB App Submitted,
   // UA Signed, Takeover (UA Signed), In/Out Licensing Assigned Agent/Analyst, Pending License
   // Extensions: contract date in Q1/Q2 from extension 2026.xlsx
   const extensionsData = {
-    'all': { q1: 8,  q2: 3 },
-    '1':   { q1: 0,  q2: 0 },
-    '2':   { q1: 2,  q2: 0 },
-    '3':   { q1: 0,  q2: 0 },
-    '4':   { q1: 1,  q2: 0 },
-    '5':   { q1: 0,  q2: 0 },
-    '6':   { q1: 2,  q2: 1 },
-    '7':   { q1: 1,  q2: 2 },
-    '8':   { q1: 2,  q2: 0 }
+    'all': { q1: 8,  q2: 3,  q3: 0 },
+    '1':   { q1: 0,  q2: 0,  q3: 0 },
+    '2':   { q1: 2,  q2: 0,  q3: 0 },
+    '3':   { q1: 0,  q2: 0,  q3: 0 },
+    '4':   { q1: 1,  q2: 0,  q3: 0 },
+    '5':   { q1: 0,  q2: 0,  q3: 0 },
+    '6':   { q1: 2,  q2: 1,  q3: 0 },
+    '7':   { q1: 1,  q2: 2,  q3: 0 },
+    '8':   { q1: 2,  q2: 0,  q3: 0 }
   };
 
   const extensionsQ1Names = {
@@ -1346,29 +1846,42 @@
     '8':[]
   };
 
+  const extensionsQ3Names = {
+    'all': [], '1':[], '2':[], '3':[], '4':[], '5':[], '6':[], '7':[], '8':[]
+  };
+
   function updateExtensions(r) {
     const d = extensionsData[r] ?? extensionsData['all'];
     setTip('extensions-q1', d.q1, extensionsQ1Names[r] ?? extensionsQ1Names['all']);
     setTip('extensions-q2', d.q2, extensionsQ2Names[r] ?? extensionsQ2Names['all']);
+    setTip('extensions-q3', d.q3, extensionsQ3Names[r] ?? extensionsQ3Names['all']);
   }
 
   // New UAs: deals created in Q1/Q2 with qualifying stage (incl. Live Locations/closedwon)
   const newUAData = {
-    'all': { q1: 9,  q2: 25 },
-    '1':   { q1: 1,  q2: 16 },
-    '2':   { q1: 0,  q2: 0  },
-    '3':   { q1: 1,  q2: 1  },
-    '4':   { q1: 1,  q2: 3  },
-    '5':   { q1: 0,  q2: 1  },
-    '6':   { q1: 2,  q2: 2  },
-    '7':   { q1: 4,  q2: 1  },
-    '8':   { q1: 0,  q2: 1  }
+    'all': { q1: 9,  q2: 25, q3: 0 },
+    '1':   { q1: 1,  q2: 16, q3: 0 },
+    '2':   { q1: 0,  q2: 0,  q3: 0 },
+    '3':   { q1: 1,  q2: 1,  q3: 0 },
+    '4':   { q1: 1,  q2: 3,  q3: 0 },
+    '5':   { q1: 0,  q2: 1,  q3: 0 },
+    '6':   { q1: 2,  q2: 2,  q3: 0 },
+    '7':   { q1: 4,  q2: 1,  q3: 0 },
+    '8':   { q1: 0,  q2: 1,  q3: 0 }
+  };
+
+  const uaQ3Names = {
+    'all': [], '1':[], '2':[], '3':[], '4':[], '5':[], '6':[], '7':[], '8':[]
   };
 
   function updateNewUA(r) {
     const d = newUAData[r] ?? newUAData['all'];
     setTip('newua-q1', d.q1, uaQ1Names[r] ?? uaQ1Names['all']);
     setTip('newua-q2', d.q2, uaQ2Names[r] ?? uaQ2Names['all']);
+    setTip('newua-q3', d.q3, uaQ3Names[r] ?? uaQ3Names['all']);
+    setTip('rd-newua-q1', d.q1, uaQ1Names[r] ?? uaQ1Names['all']);
+    setTip('rd-newua-q2', d.q2, uaQ2Names[r] ?? uaQ2Names['all']);
+    setTip('rd-newua-q3', d.q3, uaQ3Names[r] ?? uaQ3Names['all']);
   }
 
   // ── Tooltip name lists ────────────────────────────────────────────────────
@@ -1395,12 +1908,18 @@
     '8': ['LENA FOOD & LIQUOR - Takeover','Fas Fuel - Belvidere','Michael\'s 29 Store - Athens']
   };
   const pipelineJuneNames = {
-    'all': ['Allendale Quick Stop LLC','Bonnie cafe mt vernon new','Aviator Coffee (Westchester)','Creal Springs Mini Mart','Petersburg Project','Ruckers Social House','The Weekend Winery and Brunch'],
-    '1':[], '2':[],
-    '3': ['Aviator Coffee (Westchester)'],
-    '4': ['Ruckers Social House','The Weekend Winery and Brunch'],
+    'all': ['Sole Stone - New Deal','Ruckers Social House - New Deal','The Weekend Winery and Brunch - New Deal','Creal Springs Mini Mart','Aviator Coffee - New Deal (Westchester)','Allendale Quick Stop LLC','Bonnie cafe mt vernon new','Petersburg Project'],
+    '1': ['Sole Stone - New Deal'], '2':[],
+    '3': ['Aviator Coffee - New Deal (Westchester)'],
+    '4': ['Ruckers Social House - New Deal','The Weekend Winery and Brunch - New Deal'],
     '5':[], '6': ['Petersburg Project'],
-    '7': ['Allendale Quick Stop LLC','Bonnie cafe mt vernon new','Creal Springs Mini Mart'],
+    '7': ['Creal Springs Mini Mart','Allendale Quick Stop LLC','Bonnie cafe mt vernon new'],
+    '8':[]
+  };
+  const pipelineJulyNames = {
+    'all': ['Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],
+    '1':[],'2':[],'3':[],'4':[],'5':[],'6':[],
+    '7': ['Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],
     '8':[]
   };
   const uaQ1Names = {
@@ -1467,23 +1986,90 @@
     }
   }
 
+  // ── Legacy Sales: # of Meetings (meetings only, no calls) ──────────────────
+  const lsMeetingsLive = {
+    w427:   {'all':61, '1':0,'2':11,'3':3, '4':7, '5':12,'6':16,'7':12,'8':0},
+    w504:   {'all':63, '1':0,'2':2, '3':10,'4':5, '5':6, '6':27,'7':13,'8':0},
+    w511:   {'all':66, '1':0,'2':8, '3':15,'4':16,'5':12,'6':9, '7':6, '8':0},
+    w518:   {'all':41, '1':0,'2':4, '3':3, '4':4, '5':3, '6':17,'7':10,'8':0},
+    w525:   {'all':34, '1':0,'2':3, '3':11,'4':4, '5':6, '6':5, '7':5, '8':0},
+    w601:   {'all':43, '1':0,'2':6, '3':5, '4':1, '5':6, '6':14,'7':11,'8':0},
+    prev:   {'all':44, '1':0,'2':7, '3':7, '4':12,'5':5, '6':11,'7':2, '8':0},
+    weekly: {'all':28, '1':0,'2':4, '3':3, '4':11,'5':7, '6':2, '7':1, '8':0},
+    week2:  {'all':83, '1':0,'2':13,'3':6, '4':9, '5':14,'6':29,'7':12,'8':0},
+    may:    {'all':213,'1':0,'2':19,'3':40,'4':30,'5':27,'6':60,'7':37,'8':0},
+    mtd:    {'all':198,'1':0,'2':30,'3':21,'4':33,'5':32,'6':56,'7':26,'8':0},
+    w629:   {'all':0, '1':0,'2':0, '3':0, '4':0, '5':0, '6':0, '7':0, '8':0},
+  };
+  const lsMeetingsProspect = {
+    w427:   {'all':22, '1':0,'2':2, '3':4, '4':0,'5':0, '6':8, '7':8, '8':0},
+    w504:   {'all':25, '1':2,'2':1, '3':2, '4':0,'5':2, '6':6, '7':11,'8':1},
+    w511:   {'all':25, '1':1,'2':1, '3':0, '4':0,'5':3, '6':10,'7':8, '8':2},
+    w518:   {'all':25, '1':1,'2':2, '3':4, '4':0,'5':1, '6':9, '7':5, '8':3},
+    w525:   {'all':32, '1':0,'2':5, '3':2, '4':0,'5':5, '6':10,'7':6, '8':4},
+    w601:   {'all':26, '1':0,'2':2, '3':0, '4':1,'5':0, '6':9, '7':11,'8':3},
+    prev:   {'all':23, '1':3,'2':3, '3':0, '4':1,'5':3, '6':6, '7':7, '8':0},
+    weekly: {'all':17, '1':0,'2':3, '3':1, '4':0,'5':1, '6':5, '7':7, '8':0},
+    week2:  {'all':22, '1':0,'2':3, '3':1, '4':1,'5':1, '6':10,'7':5, '8':1},
+    may:    {'all':110,'1':4,'2':10,'3':8, '4':0,'5':11,'6':35,'7':32,'8':10},
+    mtd:    {'all':88, '1':3,'2':11,'3':2, '4':3,'5':5, '6':30,'7':30,'8':4},
+    w629:   {'all':0, '1':0,'2':0, '3':0, '4':0, '5':0, '6':0, '7':0, '8':0},
+  };
+  const lsMeetingsLiveNames = {
+    w427: {'all': {'Brad Fell': 12, 'Sadie Orr': 11, 'Hunter Brandt': 11, 'Hannah Rivera': 8, 'Kortney Roher': 7, 'Nick Bretwisch': 4, 'Amanda Rivera': 3, 'Michelle Kent': 2, 'Tom McInerney': 1, 'Alex Hutchinson': 1, 'Vishal Patel': 1}, '1': {}, '2': {'Hannah Rivera': 7, 'Nick Bretwisch': 3, 'Tom McInerney': 1}, '3': {'Amanda Rivera': 2, 'Hannah Rivera': 1}, '4': {'Hunter Brandt': 5, 'Alex Hutchinson': 1, 'Amanda Rivera': 1}, '5': {'Brad Fell': 12}, '6': {'Kortney Roher': 7, 'Hunter Brandt': 6, 'Michelle Kent': 2, 'Vishal Patel': 1}, '7': {'Sadie Orr': 11, 'Nick Bretwisch': 1}, '8': {}},
+    w504: {'all': {'Hunter Brandt': 16, 'Sadie Orr': 13, 'Kortney Roher': 13, 'Amanda Rivera': 8, 'Fiona Gallagher': 4, 'Hannah Rivera': 3, 'Brad Fell': 3, 'Vishal Patel': 2, 'Tom McInerney': 1}, '1': {}, '2': {'Hannah Rivera': 1, 'Tom McInerney': 1}, '3': {'Amanda Rivera': 8, 'Hannah Rivera': 2}, '4': {'Fiona Gallagher': 4, 'Vishal Patel': 1}, '5': {'Kortney Roher': 3, 'Brad Fell': 3}, '6': {'Hunter Brandt': 16, 'Kortney Roher': 10, 'Vishal Patel': 1}, '7': {'Sadie Orr': 13}, '8': {}},
+    w511: {'all': {'Amanda Rivera': 21, 'Brad Fell': 13, 'Hannah Rivera': 11, 'Hunter Brandt': 11, 'Sadie Orr': 5, 'Kortney Roher': 2, 'Vishal Patel': 1, 'Fiona Gallagher': 1, 'Michelle Kent': 1, 'Chris Oraha': 1}, '1': {}, '2': {'Hannah Rivera': 4, 'Amanda Rivera': 3, 'Hunter Brandt': 1}, '3': {'Amanda Rivera': 12, 'Hannah Rivera': 3}, '4': {'Amanda Rivera': 6, 'Hannah Rivera': 4, 'Hunter Brandt': 4, 'Vishal Patel': 1, 'Fiona Gallagher': 1}, '5': {'Brad Fell': 13}, '6': {'Hunter Brandt': 6, 'Kortney Roher': 2, 'Michelle Kent': 1}, '7': {'Sadie Orr': 5, 'Chris Oraha': 1}, '8': {}},
+    w518: {'all': {'Sadie Orr': 10, 'Hunter Brandt': 7, 'Kortney Roher': 7, 'Vishal Patel': 5, 'Amanda Rivera': 4, 'Brad Fell': 3, 'Hannah Rivera': 3, 'Tom McInerney': 1, 'Michelle Kent': 1}, '1': {}, '2': {'Hannah Rivera': 3, 'Tom McInerney': 1}, '3': {'Amanda Rivera': 3}, '4': {'Vishal Patel': 3, 'Amanda Rivera': 1}, '5': {'Brad Fell': 3}, '6': {'Hunter Brandt': 7, 'Kortney Roher': 7, 'Vishal Patel': 2, 'Michelle Kent': 1}, '7': {'Sadie Orr': 10}, '8': {}},
+    w525: {'all': {'Amanda Rivera': 13, 'Hunter Brandt': 9, 'Brad Fell': 7, 'Sadie Orr': 4, 'Vishal Patel': 1, 'Tiffany Sadler': 1}, '1': {}, '2': {'Tiffany Sadler': 1, 'Amanda Rivera': 1, 'Hunter Brandt': 1}, '3': {'Amanda Rivera': 11}, '4': {'Hunter Brandt': 3, 'Vishal Patel': 1}, '5': {'Brad Fell': 7}, '6': {'Hunter Brandt': 5}, '7': {'Sadie Orr': 4, 'Amanda Rivera': 1}, '8': {}},
+    w601: {'all': {'Sadie Orr': 11, 'Kortney Roher': 11, 'Brad Fell': 5, 'Amanda Rivera': 5, 'Hannah Rivera': 5, 'Hunter Brandt': 2, 'Michelle Kent': 2, 'Vishal Patel': 1, 'Tom McInerney': 1}, '1': {}, '2': {'Hannah Rivera': 5, 'Tom McInerney': 1}, '3': {'Amanda Rivera': 5}, '4': {'Vishal Patel': 1}, '5': {'Brad Fell': 5, 'Kortney Roher': 1}, '6': {'Kortney Roher': 10, 'Hunter Brandt': 2, 'Michelle Kent': 2}, '7': {'Sadie Orr': 11}, '8': {}},
+    prev: {'all': {'Hunter Brandt': 13, 'Hannah Rivera': 7, 'Fiona Gallagher': 6, 'Amanda Rivera': 6, 'Brad Fell': 4, 'Sadie Orr': 3, 'Kortney Roher': 3, 'Tom McInerney': 1, 'Michelle Kent': 1}, '1': {}, '2': {'Hannah Rivera': 6, 'Hunter Brandt': 1}, '3': {'Amanda Rivera': 5, 'Hannah Rivera': 1, 'Tom McInerney': 1}, '4': {'Fiona Gallagher': 6, 'Hunter Brandt': 5, 'Amanda Rivera': 1}, '5': {'Brad Fell': 4, 'Kortney Roher': 1}, '6': {'Hunter Brandt': 7, 'Kortney Roher': 2, 'Sadie Orr': 1, 'Michelle Kent': 1}, '7': {'Sadie Orr': 2}, '8': {}},
+    weekly: {'all': {'Amanda Rivera': 9, 'Brad Fell': 7, 'Fiona Gallagher': 5, 'Hannah Rivera': 3, 'Hunter Brandt': 1, 'Kortney Roher': 1, 'Tom McInerney': 1, 'Sadie Orr': 1}, '1': {}, '2': {'Hannah Rivera': 3, 'Tom McInerney': 1}, '3': {'Amanda Rivera': 3}, '4': {'Amanda Rivera': 6, 'Fiona Gallagher': 5}, '5': {'Brad Fell': 7}, '6': {'Hunter Brandt': 1, 'Kortney Roher': 1}, '7': {'Sadie Orr': 1}, '8': {}},
+    week2: {'all': {'Hunter Brandt': 28, 'Brad Fell': 12, 'Hannah Rivera': 11, 'Sadie Orr': 11, 'Kortney Roher': 10, 'Christian Corner': 4, 'Amanda Rivera': 3, 'Vishal Patel': 3, 'Tom McInerney': 1, 'Fiona Gallagher': 1}, '1': {}, '2': {'Hannah Rivera': 11, 'Amanda Rivera': 1, 'Hunter Brandt': 1}, '3': {'Christian Corner': 4, 'Amanda Rivera': 2}, '4': {'Hunter Brandt': 5, 'Vishal Patel': 3, 'Fiona Gallagher': 1}, '5': {'Brad Fell': 12, 'Kortney Roher': 3}, '6': {'Hunter Brandt': 22, 'Kortney Roher': 7}, '7': {'Sadie Orr': 11, 'Tom McInerney': 1}, '8': {}},
+    may: {'all': {'Amanda Rivera': 47, 'Hunter Brandt': 43, 'Sadie Orr': 35, 'Brad Fell': 26, 'Kortney Roher': 22, 'Hannah Rivera': 19, 'Vishal Patel': 9, 'Fiona Gallagher': 5, 'Michelle Kent': 4, 'Tom McInerney': 2, 'Nick Bretwisch': 1, 'Chris Oraha': 1, 'Tiffany Sadler': 1}, '1': {}, '2': {'Hannah Rivera': 9, 'Amanda Rivera': 4, 'Tom McInerney': 2, 'Hunter Brandt': 2, 'Nick Bretwisch': 1, 'Tiffany Sadler': 1}, '3': {'Amanda Rivera': 34, 'Hannah Rivera': 6}, '4': {'Amanda Rivera': 8, 'Hunter Brandt': 7, 'Vishal Patel': 6, 'Fiona Gallagher': 5, 'Hannah Rivera': 4}, '5': {'Brad Fell': 26, 'Kortney Roher': 3}, '6': {'Hunter Brandt': 34, 'Kortney Roher': 19, 'Michelle Kent': 4, 'Vishal Patel': 3}, '7': {'Sadie Orr': 35, 'Chris Oraha': 1, 'Amanda Rivera': 1}, '8': {}},
+    mtd: {'all': {'Hunter Brandt': 44, 'Brad Fell': 28, 'Sadie Orr': 26, 'Hannah Rivera': 26, 'Kortney Roher': 25, 'Amanda Rivera': 23, 'Fiona Gallagher': 12, 'Vishal Patel': 4, 'Tom McInerney': 4, 'Christian Corner': 4, 'Michelle Kent': 3}, '1': {}, '2': {'Hannah Rivera': 25, 'Tom McInerney': 2, 'Hunter Brandt': 2, 'Amanda Rivera': 1}, '3': {'Amanda Rivera': 15, 'Christian Corner': 4, 'Hannah Rivera': 1, 'Tom McInerney': 1}, '4': {'Fiona Gallagher': 12, 'Hunter Brandt': 10, 'Amanda Rivera': 7, 'Vishal Patel': 4}, '5': {'Brad Fell': 28, 'Kortney Roher': 5}, '6': {'Hunter Brandt': 32, 'Kortney Roher': 20, 'Michelle Kent': 3, 'Sadie Orr': 1}, '7': {'Sadie Orr': 25, 'Tom McInerney': 1}, '8': {}},
+    w629: {'all':{},'1':{},'2':{},'3':{},'4':{},'5':{},'6':{},'7':{},'8':{}},
+  };
+  const lsMeetingsProspectNames = {
+    w427: {'all': {'Michelle Kent': 8, 'Chris Oraha': 5, 'Vishal Patel': 3, 'Sadie Orr': 2, 'Alex Hutchinson': 2, 'Kortney Roher': 1}, '1': {}, '2': {'Michelle Kent': 1, 'Vishal Patel': 1}, '3': {'Alex Hutchinson': 2, 'Vishal Patel': 2}, '4': {}, '5': {}, '6': {'Michelle Kent': 7, 'Kortney Roher': 1}, '7': {'Chris Oraha': 5, 'Sadie Orr': 2}, '8': {}},
+    w504: {'all': {'Chris Oraha': 11, 'Amanda Rivera': 3, 'Kortney Roher': 3, 'Michelle Kent': 3, 'Brad Fell': 2, 'Patrick Lehmann': 2, 'Vishal Patel': 1}, '1': {'Amanda Rivera': 2}, '2': {'Patrick Lehmann': 1}, '3': {'Amanda Rivera': 1, 'Patrick Lehmann': 1}, '4': {}, '5': {'Brad Fell': 2}, '6': {'Kortney Roher': 3, 'Michelle Kent': 3}, '7': {'Chris Oraha': 11}, '8': {'Vishal Patel': 1}},
+    w511: {'all': {'Chris Oraha': 7, 'Vishal Patel': 5, 'Michelle Kent': 5, 'Sadie Orr': 3, 'Kortney Roher': 2, 'Brad Fell': 2, 'Hannah Rivera': 1}, '1': {'Hannah Rivera': 1}, '2': {'Chris Oraha': 1}, '3': {}, '4': {}, '5': {'Brad Fell': 2, 'Chris Oraha': 1}, '6': {'Vishal Patel': 5, 'Michelle Kent': 3, 'Kortney Roher': 2}, '7': {'Chris Oraha': 5, 'Sadie Orr': 3}, '8': {'Michelle Kent': 2}},
+    w518: {'all': {'Vishal Patel': 9, 'Michelle Kent': 6, 'Chris Oraha': 3, 'Alex Hutchinson': 2, 'Sadie Orr': 2, 'Hannah Rivera': 1, 'Brad Fell': 1, 'Kortney Roher': 1}, '1': {'Vishal Patel': 1}, '2': {'Vishal Patel': 1, 'Hannah Rivera': 1}, '3': {'Alex Hutchinson': 2, 'Vishal Patel': 2}, '4': {}, '5': {'Brad Fell': 1}, '6': {'Michelle Kent': 5, 'Vishal Patel': 3, 'Kortney Roher': 1}, '7': {'Chris Oraha': 3, 'Sadie Orr': 2}, '8': {'Vishal Patel': 2, 'Michelle Kent': 1}},
+    w525: {'all': {'Vishal Patel': 9, 'Michelle Kent': 9, 'Chris Oraha': 7, 'Brad Fell': 4, 'Sadie Orr': 2, 'Patrick Lehmann': 1}, '1': {}, '2': {'Vishal Patel': 2, 'Chris Oraha': 2, 'Patrick Lehmann': 1}, '3': {'Vishal Patel': 2}, '4': {}, '5': {'Brad Fell': 4, 'Chris Oraha': 1}, '6': {'Michelle Kent': 7, 'Vishal Patel': 3}, '7': {'Chris Oraha': 4, 'Sadie Orr': 2}, '8': {'Vishal Patel': 2, 'Michelle Kent': 2}},
+    w601: {'all': {'Vishal Patel': 7, 'Michelle Kent': 7, 'Chris Oraha': 6, 'Sadie Orr': 5, 'Tommy Bloom': 1}, '1': {}, '2': {'Vishal Patel': 2}, '3': {}, '4': {'Tommy Bloom': 1}, '5': {}, '6': {'Michelle Kent': 7, 'Vishal Patel': 2}, '7': {'Chris Oraha': 6, 'Sadie Orr': 5}, '8': {'Vishal Patel': 3}},
+    prev: {'all': {'Vishal Patel': 6, 'Brad Fell': 4, 'Chris Oraha': 4, 'Michelle Kent': 4, 'Sadie Orr': 3, 'Tom McInerney': 1, 'Amanda Rivera': 1, 'Patrick Lehmann': 1}, '1': {'Vishal Patel': 2, 'Amanda Rivera': 1}, '2': {'Vishal Patel': 2, 'Patrick Lehmann': 1}, '3': {}, '4': {'Tom McInerney': 1}, '5': {'Brad Fell': 4}, '6': {'Michelle Kent': 4, 'Vishal Patel': 2}, '7': {'Chris Oraha': 4, 'Sadie Orr': 3}, '8': {}},
+    weekly: {'all': {'Chris Oraha': 5, 'Sadie Orr': 3, 'Vishal Patel': 3, 'Patrick Lehmann': 3, 'Kortney Roher': 1, 'Brad Fell': 1, 'Hannah Rivera': 1}, '1': {}, '2': {'Patrick Lehmann': 2, 'Hannah Rivera': 1}, '3': {'Patrick Lehmann': 1}, '4': {}, '5': {'Brad Fell': 1}, '6': {'Vishal Patel': 3, 'Kortney Roher': 1, 'Chris Oraha': 1}, '7': {'Chris Oraha': 4, 'Sadie Orr': 3}, '8': {}},
+    week2: {'all': {'Michelle Kent': 7, 'Vishal Patel': 4, 'Chris Oraha': 3, 'Sadie Orr': 2, 'Hannah Rivera': 1, 'Brad Fell': 1, 'Patrick Lehmann': 1, 'Christian Corner': 1, 'Kortney Roher': 1, 'Fiona Gallagher': 1}, '1': {}, '2': {'Vishal Patel': 1, 'Hannah Rivera': 1, 'Patrick Lehmann': 1}, '3': {'Christian Corner': 1}, '4': {'Fiona Gallagher': 1}, '5': {'Brad Fell': 1}, '6': {'Michelle Kent': 6, 'Vishal Patel': 3, 'Kortney Roher': 1}, '7': {'Chris Oraha': 3, 'Sadie Orr': 2}, '8': {'Michelle Kent': 1}},
+    may: {'all': {'Chris Oraha': 30, 'Vishal Patel': 25, 'Michelle Kent': 23, 'Brad Fell': 9, 'Sadie Orr': 7, 'Kortney Roher': 6, 'Amanda Rivera': 3, 'Patrick Lehmann': 3, 'Hannah Rivera': 2, 'Alex Hutchinson': 2}, '1': {'Amanda Rivera': 2, 'Hannah Rivera': 1, 'Vishal Patel': 1}, '2': {'Vishal Patel': 4, 'Chris Oraha': 3, 'Patrick Lehmann': 2, 'Hannah Rivera': 1}, '3': {'Vishal Patel': 4, 'Alex Hutchinson': 2, 'Amanda Rivera': 1, 'Patrick Lehmann': 1}, '4': {}, '5': {'Brad Fell': 9, 'Chris Oraha': 2}, '6': {'Michelle Kent': 18, 'Vishal Patel': 11, 'Kortney Roher': 6}, '7': {'Chris Oraha': 25, 'Sadie Orr': 7}, '8': {'Vishal Patel': 5, 'Michelle Kent': 5}},
+    mtd: {'all': {'Vishal Patel': 20, 'Michelle Kent': 18, 'Chris Oraha': 18, 'Sadie Orr': 13, 'Brad Fell': 6, 'Patrick Lehmann': 5, 'Kortney Roher': 2, 'Hannah Rivera': 2, 'Tommy Bloom': 1, 'Tom McInerney': 1, 'Amanda Rivera': 1, 'Christian Corner': 1, 'Fiona Gallagher': 1}, '1': {'Vishal Patel': 2, 'Amanda Rivera': 1}, '2': {'Vishal Patel': 5, 'Patrick Lehmann': 4, 'Hannah Rivera': 2}, '3': {'Patrick Lehmann': 1, 'Christian Corner': 1}, '4': {'Tommy Bloom': 1, 'Tom McInerney': 1, 'Fiona Gallagher': 1}, '5': {'Brad Fell': 6}, '6': {'Michelle Kent': 17, 'Vishal Patel': 10, 'Kortney Roher': 2, 'Chris Oraha': 1}, '7': {'Chris Oraha': 17, 'Sadie Orr': 13}, '8': {'Vishal Patel': 3, 'Michelle Kent': 1}},
+    w629: {'all':{},'1':{},'2':{},'3':{},'4':{},'5':{},'6':{},'7':{},'8':{}},
+  };
+
+  function updateLSMeetings(r) {
+    const reg = r ?? 'all';
+    [...WEEK_KEYS, 'may', 'mtd'].forEach(key => {
+      const liveVal = (lsMeetingsLive[key] ?? {})[reg] ?? (lsMeetingsLive[key] ?? {})['all'] ?? 0;
+      const prosVal = (lsMeetingsProspect[key] ?? {})[reg] ?? (lsMeetingsProspect[key] ?? {})['all'] ?? 0;
+      const liveNames = (lsMeetingsLiveNames[key] ?? {})[reg] ?? (lsMeetingsLiveNames[key] ?? {})['all'] ?? {};
+      const prosNames = (lsMeetingsProspectNames[key] ?? {})[reg] ?? (lsMeetingsProspectNames[key] ?? {})['all'] ?? {};
+      setTip('ls-meetings-live-' + key, liveVal, liveNames);
+      setTip('ls-meetings-pros-' + key, prosVal, prosNames);
+    });
+  }
+
   function updateNewPipeline(r) {
-    setTip('newpipeline-prev',   newPipelinePrevData[r]    ?? newPipelinePrevData['all'],   pipelinePrevNames[r]   ?? pipelinePrevNames['all']);
-    setTip('newpipeline-weekly', newPipelineWeeklyData[r]  ?? newPipelineWeeklyData['all'], pipelineWeeklyNames[r] ?? pipelineWeeklyNames['all']);
-    setTip('newpipeline-may',    newPipelineMayData[r]     ?? newPipelineMayData['all'],    pipelineMayNames[r]    ?? pipelineMayNames['all']);
-    setTip('newpipeline-mtd',    newPipelineJuneData[r]    ?? newPipelineJuneData['all'],   pipelineJuneNames[r]   ?? pipelineJuneNames['all']);
-    const w2v = newPipelineWeek2Data[r];
-    const el2 = document.getElementById('newpipeline-week2');
-    if (el2) {
-      if (w2v !== null && w2v !== undefined) {
-        setTip('newpipeline-week2', w2v, pipelineWeek2Names[r] ?? pipelineWeek2Names['all']);
-      } else {
-        el2.textContent = '—';
-        el2.classList.add('empty');
-        delete el2.dataset.tip;
-        el2.classList.remove('tip');
-      }
-    }
+    setTip('newpipeline-may',  newPipelineMayData[r]  ?? newPipelineMayData['all'],  pipelineMayNames[r]  ?? pipelineMayNames['all']);
+    setTip('newpipeline-mtd',  newPipelineJuneData[r] ?? newPipelineJuneData['all'], pipelineJuneNames[r] ?? pipelineJuneNames['all']);
+    setTip('newpipeline-july', newPipelineJulyData[r] ?? newPipelineJulyData['all'], pipelineJulyNames[r] ?? pipelineJulyNames['all']);
+    setTip('ls-pipeline-may',  newPipelineMayData[r]  ?? newPipelineMayData['all'],  pipelineMayNames[r]  ?? pipelineMayNames['all']);
+    setTip('ls-pipeline-mtd',  newPipelineJuneData[r] ?? newPipelineJuneData['all'], pipelineJuneNames[r] ?? pipelineJuneNames['all']);
+    WEEK_KEYS.forEach(key => {
+      const el = document.getElementById('newpipeline-' + key);
+      if (!el) return;
+      const val = _plDataByKey[key][r] ?? _plDataByKey[key]['all'];
+      const names = _plNamesByKey[key];
+      setTip('newpipeline-' + key, val, names ? (names[r] ?? names['all']) : []);
+      setTip('ls-pipeline-' + key, val, names ? (names[r] ?? names['all']) : []);
+    });
   }
 
   // ── SUMMARY CHARTS ──
@@ -1544,68 +2130,50 @@
 
   function buildSummaryCharts(r) {
     const reg = r ?? 'all';
-    const labels = ['6/8–6/14', '6/15–6/21', '6/22–6/28'];
+    const labels = ['4/27–5/3','5/4–5/10','5/11–5/17','5/18–5/24','5/25–5/31','6/1–6/7','6/8–6/14','6/15–6/21','6/22–6/28','6/29–7/5'];
 
     // Door Swings — Live (stacked by rep)
-    buildStackedChart('chart-live', labels, [
-      dsLiveNames_PrevWeek[reg]  ?? dsLiveNames_PrevWeek['all'],
-      dsLiveNames_CurrWeek[reg]  ?? dsLiveNames_CurrWeek['all'],
-      dsLiveNames_Week2[reg]     ?? dsLiveNames_Week2['all'],
-    ], reg);
+    buildStackedChart('chart-live', labels,
+      WEEK_KEYS.map(k => { const d = _dsLiveByKey[k]; return (d[reg] ?? d['all']) || {}; }),
+    reg);
 
     // Door Swings — Prospect (stacked by rep)
-    buildStackedChart('chart-prospect', labels, [
-      dsProspectNames_PrevWeek[reg] ?? dsProspectNames_PrevWeek['all'],
-      dsProspectNames_CurrWeek[reg] ?? dsProspectNames_CurrWeek['all'],
-      dsProspectNames_Week2[reg]    ?? dsProspectNames_Week2['all'],
-    ], reg);
+    buildStackedChart('chart-prospect', labels,
+      WEEK_KEYS.map(k => { const d = _dsProspectByKey[k]; return (d[reg] ?? d['all']) || {}; }),
+    reg);
 
     // New Pipeline (simple)
-    buildSimpleChart('chart-pipeline', labels, [
-      newPipelinePrevData[reg]    ?? newPipelinePrevData['all'],
-      newPipelineWeeklyData[reg]  ?? newPipelineWeeklyData['all'],
-      newPipelineWeek2Data[reg]   ?? newPipelineWeek2Data['all'],
-    ], '#4e79a7');
+    buildSimpleChart('chart-pipeline', labels,
+      WEEK_KEYS.map(k => { const d = _plDataByKey[k]; return d[reg] ?? d['all'] ?? 0; }),
+    '#4e79a7');
 
     // Active Campaigns (stacked by owner)
-    buildStackedChart('chart-campaigns', labels, [
-      campaignData.prev[reg]   ? campaignData.prev[reg].owners   : campaignData.prev['all'].owners,
-      campaignData.weekly[reg] ? campaignData.weekly[reg].owners : campaignData.weekly['all'].owners,
-      campaignData.week2[reg]  ? campaignData.week2[reg].owners  : campaignData.week2['all'].owners,
-    ], reg);
+    buildStackedChart('chart-campaigns', labels,
+      WEEK_KEYS.map(k => { const pd = campaignData[k]; return pd ? (pd[reg] ?? pd['all']).owners : {}; }),
+    reg);
 
     // Problematic Machines (simple)
-    buildSimpleChart('chart-problematic', labels, [
-      (problematicData[reg] ?? problematicData['all']).prev,
-      (problematicData[reg] ?? problematicData['all']).weekly,
-      (problematicData[reg] ?? problematicData['all']).week2,
-    ], '#e15759');
+    buildSimpleChart('chart-problematic', labels,
+      WEEK_KEYS.map(k => (problematicData[reg] ?? problematicData['all'])[k] ?? 0),
+    '#e15759');
 
     // Unacceptable Tickets (simple)
-    buildSimpleChart('chart-unacceptable', labels, [
-      (unacceptableData[reg] ?? unacceptableData['all']).prev,
-      (unacceptableData[reg] ?? unacceptableData['all']).weekly,
-      (unacceptableData[reg] ?? unacceptableData['all']).week2,
-    ], '#f28e2b');
+    buildSimpleChart('chart-unacceptable', labels,
+      WEEK_KEYS.map(k => (unacceptableData[reg] ?? unacceptableData['all'])[k] ?? 0),
+    '#f28e2b');
 
     // Vault Discrepancy (simple)
-    buildSimpleChart('chart-vault', labels, [
-      (vaultData[reg] ?? vaultData['all']).prev,
-      (vaultData[reg] ?? vaultData['all']).weekly,
-      (vaultData[reg] ?? vaultData['all']).week2,
-    ], '#59a14f');
+    buildSimpleChart('chart-vault', labels,
+      WEEK_KEYS.map(k => (vaultData[reg] ?? vaultData['all'])[k] ?? 0),
+    '#59a14f');
 
-    // Revenue Under Contract (stacked house + nonhouse)
-    const rucPrev = rucPrevData[reg] ?? rucPrevData['all'];
-    const rucW1   = rucData[reg]     ?? rucData['all'];
-    const rucW2   = rucWeek2Data[reg]?? rucWeek2Data['all'];
-    const rucM = value => Math.round(value / 1e6 * 10) / 10; // millions
+    // Revenue Under Contract (house + nonhouse)
+    const rucM = v => Math.round(v / 1e6 * 10) / 10;
     buildChartInstance('chart-ruc', 'line', labels, [
-      { label: 'House', data: [rucM(rucPrev.house), rucM(rucW1.house), rucM(rucW2.house)], borderColor: '#4e79a7', backgroundColor: '#4e79a7', tension: 0.3, pointRadius: 4 },
-      { label: 'Non-House', data: [rucM(rucPrev.nonhouse), rucM(rucW1.nonhouse), rucM(rucW2.nonhouse)], borderColor: '#f28e2b', backgroundColor: '#f28e2b', tension: 0.3, pointRadius: 4 },
+      { label: 'House',     data: WEEK_KEYS.map(k => rucM((_rucByKey[k][reg] ?? _rucByKey[k]['all']).house)),    borderColor: '#4e79a7', backgroundColor: '#4e79a7', tension: 0.3, pointRadius: 4 },
+      { label: 'Non-House', data: WEEK_KEYS.map(k => rucM((_rucByKey[k][reg] ?? _rucByKey[k]['all']).nonhouse)), borderColor: '#f28e2b', backgroundColor: '#f28e2b', tension: 0.3, pointRadius: 4 },
     ], false);
 
-    // fix y-axis label for RUC chart
     if (_summaryCharts['chart-ruc']) {
       _summaryCharts['chart-ruc'].options.scales.y.title = { display: true, text: '$ Millions', font: { size: 10 } };
       _summaryCharts['chart-ruc'].update();
@@ -1623,6 +2191,7 @@
     updatePayroll(sel.value);
     updateDoorSwings(sel.value);
     updateNewPipeline(sel.value);
+    updateLSMeetings(sel.value);
     updateNewUA(sel.value);
     updateExtensions(sel.value);
     if (document.getElementById('tab-summary').classList.contains('active')) {
@@ -1639,8 +2208,10 @@
   updatePayroll('all');
   updateDoorSwings('all');
   updateNewPipeline('all');
+  updateLSMeetings('all');
   updateNewUA('all');
   updateExtensions('all');
+  updateNTI('all');
   setTimeout(() => buildSummaryCharts('all'), 0);
 
   // ── SAME STORE GROWTH DATA ──
@@ -1948,7 +2519,7 @@
     document.getElementById('region-label').textContent = '— ' + sel.options[sel.selectedIndex].text;
     updateRUC(sel.value); updateVault(sel.value); updateProblematic(sel.value); updateCampaigns(sel ? sel.value : 'all');
     updateUnacceptable(sel.value); updatePayroll(sel.value); updateDoorSwings(sel.value);
-    updateNewPipeline(sel.value); updateNewUA(sel.value); updateExtensions(sel.value);
+    updateNewPipeline(sel.value); updateLSMeetings(sel.value); updateNewUA(sel.value); updateExtensions(sel.value); updateNTI(sel.value); updateMarketShare(sel.value);
     renderSSTable(sel.value);
     if (document.getElementById('tab-summary').classList.contains('active')) {
       buildSummaryCharts(sel.value);
@@ -1956,6 +2527,7 @@
   }
 
   renderSSTable('all');
+  updateMarketShare('all');
 </script>
 
 </body>
