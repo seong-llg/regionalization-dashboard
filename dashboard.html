@@ -195,10 +195,9 @@
 
 <!-- POSITION TABS -->
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('rd', this)">Regional Director</button>
-  <button class="tab-btn" onclick="switchTab('ops', this)">Ops Lead</button>
-  <button class="tab-btn" onclick="switchTab('dm', this)">District Manager</button>
-  <button class="tab-btn" onclick="switchTab('ls', this)">Legacy Sales</button>
+  <button class="tab-btn active" onclick="switchTab('rd', this)">Finance</button>
+  <button class="tab-btn" onclick="switchTab('ops', this)">Operations</button>
+  <button class="tab-btn" onclick="switchTab('dm', this)">Sales/Marketing</button>
   <button class="tab-btn" onclick="switchTab('summary', this)">Summary</button>
 </div>
 
@@ -208,10 +207,10 @@
   <!-- ── DISTRICT MANAGER ── -->
   <div id="tab-dm" class="tab-content">
     <div class="section-header">
-      <div class="section-title">District Manager KPIs</div>
+      <div class="section-title">Sales/Marketing KPIs</div>
       <div class="view-toggle">
         <button class="view-toggle-btn active" onclick="switchView('dm', 'weekly', this)">Weekly</button>
-        <button class="view-toggle-btn" onclick="switchView('dm', 'mtd', this)">MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('dm', 'mtd', this)">Monthly</button>
         <button class="view-toggle-btn" onclick="switchView('dm', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
@@ -378,6 +377,18 @@
               <td class="value-cell empty qtd-val">—</td>
               <td class="value-cell empty q3-val">—</td>
             </tr>
+            <tr>
+              <td class="kpi-name">Win Rate</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell empty q3-val">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">UA Target</td>
+              <td class="value-cell empty q1-val">—</td>
+              <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell empty q3-val">—</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -409,10 +420,10 @@
   <!-- ── OPS LEAD ── -->
   <div id="tab-ops" class="tab-content">
     <div class="section-header">
-      <div class="section-title">Ops Lead KPIs</div>
+      <div class="section-title">Operations KPIs</div>
       <div class="view-toggle">
         <button class="view-toggle-btn active" onclick="switchView('ops', 'weekly', this)">Weekly</button>
-        <button class="view-toggle-btn" onclick="switchView('ops', 'mtd', this)">MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('ops', 'mtd', this)">Monthly</button>
         <button class="view-toggle-btn" onclick="switchView('ops', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
@@ -558,13 +569,13 @@
           <tbody>
             <tr>
               <td class="kpi-name">Problematic Machines</td>
-              <td class="value-cell empty q1-val">—</td>
-              <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell q1-val" id="ops-problematic-q1">—</td>
+              <td class="value-cell qtd-val" id="ops-problematic-q2">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Unacceptable Tickets</td>
-              <td class="value-cell empty q1-val">—</td>
-              <td class="value-cell empty qtd-val">—</td>
+              <td class="value-cell q1-val" id="ops-unacceptable-q1">—</td>
+              <td class="value-cell qtd-val" id="ops-unacceptable-q2">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Average Utilization</td>
@@ -590,10 +601,10 @@
   <!-- ── REGIONAL DIRECTOR ── -->
   <div id="tab-rd" class="tab-content active">
     <div class="section-header">
-      <div class="section-title">Regional Director KPIs</div>
+      <div class="section-title">Finance KPIs</div>
       <div class="view-toggle">
         <button class="view-toggle-btn active" onclick="switchView('rd', 'weekly', this)">Weekly</button>
-        <button class="view-toggle-btn" onclick="switchView('rd', 'mtd', this)">MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('rd', 'mtd', this)">Monthly</button>
         <button class="view-toggle-btn" onclick="switchView('rd', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
@@ -822,12 +833,12 @@
   </div>
 
   <!-- ── LEGACY SALES ── -->
-  <div id="tab-ls" class="tab-content">
+  <div id="tab-ls" class="tab-content" style="display:none!important">
     <div class="section-header">
       <div class="section-title">Legacy Sales KPIs</div>
       <div class="view-toggle">
         <button class="view-toggle-btn active" onclick="switchView('ls', 'weekly', this)">Weekly</button>
-        <button class="view-toggle-btn" onclick="switchView('ls', 'mtd', this)">MTD</button>
+        <button class="view-toggle-btn" onclick="switchView('ls', 'mtd', this)">Monthly</button>
         <button class="view-toggle-btn" onclick="switchView('ls', 'quarterly', this)">Quarterly</button>
       </div>
     </div>
@@ -1033,6 +1044,19 @@
     '8':   { house: 5448617,   nonhouse: 2330720,    total: 7779338   }
   };
 
+  // June Monthly RUC — ref date 2026-06-30
+  const rucJuneData = {
+    'all': { house: 456792136, nonhouse: 142527584, total: 599319720 },
+    '1':   { house: 0,         nonhouse: 0,          total: 0         },
+    '2':   { house: 63281907,  nonhouse: 35615427,   total: 98897334  },
+    '3':   { house: 136763467, nonhouse: 20047123,   total: 156810590 },
+    '4':   { house: 106655503, nonhouse: 22306443,   total: 128961946 },
+    '5':   { house: 9001060,   nonhouse: 5220787,    total: 14221847  },
+    '6':   { house: 103065939, nonhouse: 22815528,   total: 125881467 },
+    '7':   { house: 32661846,  nonhouse: 34270310,   total: 66932156  },
+    '8':   { house: 5362415,   nonhouse: 2251965,    total: 7614380   }
+  };
+
   // Previous week (6/8–6/14) RUC — ref date 2026-06-14
   const rucPrevData = {
     'all': { house: 458616853, nonhouse: 142278503, total: 600895355 },
@@ -1135,29 +1159,29 @@
   };
 
   const vaultData = {
-    'all': { w427:0, w504:1,  w511:0, w518:0, w525:50, w601:20, prev:0, weekly:20,  week2:0, w629:-6583, may:51, mtd:-6543 },
+    'all': { w427:0, w504:1,  w511:0, w518:0, w525:50, w601:20, prev:0, weekly:20,  week2:0, w629:-9760, may:51, mtd:-9720 },
     '1':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  },
-    '2':   { w427:0, w504:1,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:1,  mtd:0  },
+    '2':   { w427:0, w504:1,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-134,  may:1,  mtd:-134 },
     '3':   { w427:0, w504:0,  w511:0, w518:0, w525:50, w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:50, mtd:0  },
     '4':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  },
     '5':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  },
     '6':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:20, prev:0, weekly:20,  week2:0, w629:0,     may:0,  mtd:40 },
-    '7':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-6583, may:0,  mtd:-6583 },
+    '7':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-9626, may:0,  mtd:-9626 },
     '8':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0,     may:0,  mtd:0  }
   };
 
   // Problematic machines: >6 tickets in rolling 30-day window ending on last day of period
   // Current week window: 5/23–6/21 | Previous week window: 5/16–6/14
   const problematicData = {
-    'all': { w427:8, w504:2, w511:2, w518:6, w525:19, w601:36, prev: 47,  weekly: 50,  week2: 42, w629:0, may: 19, mtd: 42 },
-    '1':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 0,  w629:0, may: 0,  mtd: 0  },
-    '2':   { w427:1, w504:0, w511:1, w518:3, w525:5,  w601:6,  prev: 8,   weekly: 9,   week2: 7,  w629:0, may: 5,  mtd: 7  },
-    '3':   { w427:2, w504:0, w511:0, w518:1, w525:7,  w601:12, prev: 17,  weekly: 16,  week2: 12, w629:0, may: 7,  mtd: 12 },
-    '4':   { w427:2, w504:0, w511:0, w518:0, w525:3,  w601:8,  prev: 12,  weekly: 15,  week2: 12, w629:0, may: 3,  mtd: 12 },
-    '5':   { w427:0, w504:0, w511:0, w518:0, w525:1,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:0, may: 1,  mtd: 1  },
-    '6':   { w427:2, w504:1, w511:0, w518:0, w525:1,  w601:4,  prev: 5,   weekly: 6,   week2: 8,  w629:0, may: 1,  mtd: 8  },
-    '7':   { w427:1, w504:1, w511:1, w518:2, w525:2,  w601:4,  prev: 3,   weekly: 2,   week2: 1,  w629:0, may: 2,  mtd: 1  },
-    '8':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:0, may: 0,  mtd: 1  }
+    'all': { w427:8, w504:2, w511:2, w518:6, w525:19, w601:36, prev: 47,  weekly: 50,  week2: 42, w629:46, may: 19, mtd: 45 },
+    '1':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 0,  w629:0,  may: 0,  mtd: 0  },
+    '2':   { w427:1, w504:0, w511:1, w518:3, w525:5,  w601:6,  prev: 8,   weekly: 9,   week2: 7,  w629:9,  may: 5,  mtd: 6  },
+    '3':   { w427:2, w504:0, w511:0, w518:1, w525:7,  w601:12, prev: 17,  weekly: 16,  week2: 12, w629:13, may: 7,  mtd: 14 },
+    '4':   { w427:2, w504:0, w511:0, w518:0, w525:3,  w601:8,  prev: 12,  weekly: 15,  week2: 12, w629:12, may: 3,  mtd: 14 },
+    '5':   { w427:0, w504:0, w511:0, w518:0, w525:1,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:1,  may: 1,  mtd: 1  },
+    '6':   { w427:2, w504:1, w511:0, w518:0, w525:1,  w601:4,  prev: 5,   weekly: 6,   week2: 8,  w629:10, may: 1,  mtd: 8  },
+    '7':   { w427:1, w504:1, w511:1, w518:2, w525:2,  w601:4,  prev: 3,   weekly: 2,   week2: 1,  w629:0,  may: 2,  mtd: 1  },
+    '8':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:1,  may: 0,  mtd: 1  }
   };
 
   // Tooltip data: "Location — Machine (N tickets)" per period per region
@@ -1236,6 +1260,17 @@
       '7': ["Sin City Slots And Cafe — M3T TR8011 (9)"],
       '8': ["Sunrise Harvard — M3T TR8011 (9)"],
     },
+    w629: {
+      'all': ["Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — SG 1690000-SLANT-XX SK-1 KASCADA SLANT GAMING MACHINE (13)", "Catie's Place North Riverside — M3T TR1016 (13)", "Vegas Place Rantoul — M3T TR1016 (12)", "Citgo Elmwood Park — M3T TR1016 (12)", "Lucky Penny's Lindenhurst — M3T TR1016 (11)", "Ava's Cafe — M3T TR1016 (11)", "Lucky Bernie's Antioch — M3T TR1016 (11)", "Centennial Lanes 2.0 — M3T TR1016 (10)", "Sunrise Harvard — M3T TR8011 (10)", "Berkots Braidwood — M3T TR1016 (10)", "Lacey's Kankakee — M3T TR8011 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Lacey's Melrose Park — M3T TR1016 (10)", "Peggy's Deli — M3T TR1016 (10)", "Vegas Place Rantoul — IGT PEAK 49 (10)", "Marathon Oak Forest — M3T TR1016 (9)", "Lacey's Mchenry — M3T TR1016 (9)", "Tai Pan Chinese — M3T TR1016 (9)", "Rocky's Gaming Bar — M3T TR1016 (9)", "Diamonds Crestwood — M3T TR1016 (8)", "Ken's Food & Liquor — M3T TR8011 (8)", "Happy Gang — Spielo Prodigy Slant (8)", "Phillips 66 Watseka — M3T TR1016 (8)", "Lacey's North Riverside — M3T TR8011 (8)", "Lacey's Decatur (French Quarters) — M3T TR8011 (8)", "Matteson Bp Inc — M3T TR8011 (8)", "Diamonds Decatur — IGT PEAK 49 (8)", "Keeley's Place Springfield — M3T TR1016 (7)", "Saroor — M3T TR1016 (7)", "Mira's Cafe — M3T TR1016 (7)", "Lucky Penny's Third Lake — M3T TR1016 (7)", "Lacey's Oswego — M3T TR8011 (7)", "Lucky Penny's Lake Villa — M3T TR1016 (7)", "Lucky Penny's Cary — M3T TR1016 (7)", "The Taproom — M3T TR1016 (7)", "Astoria Tavern — M3T TR8011 (7)", "Lacey's Summit — M3T TR1016 (7)", "Happy Gang — M3T TR1016 (7)", "Lacey's Matteson — M3T TR8011 (7)", "Lacey's Maywood — M3T TR8011 (7)", "Dragon Palace — Spielo Prodigy Slant (7)", "Diamonds Champaign — M3T TR8011 (7)", "Lacey's Stone Park — M3T TR8011 (7)", "MISS KIMMEES MOUNT ZION, DECATUR — M3T TR8011 (7)", "Lacey's Champaign (Crossing/Village Green) — M3T TR1016 (7)"],
+      '1': [],
+      '2': ["Lucky Penny's Lindenhurst — M3T TR1016 (11)", "Lucky Bernie's Antioch — M3T TR1016 (11)", "Lacey's Mchenry — M3T TR1016 (9)", "Happy Gang — Spielo Prodigy Slant (8)", "Lucky Penny's Third Lake — M3T TR1016 (7)", "Lucky Penny's Lake Villa — M3T TR1016 (7)", "Lucky Penny's Cary — M3T TR1016 (7)", "The Taproom — M3T TR1016 (7)", "Happy Gang — M3T TR1016 (7)"],
+      '3': ["Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — SG 1690000-SLANT-XX SK-1 KASCADA SLANT GAMING MACHINE (13)", "Catie's Place North Riverside — M3T TR1016 (13)", "Citgo Elmwood Park — M3T TR1016 (12)", "Ava's Cafe — M3T TR1016 (11)", "Berkots Braidwood — M3T TR1016 (10)", "Lacey's Melrose Park — M3T TR1016 (10)", "Rocky's Gaming Bar — M3T TR1016 (9)", "Lacey's North Riverside — M3T TR8011 (8)", "Mira's Cafe — M3T TR1016 (7)", "Lacey's Oswego — M3T TR8011 (7)", "Lacey's Maywood — M3T TR8011 (7)", "Lacey's Stone Park — M3T TR8011 (7)"],
+      '4': ["Centennial Lanes 2.0 — M3T TR1016 (10)", "Lacey's Kankakee — M3T TR8011 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Peggy's Deli — M3T TR1016 (10)", "Marathon Oak Forest — M3T TR1016 (9)", "Diamonds Crestwood — M3T TR1016 (8)", "Ken's Food & Liquor — M3T TR8011 (8)", "Matteson Bp Inc — M3T TR8011 (8)", "Saroor — M3T TR1016 (7)", "Lacey's Summit — M3T TR1016 (7)", "Lacey's Matteson — M3T TR8011 (7)", "Dragon Palace — Spielo Prodigy Slant (7)"],
+      '5': ["Astoria Tavern — M3T TR8011 (7)"],
+      '6': ["Vegas Place Rantoul — M3T TR1016 (12)", "Vegas Place Rantoul — IGT PEAK 49 (10)", "Tai Pan Chinese — M3T TR1016 (9)", "Phillips 66 Watseka — M3T TR1016 (8)", "Lacey's Decatur (French Quarters) — M3T TR8011 (8)", "Diamonds Decatur — IGT PEAK 49 (8)", "Keeley's Place Springfield — M3T TR1016 (7)", "Diamonds Champaign — M3T TR8011 (7)", "MISS KIMMEES MOUNT ZION, DECATUR — M3T TR8011 (7)", "Lacey's Champaign (Crossing/Village Green) — M3T TR1016 (7)"],
+      '7': [],
+      '8': ["Sunrise Harvard — M3T TR8011 (10)"],
+    },
     may: {
       'all': ["Lucky Bernie's Spring Grove — M3T TR8011 (13)", "Lucky Penny's Cary — M3T TR1016 (13)", "Swamp Tales — M3T TR8011 (11)", "Catie's Place North Riverside — WMS S32 (10)", "The Pour House Bar & Grill — M3T TR1016 (9)", "Ava's Cafe — M3T TR1016 (9)", "Payson Convenience Quick Stop — M3T TR8011 (9)", "Barrelbounty Sip & Shop — M3T TR1016 (8)", "Mira's Cafe — M3T TR1016 (8)", "Lucky Bernie's Antioch — M3T TR1016 (8)", "Catie's Place River Grove — M3T TR8011 (8)", "Lacey's Decatur (French Quarters) — M3T TR8011 (8)", "Olivia's Place — M3T TR8011 (8)", "Lacey's Stone Park — M3T TR8011 (7)", "Agora Liquors — M3T TR8011 (7)", "Catie's Place North Riverside — M3T TR1016 (7)", "Lacey's Beecher — M3T TR8011 (7)", "Peggy's Deli — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
       '1': [], '2': ["Lucky Bernie's Spring Grove — M3T TR8011 (13)", "Lucky Penny's Cary — M3T TR1016 (13)", "Barrelbounty Sip & Shop — M3T TR1016 (8)", "Lucky Bernie's Antioch — M3T TR1016 (8)", "Agora Liquors — M3T TR8011 (7)"],
@@ -1246,29 +1281,30 @@
       '7': ["Swamp Tales — M3T TR8011 (11)", "The Pour House Bar & Grill — M3T TR1016 (9)"], '8': [],
     },
     mtd: {
-      'all': ["Catie's Place North Riverside — M3T TR1016 (19)", "Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — M3T TR1016 (13)", "Vegas Place Rantoul — M3T TR1016 (13)", "Lacey's Decatur (French Quarters) — M3T TR8011 (13)", "Sin City Slots And Cafe — M3T TR8011 (11)", "Lucky Bernie's Antioch — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (11)", "Rocky's Gaming Bar — M3T TR1016 (10)", "Mira's Cafe — M3T TR1016 (10)", "Lucky Penny's Cary — M3T TR1016 (10)", "Crab Du Jour — M3T TR1016 (10)", "Lacey's Markham — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Pops Lyons — M3T TR1016 (9)", "Berkots Braidwood — M3T TR1016 (9)", "Phillips 66 Watseka — M3T TR1016 (9)", "Lacey's Stone Park — M3T TR8011 (9)", "Diamonds Crestwood — M3T TR1016 (9)", "Catie's Place River Grove — M3T TR8011 (9)", "Payson Convenience Quick Stop — M3T TR8011 (9)", "Swamp Tales — M3T TR8011 (9)", "Lacey's Matteson — M3T TR8011 (9)", "Happy Gang — Spielo Prodigy Slant (8)", "Centennial Lanes 2.0 — M3T TR1016 (8)", "Lucky Penny's Third Lake — M3T TR1016 (8)", "Station 34 Mt Prospect — M3T TR1016 (8)", "Alsip Marathon — M3T TR8011 (8)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (8)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)", "Lacey's Beecher — M3T TR8011 (7)", "Aly Anne's — M3T TR1016 (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "BP Hometown — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Lacey's North Riverside — M3T TR8011 (7)", "Saroor — M3T TR1016 (7)", "Diamonds Decatur — M3T TR8011 (7)", "Agora Liquors — M3T TR8011 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "Lacey's Summit — M3T TR1016 (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Lacey's Mchenry — M3T TR1016 (7)", "Lacey's Romeoville — M3T TR8011 (7)", "Sunrise Harvard — M3T TR8011 (7)", "Mobil Summit — M3T TR1016 (7)"],
-      '1': [], '2': ["Lucky Bernie's Antioch — M3T TR1016 (11)", "Lucky Bernie's Spring Grove — M3T TR8011 (11)", "Lucky Penny's Cary — M3T TR1016 (10)", "Happy Gang — Spielo Prodigy Slant (8)", "Lucky Penny's Third Lake — M3T TR1016 (8)", "Station 34 Mt Prospect — M3T TR1016 (8)", "Agora Liquors — M3T TR8011 (7)", "Casa Chapala's Grill — M3T TR1016 (7)", "Lacey's Mchenry — M3T TR1016 (7)"],
-      '3': ["Catie's Place North Riverside — M3T TR1016 (19)", "Catie's Place North Riverside — WMS S32 (15)", "Lacey's Melrose Park — M3T TR1016 (13)", "Rocky's Gaming Bar — M3T TR1016 (10)", "Mira's Cafe — M3T TR1016 (10)", "Crab Du Jour — M3T TR1016 (10)", "Pops Lyons — M3T TR1016 (9)", "Berkots Braidwood — M3T TR1016 (9)", "Lacey's Stone Park — M3T TR8011 (9)", "Catie's Place River Grove — M3T TR8011 (9)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lacey's South Elgin — M3T TR8011 (8)", "Lacey's North Riverside — M3T TR8011 (7)", "Lucky Penny's Romeoville — M3T TR1016 (7)", "Cher's Rendezvous — M3T TR1016 (7)", "Lacey's Romeoville — M3T TR8011 (7)"],
-      '4': ["Lacey's Markham — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Diamonds Crestwood — M3T TR1016 (9)", "Lacey's Matteson — M3T TR8011 (9)", "Centennial Lanes 2.0 — M3T TR1016 (8)", "Alsip Marathon — M3T TR8011 (8)", "Lucky Penny's Justice — M3T TR8011 (8)", "Citgo Alsip — M3T TR1016 (8)", "Lacey's Beecher — M3T TR8011 (7)", "Aly Anne's — M3T TR1016 (7)", "BP Hometown — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Saroor — M3T TR1016 (7)", "Lacey's Summit — M3T TR1016 (7)", "Mobil Summit — M3T TR1016 (7)"],
-      '5': ["Payson Convenience Quick Stop — M3T TR8011 (9)"],
-      '6': ["Vegas Place Rantoul — M3T TR1016 (13)", "Lacey's Decatur (French Quarters) — M3T TR8011 (13)", "Phillips 66 Watseka — M3T TR1016 (9)", "Roadways Plaza — Aristocrat MARSX PORTRAIT (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "Diamonds Decatur — M3T TR8011 (7)"],
-      '7': ["Sin City Slots And Cafe — M3T TR8011 (11)", "Swamp Tales — M3T TR8011 (9)"],
-      '8': ["Sunrise Harvard — M3T TR8011 (7)"],
+      'all': ["Catie's Place North Riverside — M3T TR1016 (15)", "Lacey's Melrose Park — SG 1690000-SLANT-XX SK-1 KASCADA SLANT GAMING MACHINE (14)", "Catie's Place North Riverside — WMS S32 (13)", "Lucky Bernie's Antioch — M3T TR1016 (12)", "Rocky's Gaming Bar — M3T TR1016 (11)", "Centennial Lanes 2.0 — M3T TR1016 (10)", "Lacey's Melrose Park — M3T TR1016 (10)", "Phillips 66 Watseka — M3T TR1016 (10)", "Berkots Braidwood — M3T TR1016 (10)", "Vegas Place Rantoul — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Lucky Penny's Third Lake — M3T TR1016 (9)", "Ava's Cafe — M3T TR1016 (9)", "Lucky Penny's Lindenhurst — M3T TR1016 (9)", "Diamonds Decatur — IGT PEAK 49 (9)", "Sunrise Harvard — M3T TR8011 (9)", "Sin City Slots And Cafe — M3T TR8011 (9)", "Lacey's Kankakee — M3T TR8011 (9)", "Lacey's Decatur (French Quarters) — M3T TR8011 (9)", "Citgo Elmwood Park — M3T TR1016 (8)", "Pops Lyons — M3T TR1016 (8)", "BP Hometown — M3T TR1016 (8)", "Diamonds Crestwood — M3T TR1016 (8)", "Lacey's North Riverside — M3T TR8011 (8)", "Tai Pan Chinese — M3T TR1016 (8)", "Saroor — M3T TR1016 (8)", "Lacey's Mchenry — M3T TR1016 (8)", "Lucky Penny's Cary — M3T TR1016 (8)", "Marathon Oak Forest — M3T TR1016 (8)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Ken's Food & Liquor — M3T TR8011 (8)", "Lacey's Matteson — M3T TR8011 (8)", "Lucky Penny's Romeoville — M3T TR1016 (8)", "Happy Gang — Spielo Prodigy Slant (8)", "Diamonds Decatur — M3T TR8011 (7)", "Mobil Summit — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "MISS KIMMEES MOUNT ZION, DECATUR — M3T TR8011 (7)", "Crab Du Jour — M3T TR1016 (7)", "Lacey's Markham — M3T TR1016 (7)", "Grand Tobacco — Aristocrat HELIX PLUS SLANT (7)", "Keeley's Place Springfield — M3T TR1016 (7)", "Matteson Bp Inc — M3T TR8011 (7)", "Lacey's Summit — M3T TR1016 (7)", "Lacey's Addison 2 — M3T TR8011 (7)"],
+      '1': [],
+      '2': ["Lucky Bernie's Antioch — M3T TR1016 (12)", "Lucky Penny's Third Lake — M3T TR1016 (9)", "Lucky Penny's Lindenhurst — M3T TR1016 (9)", "Lacey's Mchenry — M3T TR1016 (8)", "Lucky Penny's Cary — M3T TR1016 (8)", "Happy Gang — Spielo Prodigy Slant (8)"],
+      '3': ["Catie's Place North Riverside — M3T TR1016 (15)", "Lacey's Melrose Park — SG 1690000-SLANT-XX SK-1 KASCADA SLANT GAMING MACHINE (14)", "Catie's Place North Riverside — WMS S32 (13)", "Rocky's Gaming Bar — M3T TR1016 (11)", "Lacey's Melrose Park — M3T TR1016 (10)", "Berkots Braidwood — M3T TR1016 (10)", "Ava's Cafe — M3T TR1016 (9)", "Citgo Elmwood Park — M3T TR1016 (8)", "Pops Lyons — M3T TR1016 (8)", "Lacey's North Riverside — M3T TR8011 (8)", "Onestop Liquor & Grocery Melrose Park — M3T TR1016 (8)", "Lucky Penny's Romeoville — M3T TR1016 (8)", "Crab Du Jour — M3T TR1016 (7)", "Lacey's Addison 2 — M3T TR8011 (7)"],
+      '4': ["Centennial Lanes 2.0 — M3T TR1016 (10)", "The Dock On Front Street — M3T TR8011 (10)", "Lacey's Kankakee — M3T TR8011 (9)", "BP Hometown — M3T TR1016 (8)", "Diamonds Crestwood — M3T TR1016 (8)", "Saroor — M3T TR1016 (8)", "Marathon Oak Forest — M3T TR1016 (8)", "Ken's Food & Liquor — M3T TR8011 (8)", "Lacey's Matteson — M3T TR8011 (8)", "Mobil Summit — M3T TR1016 (7)", "Peggy's Deli — M3T TR1016 (7)", "Lacey's Markham — M3T TR1016 (7)", "Matteson Bp Inc — M3T TR8011 (7)", "Lacey's Summit — M3T TR1016 (7)"],
+      '5': ["Grand Tobacco — Aristocrat HELIX PLUS SLANT (7)"],
+      '6': ["Phillips 66 Watseka — M3T TR1016 (10)", "Vegas Place Rantoul — M3T TR1016 (10)", "Diamonds Decatur — IGT PEAK 49 (9)", "Lacey's Decatur (French Quarters) — M3T TR8011 (9)", "Tai Pan Chinese — M3T TR1016 (8)", "Diamonds Decatur — M3T TR8011 (7)", "MISS KIMMEES MOUNT ZION, DECATUR — M3T TR8011 (7)", "Keeley's Place Springfield — M3T TR1016 (7)"],
+      '7': ["Sin City Slots And Cafe — M3T TR8011 (9)"],
+      '8': ["Sunrise Harvard — M3T TR8011 (9)"],
     },
   };
 
   // Unacceptable Tickets: sum(Mins to Accept + Mins to En Route + ETA to In Process + Deviation) > 120
   // Exclusions: ETA to In Process > 100, or total > 400 (outlier)
   const unacceptableData = {
-    'all': { w427:0,  w504:11, w511:16, w518:61, w525:47, w601:63, prev: 57,  weekly: 55,  week2: 50, w629:0, may: 133, mtd: 227 },
-    '1':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 1,  w629:0, may: 0,   mtd: 4   },
-    '2':   { w427:0,  w504:2,  w511:3,  w518:13, w525:12, w601:10, prev: 8,   weekly: 5,   week2: 8,  w629:0, may: 30,  mtd: 31  },
-    '3':   { w427:0,  w504:2,  w511:5,  w518:10, w525:11, w601:22, prev: 13,  weekly: 12,  week2: 14, w629:0, may: 28,  mtd: 61  },
-    '4':   { w427:0,  w504:2,  w511:5,  w518:28, w525:14, w601:15, prev: 25,  weekly: 18,  week2: 15, w629:0, may: 49,  mtd: 73  },
-    '5':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 4,   week2: 2,  w629:0, may: 0,   mtd: 6   },
-    '6':   { w427:0,  w504:0,  w511:0,  w518:5,  w525:4,  w601:9,  prev: 6,   weekly: 6,   week2: 2,  w629:0, may: 7,   mtd: 22  },
-    '7':   { w427:0,  w504:5,  w511:1,  w518:3,  w525:2,  w601:4,  prev: 5,   weekly: 9,   week2: 6,  w629:0, may: 11,  mtd: 24  },
-    '8':   { w427:0,  w504:0,  w511:2,  w518:2,  w525:4,  w601:3,  prev: 0,   weekly: 1,   week2: 2,  w629:0, may: 8,   mtd: 6   }
+    'all': { w427:0,  w504:11, w511:16, w518:61, w525:47, w601:63, prev: 57,  weekly: 55,  week2: 50, w629:67, may: 133, mtd: 227 },
+    '1':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 1,  w629:0,  may: 0,   mtd: 4   },
+    '2':   { w427:0,  w504:2,  w511:3,  w518:13, w525:12, w601:10, prev: 8,   weekly: 5,   week2: 8,  w629:6,  may: 30,  mtd: 31  },
+    '3':   { w427:0,  w504:2,  w511:5,  w518:10, w525:11, w601:22, prev: 13,  weekly: 12,  week2: 14, w629:17, may: 28,  mtd: 61  },
+    '4':   { w427:0,  w504:2,  w511:5,  w518:28, w525:14, w601:15, prev: 25,  weekly: 18,  week2: 15, w629:23, may: 49,  mtd: 73  },
+    '5':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 4,   week2: 2,  w629:2,  may: 0,   mtd: 6   },
+    '6':   { w427:0,  w504:0,  w511:0,  w518:5,  w525:4,  w601:9,  prev: 6,   weekly: 6,   week2: 2,  w629:7,  may: 7,   mtd: 22  },
+    '7':   { w427:0,  w504:5,  w511:1,  w518:3,  w525:2,  w601:4,  prev: 5,   weekly: 9,   week2: 6,  w629:10, may: 11,  mtd: 24  },
+    '8':   { w427:0,  w504:0,  w511:2,  w518:2,  w525:4,  w601:3,  prev: 0,   weekly: 1,   week2: 2,  w629:2,  may: 8,   mtd: 6   }
   };
 
   // Weekly door swings/cold calls from HubSpot (6/15–6/21)
@@ -1650,17 +1686,17 @@
     document.getElementById('ruc-house-q1').textContent    = fmt(q1.house);
     document.getElementById('ruc-nonhouse-q1').textContent = fmt(q1.nonhouse);
     document.getElementById('ruc-q1').textContent          = fmt(q1.total);
-    // MTD / QTD (reuse week2 ref date)
-    const w2 = rucWeek2Data[r] ?? rucWeek2Data['all'];
+    // Monthly columns
+    const jun = rucJuneData[r] ?? rucJuneData['all'];
     document.getElementById('ruc-house-may').textContent    = fmt((rucMayData[r] ?? rucMayData['all']).house);
     document.getElementById('ruc-nonhouse-may').textContent = fmt((rucMayData[r] ?? rucMayData['all']).nonhouse);
     document.getElementById('ruc-total-may').textContent    = fmt((rucMayData[r] ?? rucMayData['all']).total);
-    document.getElementById('ruc-house-mtd').textContent    = fmt(w2.house);
-    document.getElementById('ruc-nonhouse-mtd').textContent = fmt(w2.nonhouse);
-    document.getElementById('ruc-mtd').textContent          = fmt(w2.total);
-    document.getElementById('ruc-house-qtd').textContent    = fmt(w2.house);
-    document.getElementById('ruc-nonhouse-qtd').textContent = fmt(w2.nonhouse);
-    document.getElementById('ruc-qtd').textContent          = fmt(w2.total);
+    document.getElementById('ruc-house-mtd').textContent    = fmt(jun.house);
+    document.getElementById('ruc-nonhouse-mtd').textContent = fmt(jun.nonhouse);
+    document.getElementById('ruc-mtd').textContent          = fmt(jun.total);
+    document.getElementById('ruc-house-qtd').textContent    = fmt(jun.house);
+    document.getElementById('ruc-nonhouse-qtd').textContent = fmt(jun.nonhouse);
+    document.getElementById('ruc-qtd').textContent          = fmt(jun.total);
     // Weekly trend cells
     WEEK_KEYS.forEach(key => {
       const d = _rucByKey[key][r] ?? _rucByKey[key]['all'];
@@ -1709,7 +1745,7 @@
     w427: rucW427Data, w504: rucW504Data, w511: rucW511Data,
     w518: rucW518Data, w525: rucW525Data, w601: rucW601Data,
     prev: rucPrevData, weekly: rucData, week2: rucWeek2Data,
-    w629: {'all':{house:0,nonhouse:0,total:0},'1':{house:0,nonhouse:0,total:0},'2':{house:0,nonhouse:0,total:0},'3':{house:0,nonhouse:0,total:0},'4':{house:0,nonhouse:0,total:0},'5':{house:0,nonhouse:0,total:0},'6':{house:0,nonhouse:0,total:0},'7':{house:0,nonhouse:0,total:0},'8':{house:0,nonhouse:0,total:0}}
+    w629: {'all':{house:455906716,nonhouse:142639590,total:598546306},'1':{house:0,nonhouse:0,total:0},'2':{house:63278003,nonhouse:35553388,total:98831391},'3':{house:136504240,nonhouse:20035323,total:156539564},'4':{house:106433634,nonhouse:22267998,total:128701632},'5':{house:8978265,nonhouse:5170223,total:14148488},'6':{house:102746080,nonhouse:22751786,total:125497867},'7':{house:32620534,nonhouse:34645668,total:67266202},'8':{house:5345961,nonhouse:2215203,total:7561164}}
   };
   const WEEK_KEYS = ['w427','w504','w511','w518','w525','w601','prev','weekly','week2','w629'];
 
@@ -1740,14 +1776,51 @@
     });
   }
 
+  const vaultNames = {
+    w504:   { 'all': ["Casa Chapala, Wheeling ($1)"],                              '2': ["Casa Chapala, Wheeling ($1)"] },
+    w525:   { 'all': ["Neenah Warehouse ($50)"],                                   '3': ["Neenah Warehouse ($50)"] },
+    w601:   { 'all': ["Cloud 9, Champaign ($20)"],                                 '6': ["Cloud 9, Champaign ($20)"] },
+    weekly: { 'all': ["Diamonds, Decatur ($20)"],                                  '6': ["Diamonds, Decatur ($20)"] },
+    w629:   {
+      'all': ["The Blue Room, New Minden (-$6,583)", "Sorento Food Mart (-$3,043)", "Lucky Bernie's, Spring Grove (-$134)"],
+      '2':   ["Lucky Bernie's, Spring Grove (-$134)"],
+      '7':   ["The Blue Room, New Minden (-$6,583)", "Sorento Food Mart (-$3,043)"],
+    },
+    may:    { 'all': ["Casa Chapala, Wheeling ($1)", "Neenah Warehouse ($50)"],    '2': ["Casa Chapala, Wheeling ($1)"], '3': ["Neenah Warehouse ($50)"] },
+    mtd:    {
+      'all': ["Cloud 9, Champaign ($20)", "Diamonds, Decatur ($20)", "The Blue Room, New Minden (-$6,583)", "Sorento Food Mart (-$3,043)", "Lucky Bernie's, Spring Grove (-$134)"],
+      '2':   ["Lucky Bernie's, Spring Grove (-$134)"],
+      '6':   ["Cloud 9, Champaign ($20)", "Diamonds, Decatur ($20)"],
+      '7':   ["The Blue Room, New Minden (-$6,583)", "Sorento Food Mart (-$3,043)"],
+    },
+  };
+
   function updateVault(r) {
     const d = vaultData[r] ?? vaultData['all'];
-    document.getElementById('vault-may').textContent = '$' + (d.may ?? 0);
-    document.getElementById('vault-mtd').textContent = '$' + (d.mtd ?? 0);
+    const fmt = v => '$' + (v ?? 0);
+    setTip('vault-may', fmt(d.may), (vaultNames.may ?? {})[r] ?? (vaultNames.may ?? {})['all'] ?? []);
+    setTip('vault-mtd', fmt(d.mtd), (vaultNames.mtd ?? {})[r] ?? (vaultNames.mtd ?? {})['all'] ?? []);
     WEEK_KEYS.forEach(key => {
-      const el = document.getElementById('vault-' + key);
-      if (el) el.textContent = '$' + (d[key] ?? 0);
+      const names = (vaultNames[key] ?? {})[r] ?? (vaultNames[key] ?? {})['all'] ?? [];
+      setTip('vault-' + key, fmt(d[key] ?? 0), names);
     });
+  }
+
+  // ── Ops Quarterly Data ──────────────────────────────────────────────────────
+  const opsProblematicQ1 = { 'all':59,'1':0,'2':10,'3':16,'4':15,'5':1,'6':15,'7':1,'8':1 };
+  const opsProblematicQ2 = { 'all':45,'1':0,'2':6, '3':14,'4':14,'5':1,'6':8, '7':1,'8':1 };
+  const opsUnacceptableQ1 = { 'all':288,'1':0,'2':43,'3':54,'4':75,'5':6,'6':37,'7':57,'8':16 };
+  const opsUnacceptableQ2 = { 'all':374,'1':0,'2':59,'3':84,'4':125,'5':7,'6':38,'7':46,'8':13 };
+
+  function updateOpsQuarterly(r) {
+    const q1El = document.getElementById('ops-problematic-q1');
+    const q2El = document.getElementById('ops-problematic-q2');
+    if (q1El) q1El.textContent = opsProblematicQ1[r] ?? opsProblematicQ1['all'];
+    if (q2El) q2El.textContent = opsProblematicQ2[r] ?? opsProblematicQ2['all'];
+    const ua1El = document.getElementById('ops-unacceptable-q1');
+    const ua2El = document.getElementById('ops-unacceptable-q2');
+    if (ua1El) ua1El.textContent = opsUnacceptableQ1[r] ?? opsUnacceptableQ1['all'];
+    if (ua2El) ua2El.textContent = opsUnacceptableQ2[r] ?? opsUnacceptableQ2['all'];
   }
 
   function updateProblematic(r) {
@@ -1946,23 +2019,33 @@
   _gtip.style.cssText = 'display:none;position:fixed;background:#1a202c;color:#e2e8f0;padding:8px 14px;border-radius:7px;font-size:0.72rem;line-height:1.7;white-space:nowrap;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.45);pointer-events:none;';
   document.body.appendChild(_gtip);
 
+  function _positionTip(cx, cy) {
+    const pad = 14;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const r = _gtip.getBoundingClientRect();
+    const x = cx + pad, y = cy - 10;
+    _gtip.style.left = (x + r.width  > vw ? cx - r.width  - pad : x) + 'px';
+    _gtip.style.top  = (y + r.height > vh ? cy - r.height - pad : y) + 'px';
+  }
   document.addEventListener('mousemove', e => {
-    if (_gtip.style.display === 'block') {
-      const x = e.clientX + 14, y = e.clientY - 10;
-      const r = _gtip.getBoundingClientRect();
-      _gtip.style.left = (x + r.width > window.innerWidth ? e.clientX - r.width - 8 : x) + 'px';
-      _gtip.style.top  = (y + r.height > window.innerHeight ? e.clientY - r.height - 8 : y) + 'px';
-    }
+    if (_gtip.style.display === 'block') _positionTip(e.clientX, e.clientY);
   });
   document.addEventListener('mouseover', e => {
     const el = e.target.closest('.tip');
     if (el && el.dataset.tip) {
       _gtip.innerHTML = el.dataset.tip;
+      // Show at cursor position immediately — no waiting for first mousemove
+      _gtip.style.left = (e.clientX + 14) + 'px';
+      _gtip.style.top  = (e.clientY - 10) + 'px';
       _gtip.style.display = 'block';
+      // Correct for viewport overflow now that it's rendered
+      _positionTip(e.clientX, e.clientY);
     }
   });
   document.addEventListener('mouseout', e => {
-    if (e.target.closest('.tip')) _gtip.style.display = 'none';
+    const el = e.target.closest('.tip');
+    // Only hide when truly leaving the .tip cell, not on child element transitions
+    if (el && !el.contains(e.relatedTarget)) _gtip.style.display = 'none';
   });
 
   function setTip(id, count, names) {
@@ -2190,6 +2273,7 @@
     updateUnacceptable(sel.value);
     updatePayroll(sel.value);
     updateDoorSwings(sel.value);
+    updateOpsQuarterly(sel.value);
     updateNewPipeline(sel.value);
     updateLSMeetings(sel.value);
     updateNewUA(sel.value);
@@ -2203,6 +2287,7 @@
   updateRUC('all');
   updateVault('all');
   updateProblematic('all');
+  updateOpsQuarterly('all');
   updateCampaigns('all');
   updateUnacceptable('all');
   updatePayroll('all');
