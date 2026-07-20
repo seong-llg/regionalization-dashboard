@@ -125,6 +125,8 @@
     th.mtd-col    { color: #48bb78; }
     th.qtd-col    { color: #ed8936; }
     th.q1-col     { color: #9f7aea; }
+    th.q3-col     { color: #38a169; }
+    .q3-val       { color: #276749; }
     .weekly-val   { color: #667eea; }
     .mtd-val      { color: #38a169; }
     .qtd-val      { color: #dd6b20; }
@@ -232,6 +234,7 @@
               <th class="center weekly-col">6/22 – 6/28</th>
               <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
               <th class="center weekly-col">7/6 – 7/12</th>
+              <th class="center weekly-col">7/13 – 7/19</th>
             </tr>
           </thead>
           <tbody>
@@ -248,6 +251,7 @@
               <td class="value-cell weekly-val" id="doorswings-live-week2">—</td>
               <td class="value-cell weekly-val" id="doorswings-live-w629">—</td>
               <td class="value-cell weekly-val" id="doorswings-live-w706">—</td>
+              <td class="value-cell weekly-val" id="doorswings-live-w713">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Door Swings / Cold Calls — Prospect</td>
@@ -262,6 +266,7 @@
               <td class="value-cell weekly-val" id="doorswings-prospect-week2">—</td>
               <td class="value-cell weekly-val" id="doorswings-prospect-w629">—</td>
               <td class="value-cell weekly-val" id="doorswings-prospect-w706">—</td>
+              <td class="value-cell weekly-val" id="doorswings-prospect-w713">—</td>
             </tr>
             <tr>
               <td class="kpi-name">New Pipeline Generated</td>
@@ -276,6 +281,7 @@
               <td class="value-cell weekly-val" id="newpipeline-week2">—</td>
               <td class="value-cell weekly-val" id="newpipeline-w629">—</td>
               <td class="value-cell weekly-val" id="newpipeline-w706">—</td>
+              <td class="value-cell weekly-val" id="newpipeline-w713">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Marketing to Location Ratio</td>
@@ -303,6 +309,7 @@
               <td class="value-cell weekly-val" id="campaign-week2">—</td>
               <td class="value-cell weekly-val" id="campaign-w629">—</td>
               <td class="value-cell weekly-val" id="campaign-w706">—</td>
+              <td class="value-cell weekly-val" id="campaign-w713">—</td>
             </tr>
           </tbody>
         </table>
@@ -450,6 +457,7 @@
               <th class="center weekly-col">6/22 – 6/28</th>
               <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
               <th class="center weekly-col">7/6 – 7/12</th>
+              <th class="center weekly-col">7/13 – 7/19</th>
             </tr>
           </thead>
           <tbody>
@@ -469,6 +477,7 @@
               <td class="value-cell weekly-val" id="problematic-week2">—</td>
               <td class="value-cell weekly-val" id="problematic-w629">—</td>
               <td class="value-cell weekly-val" id="problematic-w706">—</td>
+              <td class="value-cell weekly-val" id="problematic-w713">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Unacceptable Tickets<span style="display:block;font-size:0.75rem;color:#a0aec0;margin-top:3px;">Accept + En Route + In Process &gt; 120 mins</span></td>
@@ -483,6 +492,22 @@
               <td class="value-cell weekly-val" id="unacceptable-week2">—</td>
               <td class="value-cell weekly-val" id="unacceptable-w629">—</td>
               <td class="value-cell weekly-val" id="unacceptable-w706">—</td>
+              <td class="value-cell weekly-val" id="unacceptable-w713">—</td>
+            </tr>
+            <tr>
+              <td class="kpi-name">Audit Compliant %<span style="display:block;font-size:0.75rem;color:#a0aec0;margin-top:3px;">Non-highlighted locations ÷ total locations</span></td>
+              <td class="value-cell empty weekly-val" id="audit-w427">—</td>
+              <td class="value-cell empty weekly-val" id="audit-w504">—</td>
+              <td class="value-cell empty weekly-val" id="audit-w511">—</td>
+              <td class="value-cell empty weekly-val" id="audit-w518">—</td>
+              <td class="value-cell empty weekly-val" id="audit-w525">—</td>
+              <td class="value-cell empty weekly-val" id="audit-w601">—</td>
+              <td class="value-cell empty weekly-val" id="audit-prev">—</td>
+              <td class="value-cell empty weekly-val" id="audit-weekly">—</td>
+              <td class="value-cell empty weekly-val" id="audit-week2">—</td>
+              <td class="value-cell empty weekly-val" id="audit-w629">—</td>
+              <td class="value-cell empty weekly-val" id="audit-w706">—</td>
+              <td class="value-cell weekly-val tip" id="audit-w713" data-tip="">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Average Utilization</td>
@@ -516,6 +541,7 @@
               <td class="value-cell weekly-val" id="vault-week2">—</td>
               <td class="value-cell weekly-val" id="vault-w629">—</td>
               <td class="value-cell weekly-val" id="vault-w706">—</td>
+              <td class="value-cell weekly-val" id="vault-w713">—</td>
             </tr>
           </tbody>
         </table>
@@ -635,6 +661,7 @@
               <th class="center weekly-col">6/22 – 6/28</th>
               <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
               <th class="center weekly-col">7/6 – 7/12</th>
+              <th class="center weekly-col">7/13 – 7/19</th>
             </tr>
           </thead>
           <tbody>
@@ -651,6 +678,7 @@
               <td class="value-cell weekly-val" id="ruc-house-week2">—</td>
               <td class="value-cell weekly-val" id="ruc-house-w629">—</td>
               <td class="value-cell weekly-val" id="ruc-house-w706">—</td>
+              <td class="value-cell weekly-val" id="ruc-house-w713">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Revenue Under Contract — Non-House</td>
@@ -665,6 +693,7 @@
               <td class="value-cell weekly-val" id="ruc-nonhouse-week2">—</td>
               <td class="value-cell weekly-val" id="ruc-nonhouse-w629">—</td>
               <td class="value-cell weekly-val" id="ruc-nonhouse-w706">—</td>
+              <td class="value-cell weekly-val" id="ruc-nonhouse-w713">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Revenue Under Contract — Total</td>
@@ -679,6 +708,7 @@
               <td class="value-cell weekly-val" id="ruc-week2">—</td>
               <td class="value-cell weekly-val" id="ruc-total-w629">—</td>
               <td class="value-cell weekly-val" id="ruc-total-w706">—</td>
+              <td class="value-cell weekly-val" id="ruc-total-w713">—</td>
             </tr>
             <tr>
               <td class="kpi-name">Spend Against Budget</td>
@@ -878,6 +908,7 @@
               <th class="center weekly-col">6/22 – 6/28</th>
               <th class="center weekly-col" style="opacity:0.55;">6/29 – 7/5</th>
               <th class="center weekly-col">7/6 – 7/12</th>
+              <th class="center weekly-col">7/13 – 7/19</th>
             </tr>
           </thead>
           <tbody>
@@ -1116,187 +1147,199 @@
   };
 
   // Active Campaigns — by region and period, with owner breakdown for tooltip
+  // All periods recomputed from Campaigns (20260719).xlsx using overlap rule
   const campaignData = {
     w427: {
-      'all': { count: 16, owners: {'Sadie Orr': 5, 'Paola Molina': 5, 'Kortney Roher': 2, 'Fiona Gallagher': 2, 'Brad Fell': 1, 'Hannah Rivera': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 57, owners: {'Sadie Orr': 13, 'Hannah Rivera': 13, 'Paola Molina': 12, 'Amanda Rivera': 6, 'Kortney Roher': 5, 'Fiona Gallagher': 4, 'Hunter Brandt': 3, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 19, owners: {'Hannah Rivera': 13, 'Paola Molina': 5, 'Amanda Rivera': 1} },
+      '3':   { count: 6,  owners: {'Amanda Rivera': 4, 'Paola Molina': 2} },
+      '4':   { count: 6,  owners: {'Fiona Gallagher': 4, 'Paola Molina': 1, 'Amanda Rivera': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 9,  owners: {'Kortney Roher': 5, 'Hunter Brandt': 3, 'Paola Molina': 1} },
+      '7':   { count: 16, owners: {'Sadie Orr': 13, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     w504: {
-      'all': { count: 16, owners: {'Sadie Orr': 5, 'Paola Molina': 5, 'Kortney Roher': 2, 'Fiona Gallagher': 2, 'Brad Fell': 1, 'Hannah Rivera': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 45, owners: {'Paola Molina': 12, 'Sadie Orr': 10, 'Hannah Rivera': 9, 'Amanda Rivera': 5, 'Kortney Roher': 3, 'Hunter Brandt': 3, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 14, owners: {'Hannah Rivera': 9, 'Paola Molina': 5} },
+      '3':   { count: 6,  owners: {'Amanda Rivera': 4, 'Paola Molina': 2} },
+      '4':   { count: 4,  owners: {'Fiona Gallagher': 2, 'Paola Molina': 1, 'Amanda Rivera': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 7,  owners: {'Kortney Roher': 3, 'Hunter Brandt': 3, 'Paola Molina': 1} },
+      '7':   { count: 13, owners: {'Sadie Orr': 10, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     w511: {
-      'all': { count: 24, owners: {'Sadie Orr': 7, 'Paola Molina': 7, 'Amanda Rivera': 2, 'Hannah Rivera': 2, 'Kortney Roher': 2, 'Fiona Gallagher': 2, 'Hunter Brandt': 1, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 50, owners: {'Paola Molina': 14, 'Sadie Orr': 12, 'Hannah Rivera': 10, 'Amanda Rivera': 8, 'Fiona Gallagher': 2, 'Kortney Roher': 2, 'Hunter Brandt': 1, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 15, owners: {'Hannah Rivera': 10, 'Paola Molina': 5} },
+      '3':   { count: 11, owners: {'Amanda Rivera': 7, 'Paola Molina': 4} },
+      '4':   { count: 4,  owners: {'Fiona Gallagher': 2, 'Paola Molina': 1, 'Amanda Rivera': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 4,  owners: {'Kortney Roher': 2, 'Hunter Brandt': 1, 'Paola Molina': 1} },
+      '7':   { count: 15, owners: {'Sadie Orr': 12, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     w518: {
-      'all': { count: 27, owners: {'Paola Molina': 7, 'Sadie Orr': 6, 'Amanda Rivera': 3, 'Hunter Brandt': 3, 'Hannah Rivera': 3, 'Kortney Roher': 2, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 50, owners: {'Paola Molina': 14, 'Hannah Rivera': 10, 'Sadie Orr': 10, 'Amanda Rivera': 8, 'Hunter Brandt': 3, 'Fiona Gallagher': 2, 'Kortney Roher': 2, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 15, owners: {'Hannah Rivera': 10, 'Paola Molina': 5} },
+      '3':   { count: 9,  owners: {'Amanda Rivera': 5, 'Paola Molina': 4} },
+      '4':   { count: 6,  owners: {'Amanda Rivera': 3, 'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 6,  owners: {'Hunter Brandt': 3, 'Kortney Roher': 2, 'Paola Molina': 1} },
+      '7':   { count: 13, owners: {'Sadie Orr': 10, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     w525: {
-      'all': { count: 32, owners: {'Paola Molina': 7, 'Hunter Brandt': 6, 'Sadie Orr': 6, 'Hannah Rivera': 4, 'Amanda Rivera': 3, 'Kortney Roher': 3, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 55, owners: {'Paola Molina': 14, 'Hannah Rivera': 11, 'Sadie Orr': 10, 'Amanda Rivera': 8, 'Hunter Brandt': 6, 'Kortney Roher': 3, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 16, owners: {'Hannah Rivera': 11, 'Paola Molina': 5} },
+      '3':   { count: 10, owners: {'Amanda Rivera': 6, 'Paola Molina': 4} },
+      '4':   { count: 5,  owners: {'Amanda Rivera': 2, 'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 8,  owners: {'Hunter Brandt': 4, 'Kortney Roher': 3, 'Paola Molina': 1} },
+      '7':   { count: 13, owners: {'Sadie Orr': 10, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     w601: {
-      'all': { count: 34, owners: {'Paola Molina': 8, 'Sadie Orr': 7, 'Hunter Brandt': 6, 'Hannah Rivera': 5, 'Kortney Roher': 3, 'Fiona Gallagher': 2, 'Amanda Rivera': 2, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 56, owners: {'Paola Molina': 15, 'Hannah Rivera': 12, 'Sadie Orr': 11, 'Amanda Rivera': 6, 'Hunter Brandt': 6, 'Kortney Roher': 3, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 17, owners: {'Hannah Rivera': 12, 'Paola Molina': 5} },
+      '3':   { count: 10, owners: {'Amanda Rivera': 6, 'Paola Molina': 4} },
+      '4':   { count: 3,  owners: {'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 9,  owners: {'Hunter Brandt': 4, 'Kortney Roher': 3, 'Paola Molina': 2} },
+      '7':   { count: 14, owners: {'Sadie Orr': 11, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     prev: {
-      'all': { count: 38, owners: {'Hannah Rivera': 11, 'Paola Molina': 8, 'Sadie Orr': 7, 'Hunter Brandt': 6, 'Fiona Gallagher': 2, 'Amanda Rivera': 2, 'Kortney Roher': 1, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 59, owners: {'Hannah Rivera': 17, 'Paola Molina': 15, 'Sadie Orr': 11, 'Amanda Rivera': 6, 'Hunter Brandt': 6, 'Fiona Gallagher': 2, 'Kortney Roher': 1, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 22, owners: {'Hannah Rivera': 17, 'Paola Molina': 5} },
+      '3':   { count: 10, owners: {'Amanda Rivera': 6, 'Paola Molina': 4} },
+      '4':   { count: 3,  owners: {'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 7,  owners: {'Hunter Brandt': 4, 'Paola Molina': 2, 'Kortney Roher': 1} },
+      '7':   { count: 14, owners: {'Sadie Orr': 11, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     weekly: {
-      'all': { count: 40, owners: {'Hannah Rivera': 12, 'Paola Molina': 8, 'Sadie Orr': 7, 'Hunter Brandt': 6, 'Kortney Roher': 2, 'Fiona Gallagher': 2, 'Amanda Rivera': 2, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 61, owners: {'Hannah Rivera': 18, 'Paola Molina': 15, 'Sadie Orr': 11, 'Amanda Rivera': 6, 'Hunter Brandt': 6, 'Kortney Roher': 2, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 23, owners: {'Hannah Rivera': 18, 'Paola Molina': 5} },
+      '3':   { count: 10, owners: {'Amanda Rivera': 6, 'Paola Molina': 4} },
+      '4':   { count: 3,  owners: {'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 8,  owners: {'Hunter Brandt': 4, 'Kortney Roher': 2, 'Paola Molina': 2} },
+      '7':   { count: 14, owners: {'Sadie Orr': 11, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     week2: {
-      'all': { count: 40, owners: {'Hannah Rivera': 14, 'Paola Molina': 8, 'Hunter Brandt': 6, 'Sadie Orr': 6, 'Amanda Rivera': 2, 'Fiona Gallagher': 2, 'Kortney Roher': 1, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 60, owners: {'Hannah Rivera': 19, 'Paola Molina': 15, 'Sadie Orr': 10, 'Amanda Rivera': 6, 'Hunter Brandt': 6, 'Fiona Gallagher': 2, 'Kortney Roher': 1, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 24, owners: {'Hannah Rivera': 19, 'Paola Molina': 5} },
+      '3':   { count: 10, owners: {'Amanda Rivera': 6, 'Paola Molina': 4} },
+      '4':   { count: 3,  owners: {'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 7,  owners: {'Hunter Brandt': 4, 'Paola Molina': 2, 'Kortney Roher': 1} },
+      '7':   { count: 13, owners: {'Sadie Orr': 10, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     w629: {
-      'all': { count: 49, owners: {'Hannah Rivera': 14, 'Paola Molina': 9, 'Sadie Orr': 9, 'Amanda Rivera': 8, 'Kortney Roher': 2, 'Hunter Brandt': 2, 'Fiona Gallagher': 2, 'Teresa Slepawic': 1, 'Christian Corner': 1, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 70, owners: {'Hannah Rivera': 19, 'Paola Molina': 16, 'Amanda Rivera': 14, 'Sadie Orr': 13, 'Kortney Roher': 2, 'Hunter Brandt': 2, 'Fiona Gallagher': 2, 'Christian Corner': 1, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 23, owners: {'Hannah Rivera': 18, 'Paola Molina': 5} },
+      '3':   { count: 18, owners: {'Amanda Rivera': 12, 'Paola Molina': 4, 'Hannah Rivera': 1, 'Christian Corner': 1} },
+      '4':   { count: 5,  owners: {'Amanda Rivera': 2, 'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 6,  owners: {'Kortney Roher': 2, 'Hunter Brandt': 2, 'Paola Molina': 2} },
+      '7':   { count: 16, owners: {'Sadie Orr': 13, 'Paola Molina': 3} },
+      '8':   { count: 2,  owners: {'Paola Molina': 1, 'Brad Fell': 1} },
     },
     w706: {
-      'all': { count: 42, owners: {'Hannah Rivera': 13, 'Amanda Rivera': 8, 'Paola Molina': 8, 'Sadie Orr': 6, 'Kortney Roher': 2, 'Hunter Brandt': 2, 'Teresa Slepawic': 1, 'Christian Corner': 1, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 62, owners: {'Hannah Rivera': 18, 'Paola Molina': 15, 'Amanda Rivera': 13, 'Sadie Orr': 10, 'Kortney Roher': 2, 'Hunter Brandt': 2, 'Christian Corner': 1, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 22, owners: {'Hannah Rivera': 17, 'Paola Molina': 5} },
+      '3':   { count: 17, owners: {'Amanda Rivera': 11, 'Paola Molina': 4, 'Hannah Rivera': 1, 'Christian Corner': 1} },
+      '4':   { count: 3,  owners: {'Amanda Rivera': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 6,  owners: {'Kortney Roher': 2, 'Hunter Brandt': 2, 'Paola Molina': 2} },
+      '7':   { count: 12, owners: {'Sadie Orr': 10, 'Paola Molina': 2} },
+      '8':   { count: 2,  owners: {'Paola Molina': 1, 'Brad Fell': 1} },
+    },
+    w713: {
+      'all': { count: 69, owners: {'Amanda Rivera': 21, 'Hannah Rivera': 17, 'Paola Molina': 15, 'Sadie Orr': 10, 'Kortney Roher': 2, 'Hunter Brandt': 2, 'Christian Corner': 1, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 21, owners: {'Hannah Rivera': 16, 'Paola Molina': 5} },
+      '3':   { count: 23, owners: {'Amanda Rivera': 17, 'Paola Molina': 4, 'Hannah Rivera': 1, 'Christian Corner': 1} },
+      '4':   { count: 5,  owners: {'Amanda Rivera': 4, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 6,  owners: {'Kortney Roher': 2, 'Hunter Brandt': 2, 'Paola Molina': 2} },
+      '7':   { count: 12, owners: {'Sadie Orr': 10, 'Paola Molina': 2} },
+      '8':   { count: 2,  owners: {'Paola Molina': 1, 'Brad Fell': 1} },
     },
     may: {
-      'all': { count: 37, owners: {'Sadie Orr': 7, 'Paola Molina': 7, 'Amanda Rivera': 6, 'Hunter Brandt': 6, 'Kortney Roher': 4, 'Hannah Rivera': 4, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 68, owners: {'Paola Molina': 14, 'Sadie Orr': 13, 'Amanda Rivera': 12, 'Hannah Rivera': 12, 'Hunter Brandt': 9, 'Kortney Roher': 5, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 17, owners: {'Hannah Rivera': 12, 'Paola Molina': 5} },
+      '3':   { count: 13, owners: {'Amanda Rivera': 9, 'Paola Molina': 4} },
+      '4':   { count: 6,  owners: {'Amanda Rivera': 3, 'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 13, owners: {'Hunter Brandt': 7, 'Kortney Roher': 5, 'Paola Molina': 1} },
+      '7':   { count: 16, owners: {'Sadie Orr': 13, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     mtd: {
-      'all': { count: 49, owners: {'Hannah Rivera': 14, 'Paola Molina': 8, 'Kortney Roher': 7, 'Hunter Brandt': 7, 'Sadie Orr': 7, 'Amanda Rivera': 3, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 72, owners: {'Hannah Rivera': 22, 'Paola Molina': 15, 'Sadie Orr': 11, 'Amanda Rivera': 7, 'Kortney Roher': 7, 'Hunter Brandt': 7, 'Fiona Gallagher': 2, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 27, owners: {'Hannah Rivera': 22, 'Paola Molina': 5} },
+      '3':   { count: 11, owners: {'Amanda Rivera': 7, 'Paola Molina': 4} },
+      '4':   { count: 3,  owners: {'Fiona Gallagher': 2, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 14, owners: {'Kortney Roher': 7, 'Hunter Brandt': 5, 'Paola Molina': 2} },
+      '7':   { count: 14, owners: {'Sadie Orr': 11, 'Paola Molina': 3} },
+      '8':   { count: 1,  owners: {'Brad Fell': 1} },
     },
     july: {
-      'all': { count: 44, owners: {'Hannah Rivera': 13, 'Paola Molina': 9, 'Amanda Rivera': 8, 'Sadie Orr': 7, 'Kortney Roher': 2, 'Hunter Brandt': 2, 'Teresa Slepawic': 1, 'Christian Corner': 1, 'Brad Fell': 1} },
-      '1':   { count: 0, owners: {} },
-      '2':   { count: 0, owners: {} },
-      '3':   { count: 0, owners: {} },
-      '4':   { count: 0, owners: {} },
-      '5':   { count: 0, owners: {} },
-      '6':   { count: 0, owners: {} },
-      '7':   { count: 0, owners: {} },
-      '8':   { count: 0, owners: {} },
+      'all': { count: 73, owners: {'Amanda Rivera': 22, 'Hannah Rivera': 18, 'Paola Molina': 16, 'Sadie Orr': 11, 'Kortney Roher': 2, 'Hunter Brandt': 2, 'Christian Corner': 1, 'Brad Fell': 1} },
+      '1':   { count: 0,  owners: {} },
+      '2':   { count: 22, owners: {'Hannah Rivera': 17, 'Paola Molina': 5} },
+      '3':   { count: 24, owners: {'Amanda Rivera': 18, 'Paola Molina': 4, 'Hannah Rivera': 1, 'Christian Corner': 1} },
+      '4':   { count: 5,  owners: {'Amanda Rivera': 4, 'Paola Molina': 1} },
+      '5':   { count: 0,  owners: {} },
+      '6':   { count: 6,  owners: {'Kortney Roher': 2, 'Hunter Brandt': 2, 'Paola Molina': 2} },
+      '7':   { count: 14, owners: {'Sadie Orr': 11, 'Paola Molina': 3} },
+      '8':   { count: 2,  owners: {'Paola Molina': 1, 'Brad Fell': 1} },
     },
   };
 
   const vaultData = {
-    'all': { w427:0, w504:1,  w511:0, w518:0, w525:50, w601:20, prev:0, weekly:20,  week2:0, w629:-9760, w706:10, may:51, mtd:-9720 },
-    '1':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0,     may:0,  mtd:0  },
-    '2':   { w427:0, w504:1,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-134, w706:0,  may:1,  mtd:-134 },
-    '3':   { w427:0, w504:0,  w511:0, w518:0, w525:50, w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0,     may:50, mtd:0  },
-    '4':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0,     may:0,  mtd:0  },
-    '5':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0,     may:0,  mtd:0  },
-    '6':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:20, prev:0, weekly:20,  week2:0, w629:0, w706:0,     may:0,  mtd:40 },
-    '7':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-9626, w706:10, may:0,  mtd:-9626 },
-    '8':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0,     may:0,  mtd:0  }
+    'all': { w427:0, w504:1,  w511:0, w518:0, w525:50, w601:20, prev:0, weekly:20,  week2:0, w629:-9760, w706:56, w713:-5122, may:51, mtd:-9720 },
+    '1':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0, w713:0,       may:0,  mtd:0  },
+    '2':   { w427:0, w504:1,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-134, w706:0, w713:0,    may:1,  mtd:-134 },
+    '3':   { w427:0, w504:0,  w511:0, w518:0, w525:50, w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0, w713:0,       may:50, mtd:0  },
+    '4':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0, w713:0,       may:0,  mtd:0  },
+    '5':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0, w713:0,       may:0,  mtd:0  },
+    '6':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:20, prev:0, weekly:20,  week2:0, w629:0, w706:0, w713:-5122,   may:0,  mtd:40 },
+    '7':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:-9626, w706:56, w713:0,  may:0,  mtd:-9626 },
+    '8':   { w427:0, w504:0,  w511:0, w518:0, w525:0,  w601:0,  prev:0, weekly:0,   week2:0, w629:0, w706:0, w713:0,       may:0,  mtd:0  }
   };
 
   // Problematic machines: >6 tickets in rolling 30-day window ending on last day of period
   // Current week window: 5/23–6/21 | Previous week window: 5/16–6/14
   const problematicData = {
-    'all': { w427:8, w504:2, w511:2, w518:6, w525:19, w601:36, prev: 47,  weekly: 50,  week2: 42, w629:46, w706:37, may: 19, mtd: 45 },
-    '1':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 0,  w629:0, w706:0,   may: 0,  mtd: 0  },
-    '2':   { w427:1, w504:0, w511:1, w518:3, w525:5,  w601:6,  prev: 8,   weekly: 9,   week2: 7,  w629:9, w706:6,   may: 5,  mtd: 6  },
-    '3':   { w427:2, w504:0, w511:0, w518:1, w525:7,  w601:12, prev: 17,  weekly: 16,  week2: 12, w629:13, w706:12, may: 7,  mtd: 14 },
-    '4':   { w427:2, w504:0, w511:0, w518:0, w525:3,  w601:8,  prev: 12,  weekly: 15,  week2: 12, w629:12, w706:6,  may: 3,  mtd: 14 },
-    '5':   { w427:0, w504:0, w511:0, w518:0, w525:1,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:1, w706:1,   may: 1,  mtd: 1  },
-    '6':   { w427:2, w504:1, w511:0, w518:0, w525:1,  w601:4,  prev: 5,   weekly: 6,   week2: 8,  w629:10, w706:9,  may: 1,  mtd: 8  },
-    '7':   { w427:1, w504:1, w511:1, w518:2, w525:2,  w601:4,  prev: 3,   weekly: 2,   week2: 1,  w629:0, w706:1,   may: 2,  mtd: 1  },
-    '8':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:1, w706:2,   may: 0,  mtd: 1  }
+    'all': { w427:8, w504:2, w511:2, w518:6, w525:19, w601:36, prev: 47,  weekly: 50,  week2: 42, w629:46, w706:37, w713:35, may: 19, mtd: 45 },
+    '1':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 0,  w629:0, w706:0, w713:0,   may: 0,  mtd: 0  },
+    '2':   { w427:1, w504:0, w511:1, w518:3, w525:5,  w601:6,  prev: 8,   weekly: 9,   week2: 7,  w629:9, w706:6, w713:5,   may: 5,  mtd: 6  },
+    '3':   { w427:2, w504:0, w511:0, w518:1, w525:7,  w601:12, prev: 17,  weekly: 16,  week2: 12, w629:13, w706:12, w713:10, may: 7,  mtd: 14 },
+    '4':   { w427:2, w504:0, w511:0, w518:0, w525:3,  w601:8,  prev: 12,  weekly: 15,  week2: 12, w629:12, w706:6, w713:8,  may: 3,  mtd: 14 },
+    '5':   { w427:0, w504:0, w511:0, w518:0, w525:1,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:1, w706:1, w713:1,   may: 1,  mtd: 1  },
+    '6':   { w427:2, w504:1, w511:0, w518:0, w525:1,  w601:4,  prev: 5,   weekly: 6,   week2: 8,  w629:10, w706:9, w713:8,  may: 1,  mtd: 8  },
+    '7':   { w427:1, w504:1, w511:1, w518:2, w525:2,  w601:4,  prev: 3,   weekly: 2,   week2: 1,  w629:0, w706:1, w713:2,   may: 2,  mtd: 1  },
+    '8':   { w427:0, w504:0, w511:0, w518:0, w525:0,  w601:1,  prev: 1,   weekly: 1,   week2: 1,  w629:1, w706:2, w713:1,   may: 0,  mtd: 1  }
   };
 
   // Tooltip data: "Location — Machine (N tickets)" per period per region
@@ -1417,20 +1460,60 @@
       '7': ["Sin City Slots And Cafe — M3T TR8011 (12)"],
       '8': ["Sunrise Harvard — M3T TR8011 (9)", "Lacey's Loves Park — Aristocrat MARSX PORTRAIT (8)"],
     },
+    w713: {
+      'all': ["Catie's Place North Riverside — WMS S32 (16)", "Lacey's Melrose Park — SG 1690000-SLANT-XX SK-1 KASCADA SLANT GAMING MACHINE (13)", "Jp Food & Liquor — Aristocrat HELIX PLUS UPRIGHT (13)", "Sin City Slots And Cafe — M3T TR8011 (13)", "Peggy's Deli — M3T TR1016 (13)", "Vegas Place Rantoul — IGT PEAK 49 (17)", "Ava's Cafe — M3T TR1016 (11)", "Lucky Bernie's Antioch — M3T TR1016 (11)", "Matteson Bp Inc — M3T TR8011 (11)", "Lucky Penny's Romeoville — M3T TR1016 (10)", "Lacey's Melrose Park — M3T TR1016 (10)", "Lucky Penny's Lindenhurst — M3T TR1016 (10)", "Lucky's Sweets & Slots — M3T TR8011 (9)", "Lacey's Kankakee — M3T TR8011 (9)", "Citgo Elmwood Park — M3T TR1016 (9)", "Nash Partners Llc — M3T TR1016 (8)", "Vegas Place Decatur — 1770000-XX CM-1 COSMIC CABINET (8)", "Home-Slice Homewood — M3T TR8011 (8)", "Cher's Rendezvous — M3T TR1016 (8)", "Lucky Penny's Lake Villa — M3T TR1016 (8)", "Marathon Oak Forest — M3T TR1016 (8)", "Lacey's Loves Park — Aristocrat MARSX PORTRAIT (8)", "Lucky Penny's Cary — M3T TR1016 (7)", "Dollar Day Plus — M3T TR8011 (7)", "Lacey's Urbana — M3T TR1016 (7)", "Lacey's Addison 2 — M3T TR8011 (7)", "Vegas Place Decatur — Aristocrat HELIX PLUS SLANT (7)", "Ken's Food & Liquor — M3T TR8011 (7)", "Blue Store 2 — M3T TR8011 (7)", "Home-Slice Homewood — Aristocrat HELIX PLUS UPRIGHT (7)", "Vegas Place Rantoul — M3T TR1016 (7)", "Diamonds Decatur — IGT PEAK 49 (7)", "Diamonds Champaign — M3T TR8011 (7)", "Happy Gang — Spielo Prodigy Slant (7)", "Dragon Palace — Spielo Prodigy Slant (7)"],
+      '1': [],
+      '2': ["Lucky Bernie's Antioch — M3T TR1016 (11)", "Lucky Penny's Lindenhurst — M3T TR1016 (10)", "Lucky Penny's Lake Villa — M3T TR1016 (8)", "Lucky Penny's Cary — M3T TR1016 (7)", "Happy Gang — Spielo Prodigy Slant (7)"],
+      '3': ["Catie's Place North Riverside — WMS S32 (16)", "Lacey's Melrose Park — SG 1690000-SLANT-XX SK-1 KASCADA SLANT GAMING MACHINE (13)", "Ava's Cafe — M3T TR1016 (11)", "Lucky Penny's Romeoville — M3T TR1016 (10)", "Lacey's Melrose Park — M3T TR1016 (10)", "Citgo Elmwood Park — M3T TR1016 (9)", "Nash Partners Llc — M3T TR1016 (8)", "Cher's Rendezvous — M3T TR1016 (8)", "Dollar Day Plus — M3T TR8011 (7)", "Lacey's Addison 2 — M3T TR8011 (7)"],
+      '4': ["Peggy's Deli — M3T TR1016 (13)", "Matteson Bp Inc — M3T TR8011 (11)", "Lacey's Kankakee — M3T TR8011 (9)", "Home-Slice Homewood — M3T TR8011 (8)", "Marathon Oak Forest — M3T TR1016 (8)", "Ken's Food & Liquor — M3T TR8011 (7)", "Home-Slice Homewood — Aristocrat HELIX PLUS UPRIGHT (7)", "Dragon Palace — Spielo Prodigy Slant (7)"],
+      '5': ["Jp Food & Liquor — Aristocrat HELIX PLUS UPRIGHT (13)"],
+      '6': ["Vegas Place Rantoul — IGT PEAK 49 (17)", "Vegas Place Decatur — 1770000-XX CM-1 COSMIC CABINET (8)", "Lacey's Urbana — M3T TR1016 (7)", "Vegas Place Decatur — Aristocrat HELIX PLUS SLANT (7)", "Blue Store 2 — M3T TR8011 (7)", "Vegas Place Rantoul — M3T TR1016 (7)", "Diamonds Decatur — IGT PEAK 49 (7)", "Diamonds Champaign — M3T TR8011 (7)"],
+      '7': ["Sin City Slots And Cafe — M3T TR8011 (13)", "Lucky's Sweets & Slots — M3T TR8011 (9)"],
+      '8': ["Lacey's Loves Park — Aristocrat MARSX PORTRAIT (8)"],
+    },
   };
 
   // Unacceptable Tickets: sum(Mins to Accept + Mins to En Route + ETA to In Process + Deviation) > 120
   // Exclusions: ETA to In Process > 100, or total > 400 (outlier)
   const unacceptableData = {
-    'all': { w427:0,  w504:11, w511:16, w518:61, w525:47, w601:63, prev: 57,  weekly: 55,  week2: 50, w629:67, w706:49, may: 133, mtd: 227 },
-    '1':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 1,  w629:0, w706:0,   may: 0,   mtd: 4   },
-    '2':   { w427:0,  w504:2,  w511:3,  w518:13, w525:12, w601:10, prev: 8,   weekly: 5,   week2: 8,  w629:6, w706:7,   may: 30,  mtd: 31  },
-    '3':   { w427:0,  w504:2,  w511:5,  w518:10, w525:11, w601:22, prev: 13,  weekly: 12,  week2: 14, w629:17, w706:9,  may: 28,  mtd: 61  },
-    '4':   { w427:0,  w504:2,  w511:5,  w518:28, w525:14, w601:15, prev: 25,  weekly: 18,  week2: 15, w629:23, w706:21, may: 49,  mtd: 73  },
-    '5':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 4,   week2: 2,  w629:2, w706:1,   may: 0,   mtd: 6   },
-    '6':   { w427:0,  w504:0,  w511:0,  w518:5,  w525:4,  w601:9,  prev: 6,   weekly: 6,   week2: 2,  w629:7, w706:1,   may: 7,   mtd: 22  },
-    '7':   { w427:0,  w504:5,  w511:1,  w518:3,  w525:2,  w601:4,  prev: 5,   weekly: 9,   week2: 6,  w629:10, w706:7,  may: 11,  mtd: 24  },
-    '8':   { w427:0,  w504:0,  w511:2,  w518:2,  w525:4,  w601:3,  prev: 0,   weekly: 1,   week2: 2,  w629:2, w706:3,  may: 8,   mtd: 6   }
+    'all': { w427:0,  w504:11, w511:16, w518:61, w525:47, w601:63, prev: 57,  weekly: 55,  week2: 50, w629:67, w706:49, w713:28, may: 133, mtd: 227 },
+    '1':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 0,   week2: 1,  w629:0, w706:0, w713:0,   may: 0,   mtd: 4   },
+    '2':   { w427:0,  w504:2,  w511:3,  w518:13, w525:12, w601:10, prev: 8,   weekly: 5,   week2: 8,  w629:6, w706:7, w713:5,   may: 30,  mtd: 31  },
+    '3':   { w427:0,  w504:2,  w511:5,  w518:10, w525:11, w601:22, prev: 13,  weekly: 12,  week2: 14, w629:17, w706:9, w713:7,  may: 28,  mtd: 61  },
+    '4':   { w427:0,  w504:2,  w511:5,  w518:28, w525:14, w601:15, prev: 25,  weekly: 18,  week2: 15, w629:23, w706:21, w713:7, may: 49,  mtd: 73  },
+    '5':   { w427:0,  w504:0,  w511:0,  w518:0,  w525:0,  w601:0,  prev: 0,   weekly: 4,   week2: 2,  w629:2, w706:1, w713:0,   may: 0,   mtd: 6   },
+    '6':   { w427:0,  w504:0,  w511:0,  w518:5,  w525:4,  w601:9,  prev: 6,   weekly: 6,   week2: 2,  w629:7, w706:1, w713:3,   may: 7,   mtd: 22  },
+    '7':   { w427:0,  w504:5,  w511:1,  w518:3,  w525:2,  w601:4,  prev: 5,   weekly: 9,   week2: 6,  w629:10, w706:7, w713:5,  may: 11,  mtd: 24  },
+    '8':   { w427:0,  w504:0,  w511:2,  w518:2,  w525:4,  w601:3,  prev: 0,   weekly: 1,   week2: 2,  w629:2, w706:3, w713:1,  may: 8,   mtd: 6   }
+  };
+
+  // Audit Compliant %: non-yellow locations / total locations (starts w713)
+  // Tooltips show non-compliant locations sorted by days since last audit (longest first)
+  const auditNames = {
+    w713: {
+      'all': ["ASTORIA TAVERN INC, ASTORIA (201+ days)", "LAFAYETTE MART, MACOMB (201+ days)", "PAYSON CONVENIENCE QUICK STOP, PAYSON (201+ days)", "PANA COUNTRY CLUB, PANA (201+ days)", "SAI AAYUSH KRIT, INC, MATTOON (201+ days)", "D'S WESTSIDE LOUNGE, CARLYLE (201+ days)", "BUSHNELL LIQUOR, BUSHNELL (201+ days)", "TAI PAN CHINESE, SPRINGFIELD (201+ days)", "ANTIOCH LANES, ANTIOCH (201+ days)", "MISS KIMMEES, DECATUR (201+ days)", "JACKSONVILLE BEST BUFFET, JACKSONVILLE (201+ days)", "MELISTY MART, ORENA (201+ days)", "MACON PETRO, MACON (201+ days)", "JALSA BAR AND RESTAURANT, CRYSTAL LAKE (160d)", "SHELL, WATSEKA (154d)", "AUGUSTA QUICK STOP, AUGUSTA (131d)", "STROUD LIQUORS, DANVILLE (119d)", "LUCKY LADYZ INC., DESOTO (105d)", "MISS KIMMEES (GRAND), SPRINGFIELD (105d)", "TEDDS BEVERAGE SHOP, HOOPESTON (105d)", "LEWISTOWN SMOKE SHOP LLC, LEWISTOWN (104d)", "THE DOCK ON FRONT STREET, MOKENA (96d)", "MAIN STREET TOWN INCORPORATED, ROUND LAKE PARK (91d)", "MATTESON BP INC, MATTESON (90d)", "CENTENNIAL LANES, TINLEY PARK (85d)", "DELEON LLC, TAYLORVILLE (83d)", "FINDLAY FOOD MART, FINDLAY (83d)", "HENRY'S TACOS, JUSTICE (83d)", "LUCKY LUCY'S 7, FOX RIVER GROVE (82d)", "BRAIDKOT LTD, BRAIDWOOD (77d)", "BKCR FOOD & LIQUOR INC, DANVILLE (77d)", "PALOS LANES, PALOS HILLS (76d)", "BUSHNELL FOOD MART, BUSHNELL (76d)", "THE LINKS ON GRAND LLC, LINDENHURST (75d)", "FIRESIDE GRILLE, SUGAR GROVE (75d)", "VEGAS PLACE, DECATUR (74d)", "ROKET STOP, INC., TAYLOR RIDGE (64d)", "KOREAN PRO BILLIARDS, NILES (64d)", "LACEY'S, BRIDGEVIEW (64d)", "CONVENIENT QUICK STOP, GOLDEN (62d)", "MARIA'S MEXICAN GRILL, INC., SPRING GROVE (61d)", "GRAND TOBACCO, GALESBURG (61d)", "FRANKS CORNER KITCHEN, BECKMEYER (61d)", "STRIKETOWN BOWL, NORTH PEKIN (61d)", "YE'S CHINESE, CAROL STREAM (59d)", "LACEY'S, MIDLOTHIAN (58d)", "SAROOR, LLC, ALSIP (57d)", "SILVIS MART, SILVIS (57d)", "LUCKY CAFE, LOVES PARK (56d)", "LACEY'S, CLINTON (56d)", "FOREMOST FOOD & LIQUOR, MELROSE PARK (56d)", "FAMILY HOSPITALITY GROUP LLC, DECATUR (55d)", "BURRITO GUACAMOLE INC., JOLIET (54d)", "ALL SAINTS INC, NEPONSET (54d)", "G AND G VALLEY RIDGE LLC, ANTIOCH (54d)", "PORTER CULLEN'S, EVERGREEN PARK (54d)", "LACEY'S, ADDISON 2 (54d)", "MIJOS AMF, LLC, FOX LAKE (53d)", "NOC NOC WOOD, CARPENTERSVILLE (53d)", "CITGO, ALSIP (53d)", "LUCKY PENNY'S, LAKE VILLA (53d)", "MISS KIMMEES, SPRINGFIELD (SANGAMON) (53d)", "LACEY'S, DOLTON (53d)", "LACEY'S, MARKHAM (53d)", "MARATHON, ALSIP (52d)", "EXXON, JUSTICE (52d)", "LACEY'S, BEECHER (52d)", "LUCKY PANDA, AURORA (52d)", "LACEY'S, LYNWOOD (52d)", "OLIVIA'S PLACE, BERWYN (52d)", "LACEY'S, CRETE (52d)", "THE WHITE HOUSE BREESE LLC, BREESE (49d)", "HAPPY HOUR SPORTS BAR, WATERLOO (49d)", "PHILLIPS 66, WATSEKA (49d)", "DRAGON PALACE, TINLEY PARK (49d)", "LACEY'S, STONE PARK (49d)", "DIAMONDS, NORMAL (RAAB) (49d)", "DES PLAINES ELKS LODGE, DES PLAINES (48d)", "DIETERICH MART INC, DIETERICH (48d)", "CASA CHAPALA, WHEELING (48d)", "MISS KIMMEES, SPRINGFIELD (DIRKSEN) (48d)", "BUXTON'S LLC, BECKEMEYER (46d)", "KENTUCKY BURN, SPRINGFIELD (46d)", "KGD GEGS LLC, TRENTON (43d)", "JAR FOOD MART INC., MCHENRY (42d)", "T & M RAILSHAKE INC., HIGHLAND (42d)", "CRAB DU JOUR, MELROSE PARK (42d)", "THE POUR HOUSE, MARISSA (42d)", "MOBIL, SUMMIT (42d)", "MARATHON, HOOPESTON (42d)", "CATIE'S PLACE, NORTH RIVERSIDE (42d)", "ALY ANNE'S, DWIGHT (42d)", "LUCKY PENNY'S, JUSTICE (42d)", "LACEY'S, NORTH RIVERSIDE (42d)", "F.A. TAILGATORS, INC., OAK LAWN (41d)", "MIRA'S CAFE, ELK GROVE VILLAGE (41d)", "STATION 34, MT PROSPECT (41d)", "LUCKY PENNY'S, LINDENHURST 1 (41d)", "LACEY'S, OSWEGO (41d)", "BARRELBOUNTY SIP & SHOP, SPRING GROVE (41d)", "LUCKY BERNIE'S, WOODSTOCK (41d)", "FIRE HOUSE PIZZA, EAST PEORIA (40d)", "LACEY'S PLACE LLC, CHAMPAIGN (503 W. TOWN) (36d)", "DIAMONDS, CHAMPAIGN (36d)", "DIAMONDS, CENTRALIA (36d)", "LACEY'S, URBANA (36d)", "SUNRISE SH INC, SLEEPY HOLLOW (35d)", "SUNRISE FOOD & LIQUOR, HARVARD (35d)", "AVA'S CAFE LLC, NORTH RIVERSIDE (35d)", "THE TAPROOM, WAUKEGAN (35d)", "ROADWAYS PLAZA, SPRINGFIELD -221003806 (35d)", "ORCHARD GAMING CAFE, OSWEGO (35d)", "PEPE'S, CRESTWOOD (35d)", "MISS KIMMEES, SPRINGFIELD (ILES) (35d)", "LACEY'S, MONEE (35d)", "LACEY'S, MELROSE PARK (35d)", "RAMSEY CAFE, RAMSEY (34d)", "LUCKY PENNY'S, ROMEOVILLE (34d)", "LACEY'S, SUMMIT (34d)", "KEELEY'S PLACE, SPRINGFIELD (33d)", "LACEY'S, DECATUR (WATER) (33d)", "LACEY'S, DECATUR (ELDORADO) (33d)", "LUCKY KNUTTS LLC, KEYESPORT (32d)", "SORENTO FOOD MART LLC, SORENTO (32d)", "ROCKYS GAMING BAR LLC, NORTHLAKE (32d)", "KORTE MEAT PROCESSING INC, HIGHLAND (32d)", "BLACK DIAMOND MART, SMITHTON (32d)", "LACEY'S, BELLEVILLE (32d)", "THE BLUE ROOM, NEW MINDEN (32d)"],
+      '1': [],
+      '2': ["ANTIOCH LANES, ANTIOCH (201+ days)", "JALSA BAR AND RESTAURANT, CRYSTAL LAKE (160d)", "MAIN STREET TOWN INCORPORATED, ROUND LAKE PARK (91d)", "LUCKY LUCY'S 7, FOX RIVER GROVE (82d)", "THE LINKS ON GRAND LLC, LINDENHURST (75d)", "KOREAN PRO BILLIARDS, NILES (64d)", "MARIA'S MEXICAN GRILL, INC., SPRING GROVE (61d)", "G AND G VALLEY RIDGE LLC, ANTIOCH (54d)", "MIJOS AMF, LLC, FOX LAKE (53d)", "NOC NOC WOOD, CARPENTERSVILLE (53d)", "LUCKY PENNY'S, LAKE VILLA (53d)", "DES PLAINES ELKS LODGE, DES PLAINES (48d)", "CASA CHAPALA, WHEELING (48d)", "JAR FOOD MART INC., MCHENRY (42d)", "STATION 34, MT PROSPECT (41d)", "LUCKY PENNY'S, LINDENHURST 1 (41d)", "BARRELBOUNTY SIP & SHOP, SPRING GROVE (41d)", "LUCKY BERNIE'S, WOODSTOCK (41d)", "SUNRISE SH INC, SLEEPY HOLLOW (35d)", "THE TAPROOM, WAUKEGAN (35d)"],
+      '3': ["FIRESIDE GRILLE, SUGAR GROVE (75d)", "YE'S CHINESE, CAROL STREAM (59d)", "FOREMOST FOOD & LIQUOR, MELROSE PARK (56d)", "BURRITO GUACAMOLE INC., JOLIET (54d)", "LACEY'S, ADDISON 2 (54d)", "LUCKY PANDA, AURORA (52d)", "OLIVIA'S PLACE, BERWYN (52d)", "LACEY'S, STONE PARK (49d)", "CRAB DU JOUR, MELROSE PARK (42d)", "CATIE'S PLACE, NORTH RIVERSIDE (42d)", "LACEY'S, NORTH RIVERSIDE (42d)", "MIRA'S CAFE, ELK GROVE VILLAGE (41d)", "LACEY'S, OSWEGO (41d)", "AVA'S CAFE LLC, NORTH RIVERSIDE (35d)", "ORCHARD GAMING CAFE, OSWEGO (35d)", "LACEY'S, MELROSE PARK (35d)", "LUCKY PENNY'S, ROMEOVILLE (34d)", "ROCKYS GAMING BAR LLC, NORTHLAKE (32d)"],
+      '4': ["THE DOCK ON FRONT STREET, MOKENA (96d)", "MATTESON BP INC, MATTESON (90d)", "CENTENNIAL LANES, TINLEY PARK (85d)", "HENRY'S TACOS, JUSTICE (83d)", "BRAIDKOT LTD, BRAIDWOOD (77d)", "PALOS LANES, PALOS HILLS (76d)", "LACEY'S, BRIDGEVIEW (64d)", "LACEY'S, MIDLOTHIAN (58d)", "SAROOR, LLC, ALSIP (57d)", "PORTER CULLEN'S, EVERGREEN PARK (54d)", "CITGO, ALSIP (53d)", "LACEY'S, DOLTON (53d)", "LACEY'S, MARKHAM (53d)", "MARATHON, ALSIP (52d)", "EXXON, JUSTICE (52d)", "LACEY'S, BEECHER (52d)", "LACEY'S, LYNWOOD (52d)", "LACEY'S, CRETE (52d)", "DRAGON PALACE, TINLEY PARK (49d)", "MOBIL, SUMMIT (42d)", "ALY ANNE'S, DWIGHT (42d)", "LUCKY PENNY'S, JUSTICE (42d)", "F.A. TAILGATORS, INC., OAK LAWN (41d)", "PEPE'S, CRESTWOOD (35d)", "LACEY'S, MONEE (35d)", "LACEY'S, SUMMIT (34d)"],
+      '5': ["ASTORIA TAVERN INC, ASTORIA (201+ days)", "LAFAYETTE MART, MACOMB (201+ days)", "PAYSON CONVENIENCE QUICK STOP, PAYSON (201+ days)", "BUSHNELL LIQUOR, BUSHNELL (201+ days)", "AUGUSTA QUICK STOP, AUGUSTA (131d)", "LEWISTOWN SMOKE SHOP LLC, LEWISTOWN (104d)", "BUSHNELL FOOD MART, BUSHNELL (76d)", "ROKET STOP, INC., TAYLOR RIDGE (64d)", "CONVENIENT QUICK STOP, GOLDEN (62d)", "GRAND TOBACCO, GALESBURG (61d)", "SILVIS MART, SILVIS (57d)", "ALL SAINTS INC, NEPONSET (54d)"],
+      '6': ["PANA COUNTRY CLUB, PANA (201+ days)", "SAI AAYUSH KRIT, INC, MATTOON (201+ days)", "TAI PAN CHINESE, SPRINGFIELD (201+ days)", "MISS KIMMEES, DECATUR (201+ days)", "JACKSONVILLE BEST BUFFET, JACKSONVILLE (201+ days)", "MELISTY MART, ORENA (201+ days)", "MACON PETRO, MACON (201+ days)", "SHELL, WATSEKA (154d)", "STROUD LIQUORS, DANVILLE (119d)", "MISS KIMMEES (GRAND), SPRINGFIELD (105d)", "TEDDS BEVERAGE SHOP, HOOPESTON (105d)", "DELEON LLC, TAYLORVILLE (83d)", "FINDLAY FOOD MART, FINDLAY (83d)", "BKCR FOOD & LIQUOR INC, DANVILLE (77d)", "VEGAS PLACE, DECATUR (74d)", "STRIKETOWN BOWL, NORTH PEKIN (61d)", "LACEY'S, CLINTON (56d)", "FAMILY HOSPITALITY GROUP LLC, DECATUR (55d)", "MISS KIMMEES, SPRINGFIELD (SANGAMON) (53d)", "PHILLIPS 66, WATSEKA (49d)", "DIAMONDS, NORMAL (RAAB) (49d)", "MISS KIMMEES, SPRINGFIELD (DIRKSEN) (48d)", "KENTUCKY BURN, SPRINGFIELD (46d)", "MARATHON, HOOPESTON (42d)", "FIRE HOUSE PIZZA, EAST PEORIA (40d)", "LACEY'S PLACE LLC, CHAMPAIGN (503 W. TOWN) (36d)", "DIAMONDS, CHAMPAIGN (36d)", "LACEY'S, URBANA (36d)", "ROADWAYS PLAZA, SPRINGFIELD -221003806 (35d)", "MISS KIMMEES, SPRINGFIELD (ILES) (35d)", "RAMSEY CAFE, RAMSEY (34d)", "KEELEY'S PLACE, SPRINGFIELD (33d)", "LACEY'S, DECATUR (WATER) (33d)", "LACEY'S, DECATUR (ELDORADO) (33d)"],
+      '7': ["D'S WESTSIDE LOUNGE, CARLYLE (201+ days)", "LUCKY LADYZ INC., DESOTO (105d)", "FRANKS CORNER KITCHEN, BECKMEYER (61d)", "THE WHITE HOUSE BREESE LLC, BREESE (49d)", "HAPPY HOUR SPORTS BAR, WATERLOO (49d)", "DIETERICH MART INC, DIETERICH (48d)", "BUXTON'S LLC, BECKEMEYER (46d)", "KGD GEGS LLC, TRENTON (43d)", "T & M RAILSHAKE INC., HIGHLAND (42d)", "THE POUR HOUSE, MARISSA (42d)", "DIAMONDS, CENTRALIA (36d)", "LUCKY KNUTTS LLC, KEYESPORT (32d)", "SORENTO FOOD MART LLC, SORENTO (32d)", "KORTE MEAT PROCESSING INC, HIGHLAND (32d)", "BLACK DIAMOND MART, SMITHTON (32d)", "LACEY'S, BELLEVILLE (32d)", "THE BLUE ROOM, NEW MINDEN (32d)"],
+      '8': ["LUCKY CAFE, LOVES PARK (56d)", "SUNRISE FOOD & LIQUOR, HARVARD (35d)"],
+    },
+  };
+
+  // Audit Compliant %: non-yellow locations / total locations (starts w713)
+  const auditData = {
+    'all': { w713: 47.3 },
+    '1':   { w713: null },
+    '2':   { w713: 48.7 },
+    '3':   { w713: 53.8 },
+    '4':   { w713: 44.7 },
+    '5':   { w713: 20.0 },
+    '6':   { w713: 37.0 },
+    '7':   { w713: 61.4 },
+    '8':   { w713: 71.4 },
   };
 
   // Weekly door swings/cold calls from HubSpot (6/15–6/21)
@@ -1486,15 +1569,15 @@
   };
   // July MTD door swings/cold calls from HubSpot (7/1–7/12 = 7/1–7/5 + w706 7/6–7/12)
   const doorSwingsJulyData = {
-    'all': { live: 174, prospect: 46 },
-    '1':   { live: 0,   prospect: 0  },
-    '2':   { live: 9,   prospect: 3  },
-    '3':   { live: 20,  prospect: 6  },
-    '4':   { live: 14,  prospect: 0  },
-    '5':   { live: 17,  prospect: 1  },
-    '6':   { live: 57,  prospect: 12 },
-    '7':   { live: 47,  prospect: 21 },
-    '8':   { live: 10,  prospect: 3  }
+    'all': { live: 295, prospect: 83 },
+    '1':   { live: 7,   prospect: 0  },
+    '2':   { live: 37,  prospect: 8  },
+    '3':   { live: 28,  prospect: 6  },
+    '4':   { live: 21,  prospect: 0  },
+    '5':   { live: 20,  prospect: 1  },
+    '6':   { live: 100, prospect: 37 },
+    '7':   { live: 70,  prospect: 28 },
+    '8':   { live: 12,  prospect: 3  }
   };
 
   // Door swing tooltip name breakdowns (calls + meetings by rep)
@@ -1790,7 +1873,7 @@
 
   // July MTD (7/1–7/12; w706 added 0 new pipeline)
   const newPipelineJulyData = {
-    'all': 2, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 2, '8': 0
+    'all': 3, '1': 1, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 2, '8': 0
   };
 
   const payrollData = {
@@ -1857,33 +1940,72 @@
     });
   }
 
+  const doorSwingsW713Data = {
+    'all': { live: 121, prospect: 39 },
+    '1':   { live: 7,   prospect: 0  },
+    '2':   { live: 28,  prospect: 5  },
+    '3':   { live: 8,   prospect: 0  },
+    '4':   { live: 7,   prospect: 0  },
+    '5':   { live: 3,   prospect: 0  },
+    '6':   { live: 43,  prospect: 27 },
+    '7':   { live: 23,  prospect: 7  },
+    '8':   { live: 2,   prospect: 0  }
+  };
+  const dsLiveNames_W713 = {
+    'all': {'Hannah Rivera':31,'Hunter Brandt':29,'Amanda Rivera':20,'Kortney Roher':16,'Sadie Orr':14,'Bob Cummins':9,'Christian Corner':1,'Michelle Kent':1},
+    '1':   {'Amanda Rivera':7},
+    '2':   {'Hannah Rivera':25,'Amanda Rivera':3},
+    '3':   {'Hannah Rivera':4,'Amanda Rivera':3,'Christian Corner':1},
+    '4':   {'Amanda Rivera':7},
+    '5':   {'Kortney Roher':3},
+    '6':   {'Hunter Brandt':29,'Kortney Roher':13,'Michelle Kent':1},
+    '7':   {'Sadie Orr':14,'Bob Cummins':9},
+    '8':   {'Hannah Rivera':2}
+  };
+  const dsProspectNames_W713 = {
+    'all': {'Michelle Kent':24,'Chris Oraha':4,'Hannah Rivera':4,'Kortney Roher':3,'Sadie Orr':3,'Amanda Rivera':1},
+    '1':   {},
+    '2':   {'Hannah Rivera':4,'Amanda Rivera':1},
+    '3':   {},
+    '4':   {},
+    '5':   {},
+    '6':   {'Michelle Kent':24,'Kortney Roher':3},
+    '7':   {'Chris Oraha':4,'Sadie Orr':3},
+    '8':   {}
+  };
+
   const _dsDataByKey = {
     w427: doorSwingsW427Data, w504: doorSwingsW504Data, w511: doorSwingsW511Data,
     w518: doorSwingsW518Data, w525: doorSwingsW525Data, w601: doorSwingsW601Data,
     prev: doorSwingsPrevData, weekly: doorSwingsData, week2: doorSwingsWeek2Data,
     w629: {'all':{live:56,prospect:6},'1':{live:0,prospect:0},'2':{live:10,prospect:0},'3':{live:7,prospect:0},'4':{live:4,prospect:0},'5':{live:4,prospect:0},'6':{live:18,prospect:1},'7':{live:12,prospect:5},'8':{live:1,prospect:0}},
-    w706: {'all':{live:154,prospect:44},'1':{live:0,prospect:0},'2':{live:9,prospect:3},'3':{live:18,prospect:6},'4':{live:14,prospect:0},'5':{live:17,prospect:1},'6':{live:47,prospect:12},'7':{live:39,prospect:19},'8':{live:10,prospect:3}}
+    w706: {'all':{live:154,prospect:44},'1':{live:0,prospect:0},'2':{live:9,prospect:3},'3':{live:18,prospect:6},'4':{live:14,prospect:0},'5':{live:17,prospect:1},'6':{live:47,prospect:12},'7':{live:39,prospect:19},'8':{live:10,prospect:3}},
+    w713: doorSwingsW713Data
   };
+
   const _dsLiveByKey = {
     w427: dsLiveNames_W427, w504: dsLiveNames_W504, w511: dsLiveNames_W511,
     w518: dsLiveNames_W518, w525: dsLiveNames_W525, w601: dsLiveNames_W601,
     prev: dsLiveNames_PrevWeek, weekly: dsLiveNames_CurrWeek, week2: dsLiveNames_Week2,
     w629: {'all':{'Hunter Brandt':19,'Amanda Rivera':12,'Hannah Rivera':10,'Sadie Orr':8,'Brad Fell':5,'Christian Corner':1,'Kortney Roher':1},'1':{},'2':{'Hannah Rivera':10},'3':{'Amanda Rivera':6,'Christian Corner':1},'4':{'Amanda Rivera':4},'5':{'Brad Fell':4},'6':{'Hunter Brandt':17,'Kortney Roher':1},'7':{'Sadie Orr':8,'Amanda Rivera':2,'Hunter Brandt':2},'8':{'Brad Fell':1}},
-    w706: {'all':{'Hunter Brandt':46,'Sadie Orr':32,'Amanda Rivera':29,'Brad Fell':18,'Hannah Rivera':13,'Kortney Roher':6,'Bob Cummins':6,'Vishal Patel':3},'1':{},'2':{'Hannah Rivera':9},'3':{'Amanda Rivera':16,'Hannah Rivera':2},'4':{'Amanda Rivera':10,'Vishal Patel':3,'Hunter Brandt':1},'5':{'Brad Fell':14,'Hunter Brandt':3},'6':{'Hunter Brandt':41,'Kortney Roher':6},'7':{'Sadie Orr':32,'Bob Cummins':6,'Hunter Brandt':1},'8':{'Brad Fell':4,'Amanda Rivera':4,'Hannah Rivera':2}}
+    w706: {'all':{'Hunter Brandt':46,'Sadie Orr':32,'Amanda Rivera':29,'Brad Fell':18,'Hannah Rivera':13,'Kortney Roher':6,'Bob Cummins':6,'Vishal Patel':3},'1':{},'2':{'Hannah Rivera':9},'3':{'Amanda Rivera':16,'Hannah Rivera':2},'4':{'Amanda Rivera':10,'Vishal Patel':3,'Hunter Brandt':1},'5':{'Brad Fell':14,'Hunter Brandt':3},'6':{'Hunter Brandt':41,'Kortney Roher':6},'7':{'Sadie Orr':32,'Bob Cummins':6,'Hunter Brandt':1},'8':{'Brad Fell':4,'Amanda Rivera':4,'Hannah Rivera':2}},
+    w713: dsLiveNames_W713
   };
   const _dsProspectByKey = {
     w427: dsProspectNames_W427, w504: dsProspectNames_W504, w511: dsProspectNames_W511,
     w518: dsProspectNames_W518, w525: dsProspectNames_W525, w601: dsProspectNames_W601,
     prev: dsProspectNames_PrevWeek, weekly: dsProspectNames_CurrWeek, week2: dsProspectNames_Week2,
     w629: {'all':{'Chris Oraha':3,'Sadie Orr':2,'Michelle Kent':1},'1':{},'2':{},'3':{},'4':{},'5':{},'6':{'Michelle Kent':1},'7':{'Chris Oraha':3,'Sadie Orr':2},'8':{}},
-    w706: {'all':{'Chris Oraha':15,'Michelle Kent':7,'Vishal Patel':5,'Sadie Orr':5,'Amanda Rivera':4,'Hannah Rivera':3,'Tom McInerney':2,'Kortney Roher':2,'Brad Fell':1},'1':{},'2':{'Hannah Rivera':3},'3':{'Amanda Rivera':4,'Tom McInerney':2},'4':{},'5':{'Brad Fell':1},'6':{'Michelle Kent':7,'Vishal Patel':2,'Kortney Roher':2,'Chris Oraha':1},'7':{'Chris Oraha':14,'Sadie Orr':5},'8':{'Vishal Patel':3}}
+    w706: {'all':{'Chris Oraha':15,'Michelle Kent':7,'Vishal Patel':5,'Sadie Orr':5,'Amanda Rivera':4,'Hannah Rivera':3,'Tom McInerney':2,'Kortney Roher':2,'Brad Fell':1},'1':{},'2':{'Hannah Rivera':3},'3':{'Amanda Rivera':4,'Tom McInerney':2},'4':{},'5':{'Brad Fell':1},'6':{'Michelle Kent':7,'Vishal Patel':2,'Kortney Roher':2,'Chris Oraha':1},'7':{'Chris Oraha':14,'Sadie Orr':5},'8':{'Vishal Patel':3}},
+    w713: dsProspectNames_W713
   };
   const _plDataByKey = {
     w427: newPipelineW427Data, w504: newPipelineW504Data, w511: newPipelineW511Data,
     w518: newPipelineW518Data, w525: newPipelineW525Data, w601: newPipelineW601Data,
     prev: newPipelinePrevData, weekly: newPipelineWeeklyData, week2: newPipelineWeek2Data,
     w629: {'all':3,'1':1,'2':0,'3':0,'4':0,'5':0,'6':0,'7':2,'8':0},
-    w706: {'all':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0}
+    w706: {'all':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0},
+    w713: {'all':1,'1':1,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0}
   };
   const _plNamesByKey = {
     w427: pipelineW427Names, w504: pipelineW504Names, w511: pipelineW511Names,
@@ -1892,16 +2014,18 @@
     weekly: {'all':['Aviator Coffee - New Deal (Westchester)','Creal Springs Mini Mart'],'1':[],'2':[],'3':['Aviator Coffee - New Deal (Westchester)'],'4':[],'5':[],'6':[],'7':['Creal Springs Mini Mart'],'8':[]},
     week2: pipelineWeek2Names,
     w629: {'all':['Sole Stone - New Deal','Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],'1':['Sole Stone - New Deal'],'2':[],'3':[],'4':[],'5':[],'6':[],'7':['Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],'8':[]},
-    w706: {'all':[],'1':[],'2':[],'3':[],'4':[],'5':[],'6':[],'7':[],'8':[]}
+    w706: {'all':[],'1':[],'2':[],'3':[],'4':[],'5':[],'6':[],'7':[],'8':[]},
+    w713: {'all':['Six Penny B P - New Deal'],'1':['Six Penny B P - New Deal'],'2':[],'3':[],'4':[],'5':[],'6':[],'7':[],'8':[]}
   };
   const _rucByKey = {
     w427: rucW427Data, w504: rucW504Data, w511: rucW511Data,
     w518: rucW518Data, w525: rucW525Data, w601: rucW601Data,
     prev: rucPrevData, weekly: rucData, week2: rucWeek2Data,
     w629: {'all':{house:455906716,nonhouse:142550437,total:598457153},'1':{house:0,nonhouse:0,total:0},'2':{house:63278003,nonhouse:35553388,total:98831391},'3':{house:136504240,nonhouse:20035323,total:156539564},'4':{house:106433634,nonhouse:22178846,total:128612479},'5':{house:8978265,nonhouse:5170223,total:14148488},'6':{house:102746080,nonhouse:22751786,total:125497867},'7':{house:32620534,nonhouse:34645668,total:67266202},'8':{house:5345961,nonhouse:2215203,total:7561164}},
-    w706: {'all':{house:454156135,nonhouse:140557275,total:594713410},'1':{house:0,nonhouse:0,total:0},'2':{house:62980892,nonhouse:35221519,total:98202411},'3':{house:136355158,nonhouse:19878409,total:156233567},'4':{house:105983602,nonhouse:21480650,total:127464252},'5':{house:8954001,nonhouse:5177734,total:14131735},'6':{house:102004020,nonhouse:22185220,total:124189240},'7':{house:32581205,nonhouse:34432312,total:67013517},'8':{house:5297255,nonhouse:2181432,total:7478688}}
+    w706: {'all':{house:454156135,nonhouse:140557275,total:594713410},'1':{house:0,nonhouse:0,total:0},'2':{house:62980892,nonhouse:35221519,total:98202411},'3':{house:136355158,nonhouse:19878409,total:156233567},'4':{house:105983602,nonhouse:21480650,total:127464252},'5':{house:8954001,nonhouse:5177734,total:14131735},'6':{house:102004020,nonhouse:22185220,total:124189240},'7':{house:32581205,nonhouse:34432312,total:67013517},'8':{house:5297255,nonhouse:2181432,total:7478688}},
+    w713: {'all':{house:451657095,nonhouse:137843860,total:589500955},'1':{house:0,nonhouse:0,total:0},'2':{house:62857374,nonhouse:34979786,total:97837160},'3':{house:135855986,nonhouse:19638538,total:155494524},'4':{house:105320551,nonhouse:20824026,total:126144578},'5':{house:8804515,nonhouse:5161671,total:13966186},'6':{house:101108118,nonhouse:21715578,total:122823696},'7':{house:32500674,nonhouse:33372139,total:65872813},'8':{house:5209877,nonhouse:2152122,total:7361999}}
   };
-  const WEEK_KEYS = ['w427','w504','w511','w518','w525','w601','prev','weekly','week2','w629','w706'];
+  const WEEK_KEYS = ['w427','w504','w511','w518','w525','w601','prev','weekly','week2','w629','w706','w713'];
 
   function updateDoorSwings(r) {
     // MTD cells
@@ -1940,7 +2064,8 @@
       '2':   ["Lucky Bernie's, Spring Grove (-$134)"],
       '7':   ["The Blue Room, New Minden (-$6,583)", "Sorento Food Mart (-$3,043)"],
     },
-    w706:   { 'all': ["Zeigler Petro, Zeigler ($10)"], '7': ["Zeigler Petro, Zeigler ($10)"] },
+    w706:   { 'all': ["Zeigler Petro, Zeigler ($10)", "501 Blues Club, Highland ($46)"], '7': ["Zeigler Petro, Zeigler ($10)", "501 Blues Club, Highland ($46)"] },
+    w713:   { 'all': ["HD's Lounge, Decatur (-$5,122.10)"], '6': ["HD's Lounge, Decatur (-$5,122.10)"] },
     may:    { 'all': ["Casa Chapala, Wheeling ($1)", "Neenah Warehouse ($50)"],    '2': ["Casa Chapala, Wheeling ($1)"], '3': ["Neenah Warehouse ($50)"] },
     mtd:    {
       'all': ["Cloud 9, Champaign ($20)", "Diamonds, Decatur ($20)", "The Blue Room, New Minden (-$6,583)", "Sorento Food Mart (-$3,043)", "Lucky Bernie's, Spring Grove (-$134)"],
@@ -1996,6 +2121,23 @@
     WEEK_KEYS.forEach(key => {
       const el = document.getElementById('unacceptable-' + key);
       if (el) el.textContent = d[key] ?? '—';
+    });
+  }
+
+  function updateAudit(r) {
+    const d = auditData[r] ?? auditData['all'];
+    WEEK_KEYS.forEach(key => {
+      const el = document.getElementById('audit-' + key);
+      if (!el) return;
+      const v = d[key];
+      const names = (auditNames[key] ?? {})[r] ?? (auditNames[key] ?? {})['all'] ?? [];
+      if (v != null) {
+        el.classList.remove('empty');
+        setTip('audit-' + key, v.toFixed(1) + '%', names);
+      } else {
+        el.textContent = '—';
+        el.classList.add('empty');
+      }
     });
   }
 
@@ -2159,8 +2301,8 @@
     '8':[]
   };
   const pipelineJulyNames = {
-    'all': ['Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],
-    '1':[],'2':[],'3':[],'4':[],'5':[],'6':[],
+    'all': ['Six Penny B P - New Deal','Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],
+    '1':['Six Penny B P - New Deal'],'2':[],'3':[],'4':[],'5':[],'6':[],
     '7': ['Creal Springs Mini Mart - takeover 2026','Meladi Fuel Mart Inc. 2026 takeover'],
     '8':[]
   };
@@ -2382,7 +2524,7 @@
 
   function buildSummaryCharts(r) {
     const reg = r ?? 'all';
-    const labels = ['4/27–5/3','5/4–5/10','5/11–5/17','5/18–5/24','5/25–5/31','6/1–6/7','6/8–6/14','6/15–6/21','6/22–6/28','6/29–7/5','7/6–7/12'];
+    const labels = ['4/27–5/3','5/4–5/10','5/11–5/17','5/18–5/24','5/25–5/31','6/1–6/7','6/8–6/14','6/15–6/21','6/22–6/28','6/29–7/5','7/6–7/12','7/13–7/19'];
 
     // Door Swings — Live (stacked by rep)
     buildStackedChart('chart-live', labels,
@@ -2440,6 +2582,7 @@
     updateProblematic(sel.value);
     updateCampaigns(sel ? sel.value : 'all');
     updateUnacceptable(sel.value);
+    updateAudit(sel.value);
     updatePayroll(sel.value);
     updateDoorSwings(sel.value);
     updateOpsQuarterly(sel.value);
@@ -2459,6 +2602,7 @@
   updateOpsQuarterly('all');
   updateCampaigns('all');
   updateUnacceptable('all');
+  updateAudit('all');
   updatePayroll('all');
   updateDoorSwings('all');
   updateNewPipeline('all');
@@ -2774,7 +2918,7 @@
     const sel = document.getElementById('regionFilter');
     document.getElementById('region-label').textContent = '— ' + sel.options[sel.selectedIndex].text;
     updateRUC(sel.value); updateVault(sel.value); updateProblematic(sel.value); updateCampaigns(sel ? sel.value : 'all');
-    updateUnacceptable(sel.value); updatePayroll(sel.value); updateDoorSwings(sel.value);
+    updateUnacceptable(sel.value); updateAudit(sel.value); updatePayroll(sel.value); updateDoorSwings(sel.value);
     updateNewPipeline(sel.value); updateLSMeetings(sel.value); updateNewUA(sel.value); updateExtensions(sel.value); updateNTI(sel.value); updateMarketShare(sel.value);
     renderSSTable(sel.value);
     if (document.getElementById('tab-summary').classList.contains('active')) {
